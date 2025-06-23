@@ -1,93 +1,88 @@
 function AddMissingAiFile({ personaId, onFileAdded }) {
-  const [status, setStatus] = useState('checking'); // checking, missing, exists, adding, added, error
-  const [error, setError] = useState(null);
+  const [file, setFile] = useState(null);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const fileInputRef = useRef(null);
 
-  useEffect(() => {
-    let controller = new AbortController();
-
-    if (!personaId) {
-      setStatus('missing');
-      setError(null);
-      return () => {
-        controller.abort();
-      };
+  const handleFileChange = (e) => {
+    setError('');
+    const selected = e.target.files[0];
+    if (selected && selected.type !== 'application/json') {
+      setError('Only JSON files are supported.');
+      setFile(null);
+      return;
     }
+    setFile(selected);
+  };
 
-    setStatus('checking');
-    setError(null);
-
-    async function checkFile() {
-      try {
-        const res = await fetch(`/api/ai-files/${personaId}`, { signal: controller.signal });
-        if (res.ok) {
-          setStatus('exists');
-        } else if (res.status === 404) {
-          setStatus('missing');
-        } else {
-          throw new Error(`Unexpected status ${res.status}`);
-        }
-      } catch (err) {
-        if (err.name === 'AbortError') return;
-        setError(err);
-        setStatus('error');
-      }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!file) {
+      setError('Please select a JSON file.');
+      return;
     }
-
-    checkFile();
-
-    return () => {
-      controller.abort();
-    };
-  }, [personaId]);
-
-  async function handleAdd() {
-    if (!personaId) return;
-    setStatus('adding');
-    setError(null);
+    setLoading(true);
+    setError('');
+    const formData = new FormData();
+    formData.append('personaId', personaId);
+    formData.append('file', file);
     try {
-      const res = await fetch('/api/ai-files', {
+      const response = await fetch('/api/ai-files', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ personaId }),
+        body: formData,
       });
-      if (!res.ok) {
-        const text = await res.text();
-        throw new Error(text || `Error ${res.status}`);
+      if (!response.ok) {
+        const { message } = await response.json().catch(() => ({}));
+        throw new Error(message || 'Upload failed.');
       }
-      setStatus('added');
-      if (typeof onFileAdded === 'function') {
-        onFileAdded(personaId);
+      const data = await response.json();
+      onFileAdded(data);
+      setFile(null);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
       }
     } catch (err) {
-      setError(err);
-      setStatus('error');
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
-  }
-
-  if (status === 'checking') {
-    return <div>Checking AI file...</div>;
-  }
-
-  if (status === 'exists') {
-    return null;
-  }
-
-  if (status === 'added') {
-    return <div>AI file added successfully.</div>;
-  }
+  };
 
   return (
-    <div>
-      {status === 'error' && (
-        <div style={{ color: 'red' }}>
-          Error: {error?.message || 'An unexpected error occurred'}
-        </div>
+    <form
+      onSubmit={handleSubmit}
+      className="add-missing-ai-file"
+      aria-busy={loading}
+    >
+      <label htmlFor="ai-file-input">Upload AI File (JSON)</label>
+      <input
+        type="file"
+        id="ai-file-input"
+        accept=".json,application/json"
+        onChange={handleFileChange}
+        ref={fileInputRef}
+        disabled={loading}
+        aria-describedby={error ? 'ai-file-input-error' : undefined}
+      />
+      {error && (
+        <p id="ai-file-input-error" className="error">
+          {error}
+        </p>
       )}
-      <button onClick={handleAdd} disabled={status === 'adding' || !personaId}>
-        {status === 'adding' ? 'Adding AI file...' : 'Add AI File'}
+      <button type="submit" disabled={loading}>
+        {loading ? 'Uploading...' : 'Upload'}
       </button>
-    </div>
+    </form>
   );
 }
+
+AddMissingAiFile.propTypes = {
+  personaId: PropTypes.string.isRequired,
+  onFileAdded: PropTypes.func,
+};
+
+AddMissingAiFile.defaultProps = {
+  onFileAdded: () => {},
+};
 
 export default AddMissingAiFile;
