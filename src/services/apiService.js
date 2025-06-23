@@ -14,13 +14,13 @@ apiService.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem('accessToken');
         if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
+            const newConfig = { ...config };
+            newConfig.headers.Authorization = `Bearer ${token}`;
+            return newConfig;
         }
         return config;
     },
-    (error) => {
-        return Promise.reject(error);
-    }
+    (error) => Promise.reject(error)
 );
 
 // Add response interceptor to handle token refresh
@@ -29,8 +29,8 @@ apiService.interceptors.response.use(
     async (error) => {
         const originalRequest = error.config;
 
-        if (error.response?.status === 401 && !originalRequest._retry) {
-            originalRequest._retry = true;
+        if (error.response?.status === 401 && !originalRequest.retryAttempted) {
+            originalRequest.retryAttempted = true;
 
             try {
                 const refreshToken = localStorage.getItem('refreshToken');

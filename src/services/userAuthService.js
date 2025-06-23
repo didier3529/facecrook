@@ -6,24 +6,16 @@ const REFRESH_TOKEN_KEY = 'refreshToken';
 
 const userAuthService = {
   login: async (credentials) => {
-    try {
-      const response = await apiService.post('/auth/login', credentials);
-      const { token, refreshToken } = response.data;
-      localStorage.setItem(ACCESS_TOKEN_KEY, token);
-      localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
+    const response = await apiService.post('/auth/login', credentials);
+    const { token, refreshToken } = response.data;
+    localStorage.setItem(ACCESS_TOKEN_KEY, token);
+    localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
+    return response.data;
   },
 
   signup: async (data) => {
-    try {
-      const response = await apiService.post('/auth/signup', data);
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
+    const response = await apiService.post('/auth/signup', data);
+    return response.data;
   },
 
   logout: () => {
@@ -31,13 +23,9 @@ const userAuthService = {
     localStorage.removeItem(REFRESH_TOKEN_KEY);
   },
 
-  getAccessToken: () => {
-    return localStorage.getItem(ACCESS_TOKEN_KEY);
-  },
+  getAccessToken: () => localStorage.getItem(ACCESS_TOKEN_KEY),
 
-  getRefreshToken: () => {
-    return localStorage.getItem(REFRESH_TOKEN_KEY);
-  },
+  getRefreshToken: () => localStorage.getItem(REFRESH_TOKEN_KEY),
 
   isAuthenticated: () => {
     const token = localStorage.getItem(ACCESS_TOKEN_KEY);

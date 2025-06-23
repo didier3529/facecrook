@@ -1,16 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { fetchAiResponse } from './fetchAiResponse';
+import React, { useEffect, useRef, useState } from 'react';
+import fetchAiResponse from './fetchAiResponse';
 
 const AddMissingAiEntry = ({ conversation, onUpdate }) => {
   const [loading, setLoading] = useState(false);
   const prevLengthRef = useRef(conversation.length);
   const isMountedRef = useRef(true);
 
-  useEffect(() => {
-    return () => {
-      isMountedRef.current = false;
-    };
+  useEffect(() => () => {
+    isMountedRef.current = false;
   }, []);
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useMemo, useState } from 'react';
 import { NavLink, Route, Routes } from 'react-router-dom';
 
 export const UserContext = createContext();
@@ -11,10 +11,14 @@ function App() {
   const [nfts, setNfts] = useState([]);
   const [chatHistory, setChatHistory] = useState([]);
 
+  const userValue = useMemo(() => ({ user, setUser }), [user]);
+  const tokenValue = useMemo(() => ({ tokenBalance, setTokenBalance }), [tokenBalance]);
+  const nftValue = useMemo(() => ({ nfts, setNfts }), [nfts]);
+
   return (
-    <UserContext.Provider value={{ user, setUser }}>
-      <TokenContext.Provider value={{ tokenBalance, setTokenBalance }}>
-        <NFTContext.Provider value={{ nfts, setNfts }}>
+    <UserContext.Provider value={userValue}>
+      <TokenContext.Provider value={tokenValue}>
+        <NFTContext.Provider value={nftValue}>
           <div className="app">
             <nav className="navbar">
               <NavLink to="/" end className="navlink">Home</NavLink>
@@ -93,8 +97,8 @@ function Feed() {
           <h3>{post.author}</h3>
           <p>{post.content}</p>
           <div className="post-actions">
-            <button onClick={() => likePost(post.id)}>? {post.likes}</button>
-            <button onClick={() => tipPost(post.id)}>? Tip {tipAmount} ({post.tips})</button>
+            <button type="button" onClick={() => likePost(post.id)}>? {post.likes}</button>
+            <button type="button" onClick={() => tipPost(post.id)}>? Tip {tipAmount} ({post.tips})</button>
           </div>
         </div>
       ))}
@@ -139,7 +143,7 @@ function Chat({ chatHistory, setChatHistory }) {
       </div>
       <div className="chat-input">
         <input value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === 'Enter' && sendMessage()} placeholder="Say something crooky..." />
-        <button onClick={sendMessage}>Send</button>
+        <button type="button" onClick={sendMessage}>Send</button>
       </div>
     </div>
   );
@@ -152,7 +156,7 @@ function Tokens() {
     <div className="tokens">
       <h2>In-App Tokens</h2>
       <p>Balance: {tokenBalance}</p>
-      <button onClick={() => setTokenBalance(tokenBalance + earnAmount)}>? Earn {earnAmount}</button>
+      <button type="button" onClick={() => setTokenBalance(tokenBalance + earnAmount)}>? Earn {earnAmount}</button>
     </div>
   );
 }
@@ -173,7 +177,7 @@ function Mint() {
     <div className="mint">
       <h2>Mock NFT Minting</h2>
       <p>Cost: {cost} tokens</p>
-      <button onClick={mintNFT} disabled={tokenBalance < cost}>Mint NFT</button>
+      <button type="button" onClick={mintNFT} disabled={tokenBalance < cost}>Mint NFT</button>
       <div className="nft-list">
         {nfts.map(n => <div key={n.id} className="nft-item">{n.name}</div>)}
       </div>
@@ -203,13 +207,14 @@ function Store() {
       {items.map(item => (
         <div key={item.id} className="store-item">
           <span>{item.name} - {item.price}</span>
-          <button onClick={() => buyItem(item)} disabled={tokenBalance < item.price}>Buy</button>
+          <button type="button" onClick={() => buyItem(item)} disabled={tokenBalance < item.price}>Buy</button>
         </div>
       ))}
       {purchases.length > 0 && (
         <div className="purchases">
           <h3>Your Purchases</h3>
-          <ul>{purchases.map((p, i) => <li key={i}>{p}</li>)}</ul>
+          {/* eslint-disable-next-line react/no-array-index-key */}
+          <ul>{purchases.map((p, idx) => <li key={`purchase-${idx}-${p.replace(/\s+/g, '-').toLowerCase()}`}>{p}</li>)}</ul>
         </div>
       )}
     </div>

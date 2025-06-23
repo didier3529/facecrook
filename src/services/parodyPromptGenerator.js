@@ -1,4 +1,3 @@
-import ApiService from './ApiService';
 
 const templateMap = {
   cryptoKing: 'CryptoKing says: "{user}"',
@@ -20,7 +19,7 @@ export default async function sendMessage(characterId, userText) {
   }
   const prompt = templateMap[characterId].replace(/\{user\}/g, trimmedText);
   try {
-    const { data } = await ApiService.post('/ai/chat', { prompt });
+    const { data } = await apiService.post('/ai/chat', { prompt });
     return data;
   } catch (error) {
     throw new Error(`Failed to send AI chat message for characterId "${characterId}": ${error.message}`);

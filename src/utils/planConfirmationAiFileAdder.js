@@ -20,7 +20,7 @@ const PlanConfirmationAiFileAdder = ({ onFilesChange, maxFiles, maxFileSizeMB, a
   }
 
   const handleFiles = selectedFiles => {
-    let newFiles = [...files]
+    const newFiles = [...files]
     for (let i = 0; i < selectedFiles.length; i++) {
       const file = selectedFiles[i]
       const validationError = validateFile(file, newFiles.length)

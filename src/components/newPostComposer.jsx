@@ -1,13 +1,12 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
-import { UserContext } from '../contexts/UserContext';
-import { FeedContext } from '../contexts/FeedContext';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { UserContext } from '../App';
 
 const MAX_CHAR = 280;
 const TOKEN_COST = 10;
 
 const NewPostComposer = () => {
-  const { user, dispatch: userDispatch } = useContext(UserContext);
-  const { dispatch: feedDispatch } = useContext(FeedContext);
+  const { user, setUser } = useContext(UserContext);
+  const { tokenBalance, setTokenBalance } = useContext(TokenContext);
   const [content, setContent] = useState('');
   const [file, setFile] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -43,32 +42,29 @@ const NewPostComposer = () => {
       setError('Post cannot be empty.');
       return;
     }
-    if (user.tokens < TOKEN_COST) {
+    if (tokenBalance < TOKEN_COST) {
       setError('Insufficient tokens.');
       return;
     }
     setIsSubmitting(true);
     setError('');
     try {
-      const formData = new FormData();
-      formData.append('content', content.trim());
-      if (file) formData.append('media', file);
-      const resp = await fetch('/api/posts', {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${user.token}` },
-        body: formData
-      });
-      if (!resp.ok) {
-        let errMsg = 'Failed to create post.';
-        try {
-          const errData = await resp.json();
-          errMsg = errData.message || errMsg;
-        } catch {}
-        throw new Error(errMsg);
-      }
-      const newPost = await resp.json();
-      feedDispatch({ type: 'ADD_POST', payload: newPost });
-      userDispatch({ type: 'DEDUCT_TOKENS', payload: TOKEN_COST });
+      // Simulate posting to feed (since this is a satirical app)
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // Mock successful post creation
+      const newPost = {
+        id: `post_${Date.now()}`,
+        author: user.name,
+        content: content.trim(),
+        timestamp: new Date().toISOString(),
+        likes: 0,
+        tips: 0,
+        media: file ? URL.createObjectURL(file) : null
+      };
+
+      // Deduct tokens and update balance
+      setTokenBalance(tokenBalance - TOKEN_COST);
       if (isMountedRef.current) {
         setContent('');
         setFile(null);

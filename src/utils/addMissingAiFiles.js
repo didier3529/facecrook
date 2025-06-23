@@ -19,7 +19,7 @@ function toPascalCase(str) {
     return lower.charAt(0).toUpperCase() + lower.slice(1);
   }).join('');
   if (/^[0-9]/.test(pascal)) {
-    return 'File' + pascal;
+    return `File${  pascal}`;
   }
   return pascal || 'Component';
 }
