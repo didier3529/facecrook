@@ -1,88 +1,107 @@
-function AddMissingAiFile({ personaId, onFileAdded }) {
-  const [file, setFile] = useState(null);
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
-  const fileInputRef = useRef(null);
+const AddMissingAiFile = ({ onUploadSuccess }) => {
+  const [file, setFile] = useState(null)
+  const [uploading, setUploading] = useState(false)
+  const [progress, setProgress] = useState(0)
+  const [error, setError] = useState('')
+  const [success, setSuccess] = useState(false)
+  const isMounted = useRef(true)
+  const controllerRef = useRef(null)
+
+  useEffect(() => {
+    return () => {
+      isMounted.current = false
+      if (controllerRef.current) {
+        controllerRef.current.abort()
+      }
+    }
+  }, [])
 
   const handleFileChange = (e) => {
-    setError('');
-    const selected = e.target.files[0];
-    if (selected && selected.type !== 'application/json') {
-      setError('Only JSON files are supported.');
-      setFile(null);
-      return;
-    }
-    setFile(selected);
-  };
+    if (!isMounted.current) return
+    setFile(e.target.files[0])
+    setError('')
+    setSuccess(false)
+    setProgress(0)
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     if (!file) {
-      setError('Please select a JSON file.');
-      return;
+      setError('Please select a file to upload.')
+      return
     }
-    setLoading(true);
-    setError('');
-    const formData = new FormData();
-    formData.append('personaId', personaId);
-    formData.append('file', file);
+
+    const formData = new FormData()
+    formData.append('aiFile', file)
+
+    const controller = new AbortController()
+    controllerRef.current = controller
+
     try {
-      const response = await fetch('/api/ai-files', {
-        method: 'POST',
-        body: formData,
-      });
-      if (!response.ok) {
-        const { message } = await response.json().catch(() => ({}));
-        throw new Error(message || 'Upload failed.');
+      if (isMounted.current) {
+        setUploading(true)
+        setError('')
       }
-      const data = await response.json();
-      onFileAdded(data);
-      setFile(null);
-      if (fileInputRef.current) {
-        fileInputRef.current.value = '';
+      const response = await axios.post('/api/ai-file', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+        onUploadProgress: (e) => {
+          if (isMounted.current && e.total) {
+            const percent = Math.round((e.loaded * 100) / e.total)
+            setProgress(percent)
+          }
+        },
+        signal: controller.signal
+      })
+      if (isMounted.current) {
+        setSuccess(true)
+        if (onUploadSuccess) {
+          onUploadSuccess(response.data)
+        }
       }
     } catch (err) {
-      setError(err.message);
+      if (isMounted.current) {
+        if (axios.isCancel(err)) {
+          setError('Upload canceled.')
+        } else {
+          setError(err.response?.data?.message || 'Upload failed. Please try again.')
+        }
+      }
     } finally {
-      setLoading(false);
+      if (isMounted.current) {
+        setUploading(false)
+      }
+      controllerRef.current = null
     }
-  };
+  }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="add-missing-ai-file"
-      aria-busy={loading}
-    >
-      <label htmlFor="ai-file-input">Upload AI File (JSON)</label>
-      <input
-        type="file"
-        id="ai-file-input"
-        accept=".json,application/json"
-        onChange={handleFileChange}
-        ref={fileInputRef}
-        disabled={loading}
-        aria-describedby={error ? 'ai-file-input-error' : undefined}
-      />
-      {error && (
-        <p id="ai-file-input-error" className="error">
-          {error}
-        </p>
-      )}
-      <button type="submit" disabled={loading}>
-        {loading ? 'Uploading...' : 'Upload'}
-      </button>
-    </form>
-  );
+    <div className="add-missing-ai-file">
+      <h2>Add Missing AI File</h2>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="file-input">Choose AI file:</label>
+        <input
+          id="file-input"
+          type="file"
+          accept=".json,.txt,.env"
+          onChange={handleFileChange}
+          disabled={uploading}
+        />
+        <button type="submit" disabled={uploading}>
+          {uploading ? `Uploading (${progress}%)` : 'Upload File'}
+        </button>
+      </form>
+      {error && <p className="error-message">{error}</p>}
+      {success && <p className="success-message">File uploaded successfully.</p>}
+    </div>
+  )
 }
 
 AddMissingAiFile.propTypes = {
-  personaId: PropTypes.string.isRequired,
-  onFileAdded: PropTypes.func,
-};
+  onUploadSuccess: PropTypes.func
+}
 
 AddMissingAiFile.defaultProps = {
-  onFileAdded: () => {},
-};
+  onUploadSuccess: null
+}
 
-export default AddMissingAiFile;
+export default AddMissingAiFile
