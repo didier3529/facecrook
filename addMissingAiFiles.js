@@ -1,97 +1,81 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+const fs = require('fs');
+const path = require('path');
 
-const AddMissingAiFiles = () => {
-  const [missingFiles, setMissingFiles] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [adding, setAdding] = useState(false);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
-
-  useEffect(() => {
-    const controller = new AbortController();
-    const { signal } = controller;
-    setLoading(true);
-    setError(null);
-    Promise.all([
-      fetch('/api/ai/files/expected', { signal }),
-      fetch('/api/ai/files/existing', { signal })
-    ])
-      .then(([resExpected, resExisting]) => {
-        if (!resExpected.ok) throw new Error('Expected files fetch failed');
-        if (!resExisting.ok) throw new Error('Existing files fetch failed');
-        return Promise.all([resExpected.json(), resExisting.json()]);
-      })
-      .then(([expected, existing]) => {
-        const missing = expected.filter(name => !existing.includes(name));
-        setMissingFiles(missing);
-      })
-      .catch(err => {
-        if (err.name !== 'AbortError') {
-          setError(err.message || 'Failed to load AI files');
-        }
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-    return () => {
-      controller.abort();
-    };
-  }, []);
-
-  const handleAddMissing = async () => {
-    setAdding(true);
-    setError(null);
-    setSuccess(null);
-    try {
-      for (const fileName of missingFiles) {
-        const res = await fetch('/api/ai/files', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ fileName })
-        });
-        if (!res.ok) throw new Error(`Failed to add ${fileName}`);
-      }
-      setSuccess('All missing AI files have been added.');
-      setMissingFiles([]);
-    } catch (err) {
-      setError(err.message || 'Error adding missing files');
-    } finally {
-      setAdding(false);
-    }
-  };
-
-  if (loading) {
-    return <div>Loading AI file status...</div>;
+function getPlanFilePath() {
+  const arg = process.argv.find(a => a.startsWith('--plan=') || a.startsWith('-p='));
+  if (arg) {
+    return path.resolve(process.cwd(), arg.split('=')[1]);
   }
-
-  if (error) {
-    return <div style={{ color: 'red' }}>{error}</div>;
+  if (process.env.PLAN_FILE) {
+    return path.resolve(process.cwd(), process.env.PLAN_FILE);
   }
+  return path.resolve(process.cwd(), 'aiPlan.json');
+}
 
-  return (
-    <div>
-      <h2>AI Files Status</h2>
-      {missingFiles.length === 0 ? (
-        <p>All AI files are present.</p>
-      ) : (
-        <div>
-          <p>The following AI files are missing:</p>
-          <ul>
-            {missingFiles.map(name => (
-              <li key={name}>{name}</li>
-            ))}
-          </ul>
-          <button type="button" onClick={handleAddMissing} disabled={adding}>
-            {adding ? 'Adding...' : 'Add Missing AI Files'}
-          </button>
-        </div>
-      )}
-      {success && <div style={{ color: 'green' }}>{success}</div>}
-    </div>
-  );
-};
+function toPascalCase(str) {
+  const words = str.replace(/[^a-zA-Z0-9]+/g, ' ').trim().split(/\s+/);
+  const pascal = words.map(word => {
+    const lower = word.toLowerCase();
+    return lower.charAt(0).toUpperCase() + lower.slice(1);
+  }).join('');
+  if (/^[0-9]/.test(pascal)) {
+    return 'File' + pascal;
+  }
+  return pascal || 'Component';
+}
 
-AddMissingAiFiles.propTypes = {};
+const planPath = getPlanFilePath();
 
-export default AddMissingAiFiles;
+if (!fs.existsSync(planPath)) {
+  console.error(`Plan file not found: ${planPath}`);
+  process.exit(1);
+}
+
+let plan;
+try {
+  plan = JSON.parse(fs.readFileSync(planPath, 'utf-8'));
+} catch (err) {
+  console.error('Error reading plan file:', err.message);
+  process.exit(1);
+}
+
+if (!Array.isArray(plan.files)) {
+  console.error('Invalid plan format: "files" array is required');
+  process.exit(1);
+}
+
+plan.files.forEach(rel => {
+  const target = path.resolve(process.cwd(), rel);
+  if (fs.existsSync(target)) {
+    console.log(`Exists: ${rel}`);
+    return;
+  }
+  const ext = path.extname(target);
+  if (ext !== '.js' && ext !== '.jsx') {
+    console.warn(`Skipping unsupported extension "${ext}" for file: ${rel}`);
+    return;
+  }
+  const dir = path.dirname(target);
+  try {
+    fs.mkdirSync(dir, { recursive: true });
+  } catch (err) {
+    console.error(`Error creating directory "${dir}": ${err.message}`);
+    return;
+  }
+  const name = path.basename(target, ext);
+  const identifier = toPascalCase(name);
+  const content = `import React from 'react';
+
+const ${identifier} = () => (
+  <div>${identifier} placeholder</div>
+);
+
+export default ${identifier};
+`;
+  try {
+    fs.writeFileSync(target, content, 'utf-8');
+    console.log(`Created: ${rel}`);
+  } catch (err) {
+    console.error(`Error writing file "${rel}": ${err.message}`);
+  }
+});
