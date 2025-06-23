@@ -1,0 +1,215 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+        'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #f8fafc;
+    color: #1e293b;
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+        monospace;
+}
+
+/* App layout */
+.app {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Navigation */
+.navbar {
+    @apply bg-white shadow-md px-6 py-4 flex justify-center space-x-8;
+}
+
+.navlink {
+    @apply text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200;
+}
+
+.navlink.active {
+    @apply text-blue-600 border-b-2 border-blue-600;
+}
+
+.main {
+    @apply flex-1 container mx-auto px-4 py-8 max-w-4xl;
+}
+
+/* Components */
+.home {
+    @apply text-center py-16;
+}
+
+.home h2 {
+    @apply text-3xl font-bold text-gray-800 mb-4;
+}
+
+.home p {
+    @apply text-gray-600 text-lg;
+}
+
+.home-form {
+    @apply max-w-md mx-auto bg-white rounded-lg shadow-lg p-8 space-y-6;
+}
+
+.home-form h2 {
+    @apply text-2xl font-bold text-center text-gray-800 mb-6;
+}
+
+.home-form input {
+    @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+}
+
+.home-form button {
+    @apply w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium;
+}
+
+/* Feed */
+.feed {
+    @apply space-y-6;
+}
+
+.feed h2 {
+    @apply text-2xl font-bold text-gray-800 mb-6;
+}
+
+.post {
+    @apply bg-white rounded-lg shadow-md p-6 space-y-4;
+}
+
+.post h3 {
+    @apply font-semibold text-gray-800;
+}
+
+.post p {
+    @apply text-gray-600;
+}
+
+.post-actions {
+    @apply flex space-x-4;
+}
+
+.post-actions button {
+    @apply px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors duration-200;
+}
+
+/* Chat */
+.chat {
+    @apply space-y-6;
+}
+
+.chat h2 {
+    @apply text-2xl font-bold text-gray-800 mb-6;
+}
+
+.chat-window {
+    @apply bg-white rounded-lg shadow-md p-6 h-96 overflow-y-auto space-y-4;
+}
+
+.chat-message {
+    @apply p-3 rounded-lg max-w-xs;
+}
+
+.chat-message.user {
+    @apply bg-blue-100 text-blue-800 ml-auto;
+}
+
+.chat-message.ai {
+    @apply bg-gray-100 text-gray-800;
+}
+
+.chat-input {
+    @apply flex space-x-4;
+}
+
+.chat-input input {
+    @apply flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500;
+}
+
+.chat-input button {
+    @apply px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200;
+}
+
+/* Tokens */
+.tokens {
+    @apply text-center space-y-6;
+}
+
+.tokens h2 {
+    @apply text-2xl font-bold text-gray-800;
+}
+
+.tokens p {
+    @apply text-xl text-gray-600;
+}
+
+.tokens button {
+    @apply px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors duration-200;
+}
+
+/* Mint */
+.mint {
+    @apply text-center space-y-6;
+}
+
+.mint h2 {
+    @apply text-2xl font-bold text-gray-800;
+}
+
+.mint p {
+    @apply text-lg text-gray-600;
+}
+
+.mint button {
+    @apply px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed;
+}
+
+.nft-list {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6;
+}
+
+.nft-item {
+    @apply bg-white rounded-lg shadow-md p-4 text-center;
+}
+
+/* Store */
+.store {
+    @apply space-y-6;
+}
+
+.store h2 {
+    @apply text-2xl font-bold text-gray-800 mb-6;
+}
+
+.store-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+}
+
+.store-item {
+    @apply bg-white rounded-lg shadow-md p-6 text-center space-y-4;
+}
+
+.store-item h3 {
+    @apply font-semibold text-gray-800;
+}
+
+.store-item p {
+    @apply text-gray-600;
+}
+
+.store-item button {
+    @apply px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed;
+}

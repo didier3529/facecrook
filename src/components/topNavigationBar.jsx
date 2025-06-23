@@ -1,6 +1,6 @@
-import React, { useState, useContext, useRef, useEffect } from 'react';
-import { NavLink, Link } from 'react-router-dom';
-import { UserContext } from '../contexts/UserContext';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { Link, NavLink } from 'react-router-dom';
+import { UserContext } from '../App';
 
 const NAV_LINKS = [
   { to: '/feed', label: 'Feed' },

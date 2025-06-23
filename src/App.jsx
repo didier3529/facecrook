@@ -1,5 +1,5 @@
-import React, { createContext, useState, useContext } from 'react';
-import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
+import React, { createContext, useContext, useState } from 'react';
+import { NavLink, Route, Routes } from 'react-router-dom';
 
 export const UserContext = createContext();
 export const TokenContext = createContext();
@@ -15,28 +15,26 @@ function App() {
     <UserContext.Provider value={{ user, setUser }}>
       <TokenContext.Provider value={{ tokenBalance, setTokenBalance }}>
         <NFTContext.Provider value={{ nfts, setNfts }}>
-          <Router>
-            <div className="app">
-              <nav className="navbar">
-                <NavLink to="/" end className="navlink">Home</NavLink>
-                <NavLink to="/feed" className="navlink">Feed</NavLink>
-                <NavLink to="/chat" className="navlink">Chat</NavLink>
-                <NavLink to="/tokens" className="navlink">Tokens</NavLink>
-                <NavLink to="/mint" className="navlink">Mint NFT</NavLink>
-                <NavLink to="/store" className="navlink">Store</NavLink>
-              </nav>
-              <main className="main">
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/feed" element={<Feed />} />
-                  <Route path="/chat" element={<Chat chatHistory={chatHistory} setChatHistory={setChatHistory} />} />
-                  <Route path="/tokens" element={<Tokens />} />
-                  <Route path="/mint" element={<Mint />} />
-                  <Route path="/store" element={<Store />} />
-                </Routes>
-              </main>
-            </div>
-          </Router>
+          <div className="app">
+            <nav className="navbar">
+              <NavLink to="/" end className="navlink">Home</NavLink>
+              <NavLink to="/feed" className="navlink">Feed</NavLink>
+              <NavLink to="/chat" className="navlink">Chat</NavLink>
+              <NavLink to="/tokens" className="navlink">Tokens</NavLink>
+              <NavLink to="/mint" className="navlink">Mint NFT</NavLink>
+              <NavLink to="/store" className="navlink">Store</NavLink>
+            </nav>
+            <main className="main">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/feed" element={<Feed />} />
+                <Route path="/chat" element={<Chat chatHistory={chatHistory} setChatHistory={setChatHistory} />} />
+                <Route path="/tokens" element={<Tokens />} />
+                <Route path="/mint" element={<Mint />} />
+                <Route path="/store" element={<Store />} />
+              </Routes>
+            </main>
+          </div>
         </NFTContext.Provider>
       </TokenContext.Provider>
     </UserContext.Provider>
