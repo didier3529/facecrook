@@ -1,122 +1,122 @@
-import React, { useState, useRef } from 'react';
-import axios from 'axios';
-import PropTypes from 'prop-types';
-
-const UPLOAD_ENDPOINT = process.env.REACT_APP_FILE_UPLOAD_ENDPOINT || '/api/files';
-
-const AddMissingFile = ({ onSuccess }) => {
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
+const AddMissingFile = ({ onUploadSuccess, apiUrl }) => {
   const [file, setFile] = useState(null);
+  const [filename, setFilename] = useState('');
+  const [uploading, setUploading] = useState(false);
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
-  const fileInputRef = useRef();
+  const [previewUrl, setPreviewUrl] = useState('');
 
-  const handleFileChange = (e) => {
-    setFile(e.target.files[0] || null);
+  const allowedTypes = [
+    'image/jpeg',
+    'image/png',
+    'image/gif',
+    'application/pdf',
+    'text/plain'
+  ];
+  const maxSize = 10 * 1024 * 1024; // 10MB
+
+  const handleFileChange = e => {
     setError('');
+    const selected = e.target.files[0];
+    if (!selected) {
+      setFile(null);
+      setPreviewUrl('');
+      return;
+    }
+    if (!allowedTypes.includes(selected.type)) {
+      setError('Unsupported file type.');
+      return;
+    }
+    if (selected.size > maxSize) {
+      setError('File size exceeds 10MB.');
+      return;
+    }
+    setFile(selected);
+    setFilename(selected.name);
+    if (selected.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onloadend = () => setPreviewUrl(reader.result);
+      reader.readAsDataURL(selected);
+    } else {
+      setPreviewUrl('');
+    }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    if (!name.trim()) {
-      setError('Please enter a file name.');
+    if (!apiUrl) {
+      setError('API URL is not configured.');
       return;
     }
     if (!file) {
-      setError('Please select a file to upload.');
+      setError('Please select a file.');
       return;
     }
+    setUploading(true);
     setError('');
-    setLoading(true);
-
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('filename', filename);
     try {
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('name', name.trim());
-      formData.append('description', description.trim());
-
-      const response = await axios.post(UPLOAD_ENDPOINT, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
-
-      onSuccess(response.data);
-      setName('');
-      setDescription('');
+      const response = await axios.post(
+        `${apiUrl}/files/upload`,
+        formData,
+        { headers: { 'Content-Type': 'multipart/form-data' } }
+      );
+      onUploadSuccess(response.data);
       setFile(null);
-      if (fileInputRef.current) {
-        fileInputRef.current.value = '';
-      }
+      setFilename('');
+      setPreviewUrl('');
     } catch (err) {
-      const msg =
-        err.response?.data?.message ||
-        err.message ||
-        'An error occurred while uploading.';
-      setError(msg);
+      setError(err.response?.data?.message || 'Upload failed.');
     } finally {
-      setLoading(false);
+      setUploading(false);
     }
   };
 
   return (
-    <form className="add-missing-file" onSubmit={handleSubmit} noValidate>
-      {error && (
-        <div className="add-missing-file__error" role="alert">
-          {error}
+    <div className="add-missing-file">
+      <form onSubmit={handleSubmit} className="file-form">
+        {error && <div className="error-message">{error}</div>}
+        <div className="form-group">
+          <label htmlFor="fileInput">Select File</label>
+          <input
+            id="fileInput"
+            type="file"
+            accept=".jpg,.jpeg,.png,.gif,.pdf,.txt"
+            onChange={handleFileChange}
+            disabled={uploading}
+          />
         </div>
-      )}
-      <div className="add-missing-file__field">
-        <label htmlFor="file-name">
-          File Name<span aria-hidden="true">*</span>
-        </label>
-        <input
-          id="file-name"
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          disabled={loading}
-          required
-          aria-required="true"
-        />
-      </div>
-      <div className="add-missing-file__field">
-        <label htmlFor="file-description">Description</label>
-        <textarea
-          id="file-description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          disabled={loading}
-          rows="3"
-        />
-      </div>
-      <div className="add-missing-file__field">
-        <label htmlFor="file-input">
-          Choose File<span aria-hidden="true">*</span>
-        </label>
-        <input
-          id="file-input"
-          type="file"
-          accept=".json,.csv,.txt"
-          onChange={handleFileChange}
-          disabled={loading}
-          ref={fileInputRef}
-          required
-          aria-required="true"
-        />
-      </div>
-      <button
-        type="submit"
-        className="add-missing-file__submit"
-        disabled={loading}
-      >
-        {loading ? 'Uploading...' : 'Upload File'}
-      </button>
-    </form>
+        {previewUrl && (
+          <div className="preview">
+            <img src={previewUrl} alt="Preview" />
+          </div>
+        )}
+        <div className="form-group">
+          <label htmlFor="filenameInput">Filename / Description</label>
+          <input
+            id="filenameInput"
+            type="text"
+            value={filename}
+            onChange={e => setFilename(e.target.value)}
+            disabled={uploading}
+          />
+        </div>
+        <button
+          type="submit"
+          disabled={uploading || !file}
+          className="upload-button"
+        >
+          {uploading ? 'Uploading...' : 'Upload'}
+        </button>
+      </form>
+    </div>
   );
 };
 
 AddMissingFile.propTypes = {
-  onSuccess: PropTypes.func.isRequired,
+  onUploadSuccess: PropTypes.func.isRequired,
+  apiUrl: PropTypes.string.isRequired
 };
 
 export default AddMissingFile;
