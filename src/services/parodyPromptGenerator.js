@@ -1,5 +1,7 @@
 import apiService from './apiService';
 
+import apiService from './apiService';
+
 const templateMap = {
   cryptoKing: 'CryptoKing says: "{user}"',
   nftQueen: 'NFTQueen responds: "{user}"',
