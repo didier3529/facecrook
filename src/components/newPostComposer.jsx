@@ -1,12 +1,10 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { UserContext, TokenContext } from '../App';
+import { UserContext } from '../App';
 
 const MAX_CHAR = 280;
-const TOKEN_COST = 10;
 
 const NewPostComposer = () => {
   const { user, setUser } = useContext(UserContext);
-  const { tokenBalance, setTokenBalance } = useContext(TokenContext);
   const [content, setContent] = useState('');
   const [file, setFile] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -42,10 +40,6 @@ const NewPostComposer = () => {
       setError('Post cannot be empty.');
       return;
     }
-    if (tokenBalance < TOKEN_COST) {
-      setError('Insufficient tokens.');
-      return;
-    }
     setIsSubmitting(true);
     setError('');
     try {
@@ -63,8 +57,7 @@ const NewPostComposer = () => {
         media: file ? URL.createObjectURL(file) : null,
       };
 
-      // Deduct tokens and update balance
-      setTokenBalance(tokenBalance - TOKEN_COST);
+      // Post created successfully - no token cost
       if (isMountedRef.current) {
         setContent('');
         setFile(null);
@@ -106,7 +99,7 @@ const NewPostComposer = () => {
         <span className="char-count">
           {content.length}/{MAX_CHAR}
         </span>
-        <span className="token-cost">Cost: {TOKEN_COST} CROC</span>
+        <span className="post-info">Free posting!</span>
         <button type="submit" disabled={isSubmitting || !content.trim()}>
           {isSubmitting ? 'Posting...' : 'Post'}
         </button>

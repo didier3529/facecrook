@@ -2,45 +2,31 @@ import React, { createContext, useContext, useMemo, useState } from 'react';
 import { NavLink, Route, Routes } from 'react-router-dom';
 
 export const UserContext = createContext();
-export const TokenContext = createContext();
-export const NFTContext = createContext();
 
 function App() {
   const [user, setUser] = useState({ name: '', identity: '' });
-  const [tokenBalance, setTokenBalance] = useState(1000);
-  const [nfts, setNfts] = useState([]);
   const [chatHistory, setChatHistory] = useState([]);
 
   const userValue = useMemo(() => ({ user, setUser }), [user]);
-  const tokenValue = useMemo(() => ({ tokenBalance, setTokenBalance }), [tokenBalance]);
-  const nftValue = useMemo(() => ({ nfts, setNfts }), [nfts]);
 
   return (
     <UserContext.Provider value={userValue}>
-      <TokenContext.Provider value={tokenValue}>
-        <NFTContext.Provider value={nftValue}>
-          <div className="app">
-            <nav className="navbar">
-              <NavLink to="/" end className="navlink">Home</NavLink>
-              <NavLink to="/feed" className="navlink">Feed</NavLink>
-              <NavLink to="/chat" className="navlink">Chat</NavLink>
-              <NavLink to="/tokens" className="navlink">Tokens</NavLink>
-              <NavLink to="/mint" className="navlink">Mint NFT</NavLink>
-              <NavLink to="/store" className="navlink">Store</NavLink>
-            </nav>
-            <main className="main">
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/feed" element={<Feed />} />
-                <Route path="/chat" element={<Chat chatHistory={chatHistory} setChatHistory={setChatHistory} />} />
-                <Route path="/tokens" element={<Tokens />} />
-                <Route path="/mint" element={<Mint />} />
-                <Route path="/store" element={<Store />} />
-              </Routes>
-            </main>
-          </div>
-        </NFTContext.Provider>
-      </TokenContext.Provider>
+      <div className="app">
+        <nav className="navbar">
+          <NavLink to="/" end className="navlink">🏠 Home</NavLink>
+          <NavLink to="/feed" className="navlink">📰 Feed</NavLink>
+          <NavLink to="/chat" className="navlink">💬 AI Trump</NavLink>
+          <NavLink to="/profile" className="navlink">👤 Profile</NavLink>
+        </nav>
+        <main className="main">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/feed" element={<Feed />} />
+            <Route path="/chat" element={<Chat chatHistory={chatHistory} setChatHistory={setChatHistory} />} />
+            <Route path="/profile" element={<Profile />} />
+          </Routes>
+        </main>
+      </div>
     </UserContext.Provider>
   );
 }
@@ -71,22 +57,13 @@ function Home() {
 }
 
 function Feed() {
-  const { tokenBalance, setTokenBalance } = useContext(TokenContext);
   const [posts, setPosts] = useState([
-    { id: 1, author: 'Satoshi Spoof', content: 'Just minted a PepeCoin!', likes: 0, tips: 0 },
-    { id: 2, author: 'Elon Parody', content: 'Dogecoin to the moon!', likes: 0, tips: 0 }
+    { id: 1, author: 'Satoshi Spoof', content: 'Just minted a PepeCoin!', likes: 0 },
+    { id: 2, author: 'Elon Parody', content: 'Dogecoin to the moon!', likes: 0 }
   ]);
-  const tipAmount = 50;
 
   const likePost = id => {
     setPosts(posts.map(p => p.id === id ? { ...p, likes: p.likes + 1 } : p));
-  };
-
-  const tipPost = id => {
-    if (tokenBalance >= tipAmount) {
-      setTokenBalance(tokenBalance - tipAmount);
-      setPosts(posts.map(p => p.id === id ? { ...p, tips: p.tips + tipAmount } : p));
-    }
   };
 
   return (
@@ -98,7 +75,8 @@ function Feed() {
           <p>{post.content}</p>
           <div className="post-actions">
             <button type="button" onClick={() => likePost(post.id)}>? {post.likes}</button>
-            <button type="button" onClick={() => tipPost(post.id)}>? Tip {tipAmount} ({post.tips})</button>
+            <button type="button">💬 Comment</button>
+            <button type="button">📤 Share</button>
           </div>
         </div>
       ))}
@@ -108,12 +86,14 @@ function Feed() {
 
 function Chat({ chatHistory, setChatHistory }) {
   const [input, setInput] = useState('');
-  const aiReplies = [
-    "? That's going to the moon!",
-    "? AI detects massive hype.",
-    "? Hold and prosper.",
-    "? Too early to sell.",
-    "? Chart looks pumpy."
+  const trumpReplies = [
+    "? Let me tell you, that's tremendous!",
+    "? Fake news! But I love your energy.",
+    "? We're going to make posting great again!",
+    "? That's huge, believe me. HUGE!",
+    "? I know more about social media than anyone.",
+    "? Beautiful, just beautiful. The best!",
+    "? Wrong! But keep trying."
   ];
 
   const sendMessage = () => {
@@ -124,8 +104,8 @@ function Chat({ chatHistory, setChatHistory }) {
     setTimeout(() => {
       const reply = {
         id: Date.now() + 1,
-        sender: 'AI CrookBot',
-        text: aiReplies[Math.floor(Math.random() * aiReplies.length)]
+        sender: 'AI Trump',
+        text: trumpReplies[Math.floor(Math.random() * trumpReplies.length)]
       };
       setChatHistory(history => [...history, reply]);
     }, 1000);
@@ -133,7 +113,7 @@ function Chat({ chatHistory, setChatHistory }) {
 
   return (
     <div className="chat">
-      <h2>AI-Driven Character Chat</h2>
+      <h2>Chat with AI Trump</h2>
       <div className="chat-window">
         {chatHistory.map(msg => (
           <div key={msg.id} className={`chat-message ${msg.sender === 'You' ? 'user' : 'ai'}`}>
@@ -142,79 +122,39 @@ function Chat({ chatHistory, setChatHistory }) {
         ))}
       </div>
       <div className="chat-input">
-        <input value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === 'Enter' && sendMessage()} placeholder="Say something crooky..." />
+        <input value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === 'Enter' && sendMessage()} placeholder="Ask Trump anything..." />
         <button type="button" onClick={sendMessage}>Send</button>
       </div>
     </div>
   );
 }
 
-function Tokens() {
-  const { tokenBalance, setTokenBalance } = useContext(TokenContext);
-  const earnAmount = 100;
-  return (
-    <div className="tokens">
-      <h2>In-App Tokens</h2>
-      <p>Balance: {tokenBalance}</p>
-      <button type="button" onClick={() => setTokenBalance(tokenBalance + earnAmount)}>? Earn {earnAmount}</button>
-    </div>
-  );
-}
+function Profile() {
+  const { user, setUser } = useContext(UserContext);
+  const [editMode, setEditMode] = useState(false);
+  const [name, setName] = useState(user.name);
+  const [identity, setIdentity] = useState(user.identity);
 
-function Mint() {
-  const { tokenBalance, setTokenBalance } = useContext(TokenContext);
-  const { nfts, setNfts } = useContext(NFTContext);
-  const cost = 500;
-
-  const mintNFT = () => {
-    if (tokenBalance < cost) return;
-    const newNft = { id: Date.now(), name: `MockNFT#${nfts.length + 1}` };
-    setNfts([...nfts, newNft]);
-    setTokenBalance(tokenBalance - cost);
+  const handleSave = () => {
+    setUser({ name, identity });
+    setEditMode(false);
   };
 
   return (
-    <div className="mint">
-      <h2>Mock NFT Minting</h2>
-      <p>Cost: {cost} tokens</p>
-      <button type="button" onClick={mintNFT} disabled={tokenBalance < cost}>Mint NFT</button>
-      <div className="nft-list">
-        {nfts.map(n => <div key={n.id} className="nft-item">{n.name}</div>)}
-      </div>
-    </div>
-  );
-}
-
-function Store() {
-  const { tokenBalance, setTokenBalance } = useContext(TokenContext);
-  const items = [
-    { id: 1, name: 'Premium Crook Badge', price: 300 },
-    { id: 2, name: 'Exclusive Meme Pack', price: 200 },
-    { id: 3, name: 'VIP Chat Access', price: 500 }
-  ];
-  const [purchases, setPurchases] = useState([]);
-
-  const buyItem = item => {
-    if (tokenBalance < item.price) return;
-    setTokenBalance(tokenBalance - item.price);
-    setPurchases([...purchases, item.name]);
-  };
-
-  return (
-    <div className="store">
-      <h2>Premium Store</h2>
-      <p>Balance: {tokenBalance}</p>
-      {items.map(item => (
-        <div key={item.id} className="store-item">
-          <span>{item.name} - {item.price}</span>
-          <button type="button" onClick={() => buyItem(item)} disabled={tokenBalance < item.price}>Buy</button>
+    <div className="profile">
+      <h2>Profile Settings</h2>
+      {editMode ? (
+        <div>
+          <input value={name} onChange={e => setName(e.target.value)} placeholder="Name" />
+          <input value={identity} onChange={e => setIdentity(e.target.value)} placeholder="Identity" />
+          <button type="button" onClick={handleSave}>Save</button>
+          <button type="button" onClick={() => setEditMode(false)}>Cancel</button>
         </div>
-      ))}
-      {purchases.length > 0 && (
-        <div className="purchases">
-          <h3>Your Purchases</h3>
-          {/* eslint-disable-next-line react/no-array-index-key */}
-          <ul>{purchases.map((p, idx) => <li key={`purchase-${idx}-${p.replace(/\s+/g, '-').toLowerCase()}`}>{p}</li>)}</ul>
+      ) : (
+        <div>
+          <p><strong>Name:</strong> {user.name}</p>
+          <p><strong>Identity:</strong> {user.identity}</p>
+          <button type="button" onClick={() => setEditMode(true)}>Edit Profile</button>
         </div>
       )}
     </div>
