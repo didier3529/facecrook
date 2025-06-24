@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
 const AvatarContext = createContext();
 
@@ -82,17 +82,11 @@ export const AvatarProvider = ({ children }) => {
         }));
     };
 
-    const getCurrentUserAvatar = () => {
-        return avatars[currentUserId] || defaultAvatars['current-user'];
-    };
+    const getCurrentUserAvatar = () => avatars[currentUserId] || defaultAvatars['current-user'];
 
-    const getAvatarById = (userId) => {
-        return avatars[userId] || defaultAvatars['current-user'];
-    };
+    const getAvatarById = (userId) => avatars[userId] || defaultAvatars['current-user'];
 
-    const saveCurrentUserAvatar = (avatarConfig) => {
-        updateAvatar(currentUserId, avatarConfig);
-    };
+    const saveCurrentUserAvatar = (avatarConfig) => updateAvatar(currentUserId, avatarConfig);
 
     // Generate random avatars for demo posts
     const generateRandomAvatar = () => {
@@ -112,42 +106,40 @@ export const AvatarProvider = ({ children }) => {
     };
 
     // Get demo users with avatars
-    const getDemoUsers = () => {
-        return [
-            {
-                id: 'demo-user-1',
-                name: 'Sarah Johnson',
-                avatar: avatars['demo-user-1'],
-                subtitle: 'Software Engineer'
-            },
-            {
-                id: 'demo-user-2',
-                name: 'Mike Chen',
-                avatar: avatars['demo-user-2'],
-                subtitle: 'Designer'
-            },
-            {
-                id: 'demo-user-3',
-                name: 'Alex Rivera',
-                avatar: avatars['demo-user-3'],
-                subtitle: 'Product Manager'
-            },
-            {
-                id: 'demo-user-4',
-                name: 'Emma Davis',
-                avatar: generateRandomAvatar(),
-                subtitle: 'Marketing'
-            },
-            {
-                id: 'demo-user-5',
-                name: 'James Wilson',
-                avatar: generateRandomAvatar(),
-                subtitle: 'Developer'
-            }
-        ];
-    };
+    const getDemoUsers = () => [
+        {
+            id: 'demo-user-1',
+            name: 'Sarah Johnson',
+            avatar: avatars['demo-user-1'],
+            subtitle: 'Software Engineer'
+        },
+        {
+            id: 'demo-user-2',
+            name: 'Mike Chen',
+            avatar: avatars['demo-user-2'],
+            subtitle: 'Designer'
+        },
+        {
+            id: 'demo-user-3',
+            name: 'Alex Rivera',
+            avatar: avatars['demo-user-3'],
+            subtitle: 'Product Manager'
+        },
+        {
+            id: 'demo-user-4',
+            name: 'Emma Davis',
+            avatar: generateRandomAvatar(),
+            subtitle: 'Marketing'
+        },
+        {
+            id: 'demo-user-5',
+            name: 'James Wilson',
+            avatar: generateRandomAvatar(),
+            subtitle: 'Developer'
+        }
+    ];
 
-    const value = {
+    const value = useMemo(() => ({
         avatars,
         currentUserId,
         updateAvatar,
@@ -156,7 +148,7 @@ export const AvatarProvider = ({ children }) => {
         saveCurrentUserAvatar,
         generateRandomAvatar,
         getDemoUsers
-    };
+    }), [avatars, currentUserId]);
 
     return (
         <AvatarContext.Provider value={value}>

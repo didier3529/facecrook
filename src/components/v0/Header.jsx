@@ -1,16 +1,16 @@
 import { Bell, Home, LogOut, MessageCircle, Search, Users } from "lucide-react";
-import React, { useContext } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { UserContext } from '../../App';
+import React from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-export function Header() {
+export function Header({ user, onLogout }) {
     const location = useLocation();
-    const { user } = useContext(UserContext);
+    const navigate = useNavigate();
 
     const handleLogout = () => {
-        localStorage.removeItem('facecrook_user');
-        localStorage.removeItem('facecrook_auth');
-        window.location.href = 'http://localhost:3000/login';
+        if (onLogout) {
+            onLogout();
+        }
+        navigate('/login', { replace: true });
     };
 
     return (

@@ -84,14 +84,47 @@ export function AvatarDisplay({
         const cursorClass = clickable ? 'cursor-pointer hover:scale-105' : '';
         const sizeClass = sizeClasses[size] || sizeClasses.md;
 
+        const handleKeyDown = (e) => {
+            if (clickable && (e.key === 'Enter' || e.key === ' ')) {
+                e.preventDefault();
+                onClick?.(e);
+            }
+        };
+
+        const handleClick = (e) => {
+            if (clickable) {
+                onClick?.(e);
+            }
+        };
+
+        if (clickable) {
+            return (
+                <button
+                    type="button"
+                    className={`${sizeClass} rounded-full flex items-center justify-center ${borderClass} ${cursorClass} transition-all duration-200 ${className}`}
+                    style={{ backgroundColor: color }}
+                    onClick={handleClick}
+                    onKeyDown={handleKeyDown}
+                    aria-label="Avatar button"
+                >
+                    <div className="relative">
+                        {faceEmoji}
+                        {avatarConfig.accessories !== 'none' && accessoryEmoji && (
+                            <div className={`absolute ${accessorySizes[size] || accessorySizes.md}`}>
+                                {accessoryEmoji}
+                            </div>
+                        )}
+                    </div>
+                </button>
+            );
+        }
+
         return (
             <div
-                className={`${sizeClass} rounded-full flex items-center justify-center ${borderClass} ${cursorClass} transition-all duration-200 ${className}`}
+                className={`${sizeClass} rounded-full flex items-center justify-center ${borderClass} transition-all duration-200 ${className}`}
                 style={{ backgroundColor: color }}
-                onClick={clickable ? onClick : undefined}
-                role={clickable ? 'button' : undefined}
-                tabIndex={clickable ? 0 : undefined}
-                onKeyDown={clickable ? (e) => e.key === 'Enter' && onClick?.(e) : undefined}
+                role="img"
+                aria-label="User avatar"
             >
                 <div className="relative">
                     {faceEmoji}
@@ -133,13 +166,49 @@ export function AvatarWithName({
         '2xl': 'text-2xl'
     };
 
+    const handleKeyDown = (e) => {
+        if (clickable && (e.key === 'Enter' || e.key === ' ')) {
+            e.preventDefault();
+            onClick?.(e);
+        }
+    };
+
+    const handleClick = (e) => {
+        if (clickable) {
+            onClick?.(e);
+        }
+    };
+
+    if (clickable) {
+        return (
+            <button
+                type="button"
+                className={`${layoutClasses[layout]} ${className}`}
+                onClick={handleClick}
+                onKeyDown={handleKeyDown}
+                aria-label={`${name} profile`}
+            >
+                <AvatarDisplay
+                    avatar={avatar}
+                    size={size}
+                    clickable={false}
+                />
+                <div className={layout === 'vertical' ? 'text-center' : ''}>
+                    <div className={`font-medium text-gray-900 dark:text-white ${textSizes[size] || textSizes.md}`}>
+                        {name}
+                    </div>
+                    {subtitle && (
+                        <div className={`text-gray-500 dark:text-gray-400 ${size === 'xs' ? 'text-xs' : 'text-sm'}`}>
+                            {subtitle}
+                        </div>
+                    )}
+                </div>
+            </button>
+        );
+    }
+
     return (
-        <div
-            className={`${layoutClasses[layout]} ${className} ${clickable ? 'cursor-pointer' : ''}`}
-            onClick={clickable ? onClick : undefined}
-            role={clickable ? 'button' : undefined}
-            tabIndex={clickable ? 0 : undefined}
-        >
+        <div className={`${layoutClasses[layout]} ${className}`}>
             <AvatarDisplay
                 avatar={avatar}
                 size={size}
@@ -173,8 +242,8 @@ export function AvatarGroup({ avatars, maxDisplay = 3, size = 'sm', className = 
 
     return (
         <div className={`flex items-center ${className}`}>
-            {displayAvatars.map((avatar, index) => (
-                <div key={index} className={index > 0 ? sizeClasses[size] || sizeClasses.sm : ''}>
+            {displayAvatars.map((avatar) => (
+                <div key={`${avatar.face}-${avatar.hair}-${avatar.color}`} className={sizeClasses[size] || sizeClasses.sm}>
                     <AvatarDisplay
                         avatar={avatar}
                         size={size}
