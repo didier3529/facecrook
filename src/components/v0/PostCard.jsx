@@ -25,7 +25,7 @@ export function PostCard({ post }) {
                         <p className="text-sm text-gray-500 dark:text-gray-400">{post.timestamp} · 🌍</p>
                     </div>
                 </div>
-                <button className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
+                <button type="button" className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
                     <MoreHorizontal className="h-5 w-5 text-gray-500 dark:text-gray-400" />
                 </button>
             </div>
@@ -56,22 +56,23 @@ export function PostCard({ post }) {
             {/* Post Actions */}
             <div className="flex items-center px-4 py-2">
                 <button
+                    type="button"
                     onClick={handleLike}
                     className={`flex-1 flex items-center justify-center space-x-2 py-2 rounded-lg transition-colors ${isLiked
-                            ? "text-red-600 dark:text-red-400"
-                            : "text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
+                        ? "text-red-600 dark:text-red-400"
+                        : "text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
                         }`}
                 >
                     <Heart className={`h-5 w-5 ${isLiked ? "fill-current" : ""}`} />
                     <span className="font-medium">Like</span>
                 </button>
 
-                <button className="flex-1 flex items-center justify-center space-x-2 py-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                <button type="button" className="flex-1 flex items-center justify-center space-x-2 py-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                     <MessageCircle className="h-5 w-5" />
                     <span className="font-medium">Comment</span>
                 </button>
 
-                <button className="flex-1 flex items-center justify-center space-x-2 py-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                <button type="button" className="flex-1 flex items-center justify-center space-x-2 py-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                     <Share className="h-5 w-5" />
                     <span className="font-medium">Share</span>
                 </button>

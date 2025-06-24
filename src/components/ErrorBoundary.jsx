@@ -22,11 +22,11 @@ class ErrorBoundary extends React.Component {
 
     componentDidCatch(error, errorInfo) {
         // Log error details
-        console.error('ErrorBoundary caught an error:', error, errorInfo);
+        console.error('Error caught by boundary:', error, errorInfo);
 
         this.setState({
-            error,
-            errorInfo
+            error: error,
+            errorInfo: errorInfo
         });
 
         // You can also log the error to an error reporting service here
@@ -43,159 +43,51 @@ class ErrorBoundary extends React.Component {
 
     render() {
         if (this.state.hasError) {
-            // Render custom fallback UI
             return (
-                <div className="error-boundary">
-                    <div className="error-container">
-                        <div className="error-icon">🤯</div>
-                        <h2 className="error-title">Oops! The Crypto Markets Crashed... Again!</h2>
-                        <p className="error-message">
-                            Don&apos;t worry, it&apos;s just a technical glitch in the FaceCrook matrix.
-                            <br />
-                            Even our satirical platform has more stability than most crypto projects!
-                        </p>
+                <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+                    <div className="bg-white rounded-lg shadow-lg p-8 max-w-2xl w-full">
+                        <div className="text-center mb-6">
+                            <h1 className="text-3xl font-bold text-red-600 mb-2">🚨 Oops! Something went wrong</h1>
+                            <p className="text-gray-600">
+                                Don't worry - this error boundary caught the issue to prevent a blank page!
+                            </p>
+                        </div>
+                        
+                        <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+                            <h3 className="font-semibold text-red-800 mb-2">Error Details:</h3>
+                            <p className="text-red-700 text-sm font-mono">
+                                {this.state.error && this.state.error.toString()}
+                            </p>
+                        </div>
 
-                        <div className="error-actions">
-                            <button
-                                onClick={this.handleReset}
-                                className="error-retry-button"
-                                type="button"
+                        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-6">
+                            <h3 className="font-semibold text-gray-800 mb-2">Component Stack:</h3>
+                            <pre className="text-gray-700 text-xs overflow-auto max-h-32">
+                                {this.state.errorInfo.componentStack}
+                            </pre>
+                        </div>
+
+                        <div className="flex space-x-4">
+                            <button 
+                                onClick={() => window.location.reload()} 
+                                className="flex-1 bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
                             >
-                                🔄 Try Again (HODL Strong!)
+                                🔄 Reload Page
                             </button>
-                            <button
-                                onClick={() => window.location.reload()}
-                                className="error-reload-button"
-                                type="button"
+                            <button 
+                                onClick={() => this.setState({ hasError: false, error: null, errorInfo: null })} 
+                                className="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-700 font-medium py-2 px-4 rounded-lg transition-colors"
                             >
-                                🏠 Go Home
+                                🔁 Try Again
                             </button>
                         </div>
 
-                        {process.env.NODE_ENV === 'development' && (
-                            <details className="error-details">
-                                <summary>🔍 Developer Details (Click to expand)</summary>
-                                <div className="error-stack">
-                                    <h4>Error:</h4>
-                                    <pre>{this.state.error && this.state.error.toString()}</pre>
-
-                                    <h4>Component Stack:</h4>
-                                    <pre>{this.state.errorInfo.componentStack}</pre>
-                                </div>
-                            </details>
-                        )}
+                        <div className="mt-6 text-center">
+                            <p className="text-sm text-gray-500">
+                                This error boundary prevents blank pages by catching JavaScript errors.
+                            </p>
+                        </div>
                     </div>
-
-                    <style jsx>{`
-            .error-boundary {
-              min-height: 100vh;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-              padding: 20px;
-            }
-            
-            .error-container {
-              background: white;
-              border-radius: 16px;
-              padding: 40px;
-              text-align: center;
-              box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-              max-width: 500px;
-              width: 100%;
-            }
-            
-            .error-icon {
-              font-size: 4rem;
-              margin-bottom: 20px;
-            }
-            
-            .error-title {
-              color: #2d3748;
-              font-size: 1.5rem;
-              font-weight: 600;
-              margin-bottom: 16px;
-              line-height: 1.4;
-            }
-            
-            .error-message {
-              color: #718096;
-              font-size: 1rem;
-              line-height: 1.6;
-              margin-bottom: 32px;
-            }
-            
-            .error-actions {
-              display: flex;
-              gap: 12px;
-              justify-content: center;
-              flex-wrap: wrap;
-            }
-            
-            .error-retry-button,
-            .error-reload-button {
-              padding: 12px 24px;
-              border-radius: 8px;
-              border: none;
-              font-weight: 500;
-              cursor: pointer;
-              transition: all 0.2s;
-              font-size: 0.9rem;
-            }
-            
-            .error-retry-button {
-              background: #4299e1;
-              color: white;
-            }
-            
-            .error-retry-button:hover {
-              background: #3182ce;
-              transform: translateY(-1px);
-            }
-            
-            .error-reload-button {
-              background: #edf2f7;
-              color: #4a5568;
-            }
-            
-            .error-reload-button:hover {
-              background: #e2e8f0;
-              transform: translateY(-1px);
-            }
-            
-            .error-details {
-              margin-top: 24px;
-              text-align: left;
-              background: #f7fafc;
-              border-radius: 8px;
-              padding: 16px;
-            }
-            
-            .error-details summary {
-              cursor: pointer;
-              font-weight: 500;
-              color: #4a5568;
-              margin-bottom: 12px;
-            }
-            
-            .error-stack pre {
-              background: #1a202c;
-              color: #e2e8f0;
-              padding: 12px;
-              border-radius: 4px;
-              overflow-x: auto;
-              font-size: 0.8rem;
-              margin: 8px 0;
-            }
-            
-            .error-stack h4 {
-              color: #2d3748;
-              font-size: 0.9rem;
-              margin: 16px 0 8px 0;
-            }
-          `}</style>
                 </div>
             );
         }

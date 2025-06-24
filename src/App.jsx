@@ -1,34 +1,101 @@
 import React, { createContext, useContext, useMemo, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
+import { AvatarCreator } from './components/AvatarCreator';
+import { AvatarDisplay } from './components/AvatarDisplay';
+import ErrorBoundary from './components/ErrorBoundary';
+import { StatusIndicator } from './components/StatusIndicator';
+import { Composer } from './components/v0/Composer';
+import { Header } from './components/v0/Header';
+import { PostCard } from './components/v0/PostCard';
+import { RightPanel } from './components/v0/RightPanel';
+import { Sidebar } from './components/v0/Sidebar';
+import { AvatarProvider, useAvatar } from './contexts/AvatarContext';
 
 export const UserContext = createContext();
 
 function App() {
   const [user, setUser] = useState({ name: '', identity: '' });
   const [chatHistory, setChatHistory] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasValidUser, setHasValidUser] = useState(false);
 
   const userValue = useMemo(() => ({ user, setUser }), [user]);
 
-  return (
-    <UserContext.Provider value={userValue}>
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <Header />
-        <div className="flex">
-          <Sidebar />
-          <main className="flex-1 px-4 pt-20 pb-4">
-            <div className="max-w-2xl mx-auto">
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/feed" element={<Feed />} />
-                <Route path="/chat" element={<Chat chatHistory={chatHistory} setChatHistory={setChatHistory} />} />
-                <Route path="/profile" element={<Profile />} />
-              </Routes>
-            </div>
-          </main>
-          <RightPanel />
+  // Check for user persona and redirect if needed
+  React.useEffect(() => {
+    const checkUserPersona = () => {
+      console.log('🔍 Checking for user persona...');
+      const userData = localStorage.getItem('facecrook_user');
+      const authFlag = localStorage.getItem('facecrook_auth');
+
+      if (!userData || !authFlag) {
+        console.log('🔒 No user persona found, showing normal app...');
+        setIsLoading(false);
+        setHasValidUser(false);
+        return;
+      }
+
+      try {
+        const parsedUser = JSON.parse(userData);
+        if (!parsedUser.isLoggedIn || !parsedUser.name || !parsedUser.identity) {
+          console.log('🔒 Invalid user data, showing normal app...');
+          setIsLoading(false);
+          setHasValidUser(false);
+          return;
+        }
+
+        // Set user data in context
+        setUser({ name: parsedUser.name, identity: parsedUser.identity });
+        setHasValidUser(true);
+        setIsLoading(false);
+        console.log('🎉 Welcome back,', parsedUser.name, '(' + parsedUser.identity + ')!');
+      } catch (error) {
+        console.log('🔒 Error parsing user data, showing normal app...');
+        setIsLoading(false);
+        setHasValidUser(false);
+      }
+    };
+
+    checkUserPersona();
+  }, []);
+
+  // Show loading screen while checking auth
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
+          <p className="text-gray-600 dark:text-gray-400">Loading Facecrook...</p>
         </div>
       </div>
-    </UserContext.Provider>
+    );
+  }
+
+  return (
+    <ErrorBoundary>
+      <AvatarProvider>
+        <UserContext.Provider value={userValue}>
+          <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+            <Header />
+            <div className="flex">
+              <Sidebar />
+              <main className="flex-1 px-4 pt-20 pb-4">
+                <div className="max-w-2xl mx-auto">
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/feed" element={<Feed />} />
+                    <Route path="/chat" element={<Chat chatHistory={chatHistory} setChatHistory={setChatHistory} />} />
+                    <Route path="/profile" element={<Profile />} />
+                  </Routes>
+                </div>
+              </main>
+              <RightPanel />
+            </div>
+            <StatusIndicator />
+          </div>
+        </UserContext.Provider>
+      </AvatarProvider>
+    </ErrorBoundary>
   );
 }
 
@@ -36,6 +103,9 @@ function Home() {
   const { user, setUser } = useContext(UserContext);
   const [name, setName] = useState(user.name);
   const [identity, setIdentity] = useState(user.identity);
+  const { getCurrentUserAvatar } = useAvatar();
+
+  const userAvatar = getCurrentUserAvatar();
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -45,6 +115,13 @@ function Home() {
   return user.name ? (
     <div className="space-y-6">
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 text-center">
+        <div className="flex justify-center mb-4">
+          <AvatarDisplay
+            avatar={userAvatar}
+            size="xl"
+            className="border-4 border-green-500"
+          />
+        </div>
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
           Welcome to Facecrook, {user.name}! 🎉
         </h2>
@@ -71,10 +148,11 @@ function Home() {
 
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Display Name
             </label>
             <input
+              id="name"
               type="text"
               placeholder="e.g., Crypto Wizard"
               value={name}
@@ -85,10 +163,11 @@ function Home() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label htmlFor="identity" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Satirical Identity
             </label>
             <input
+              id="identity"
               type="text"
               placeholder="e.g., Meme Coin Enthusiast"
               value={identity}
@@ -111,6 +190,8 @@ function Home() {
 }
 
 function Feed() {
+  const { generateRandomAvatar } = useAvatar();
+
   const [posts, setPosts] = useState([
     {
       id: "1",
@@ -120,7 +201,7 @@ function Feed() {
       comments: 8,
       shares: 3,
       timestamp: '2h',
-      avatar: '/placeholder-user.jpg'
+      avatar: generateRandomAvatar()
     },
     {
       id: "2",
@@ -130,7 +211,7 @@ function Feed() {
       comments: 23,
       shares: 12,
       timestamp: '4h',
-      avatar: '/placeholder-user.jpg'
+      avatar: generateRandomAvatar()
     },
     {
       id: "3",
@@ -140,7 +221,7 @@ function Feed() {
       comments: 34,
       shares: 7,
       timestamp: '6h',
-      avatar: '/placeholder-user.jpg'
+      avatar: generateRandomAvatar()
     }
   ]);
 
@@ -158,6 +239,11 @@ function Feed() {
 
 function Chat({ chatHistory, setChatHistory }) {
   const [input, setInput] = useState('');
+  const { getAvatarById, getCurrentUserAvatar } = useAvatar();
+
+  const trumpAvatar = getAvatarById('ai-trump');
+  const userAvatar = getCurrentUserAvatar();
+
   const trumpReplies = [
     "🇺🇸 Let me tell you, that's tremendous!",
     "📰 Fake news! But I love your energy.",
@@ -202,7 +288,14 @@ function Chat({ chatHistory, setChatHistory }) {
           </div>
         ) : (
           chatHistory.map(msg => (
-            <div key={msg.id} className={`flex ${msg.sender === 'You' ? 'justify-end' : 'justify-start'}`}>
+            <div key={msg.id} className={`flex ${msg.sender === 'You' ? 'justify-end' : 'justify-start'} items-end space-x-2`}>
+              {msg.sender !== 'You' && (
+                <AvatarDisplay
+                  avatar={trumpAvatar}
+                  size="sm"
+                  className="mb-1"
+                />
+              )}
               <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${msg.sender === 'You'
                 ? 'bg-green-600 text-white'
                 : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white'
@@ -212,6 +305,13 @@ function Chat({ chatHistory, setChatHistory }) {
                 </p>
                 <p className="text-sm">{msg.text}</p>
               </div>
+              {msg.sender === 'You' && (
+                <AvatarDisplay
+                  avatar={userAvatar}
+                  size="sm"
+                  className="mb-1"
+                />
+              )}
             </div>
           ))
         )}
@@ -245,98 +345,199 @@ function Profile() {
   const [editMode, setEditMode] = useState(false);
   const [name, setName] = useState(user.name);
   const [identity, setIdentity] = useState(user.identity);
+  const [showAvatarCreator, setShowAvatarCreator] = useState(false);
+
+  const { getCurrentUserAvatar, saveCurrentUserAvatar } = useAvatar();
+  const currentAvatar = getCurrentUserAvatar();
 
   const handleSave = () => {
     setUser({ name, identity });
     setEditMode(false);
   };
 
-  return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-      <div className="flex items-center space-x-4 mb-6">
-        <img
-          src="/placeholder-user.jpg"
-          alt="Profile"
-          className="w-20 h-20 rounded-full border-4 border-green-500"
+  const handleAvatarSave = (avatarConfig) => {
+    saveCurrentUserAvatar(avatarConfig);
+    setShowAvatarCreator(false);
+  };
+
+  if (showAvatarCreator) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+            🎨 Avatar Creator
+          </h1>
+          <button
+            type="button"
+            onClick={() => setShowAvatarCreator(false)}
+            className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+          >
+            ← Back to Profile
+          </button>
+        </div>
+        <AvatarCreator
+          onSave={handleAvatarSave}
+          initialAvatar={currentAvatar}
         />
-        <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-            👤 Profile Settings
-          </h2>
-          <p className="text-gray-500 dark:text-gray-400">
-            Manage your Facecrook persona
-          </p>
-        </div>
       </div>
+    );
+  }
 
-      {editMode ? (
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Display Name
-            </label>
-            <input
-              value={name}
-              onChange={e => setName(e.target.value)}
-              placeholder="Name"
-              className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-gray-900 dark:text-white"
+  return (
+    <div className="space-y-6">
+      {/* Profile Header */}
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+        <div className="flex items-center space-x-6 mb-6">
+          <div className="relative">
+            <AvatarDisplay
+              avatar={currentAvatar}
+              size="2xl"
+              className="border-4 border-green-500"
             />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Satirical Identity
-            </label>
-            <input
-              value={identity}
-              onChange={e => setIdentity(e.target.value)}
-              placeholder="Identity"
-              className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-gray-900 dark:text-white"
-            />
-          </div>
-
-          <div className="flex space-x-3 pt-2">
             <button
               type="button"
-              onClick={handleSave}
-              className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-medium transition-colors"
+              onClick={() => setShowAvatarCreator(true)}
+              className="absolute -bottom-2 -right-2 bg-green-600 hover:bg-green-700 text-white p-2 rounded-full text-sm transition-colors"
+              title="Edit Avatar"
             >
-              💾 Save Changes
+              ✏️
             </button>
-            <button
-              type="button"
-              onClick={() => setEditMode(false)}
-              className="bg-gray-300 hover:bg-gray-400 text-gray-700 px-6 py-2 rounded-lg font-medium transition-colors"
-            >
-              ❌ Cancel
-            </button>
+          </div>
+          <div className="flex-1">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+              {user.name || 'Anonymous User'}
+            </h2>
+            <p className="text-lg text-green-600 dark:text-green-400 mb-2">
+              {user.identity || 'No identity set'}
+            </p>
+            <p className="text-gray-500 dark:text-gray-400">
+              Welcome to your Facecrook profile! Customize your avatar and manage your settings.
+            </p>
           </div>
         </div>
-      ) : (
-        <div className="space-y-4">
-          <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Display Name</p>
-            <p className="text-lg font-semibold text-gray-900 dark:text-white">
-              {user.name || 'Not set'}
-            </p>
-          </div>
 
-          <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Satirical Identity</p>
-            <p className="text-lg font-semibold text-green-600 dark:text-green-400">
-              {user.identity || 'Not set'}
-            </p>
-          </div>
-
+        <div className="flex space-x-3">
+          <button
+            type="button"
+            onClick={() => setShowAvatarCreator(true)}
+            className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-medium transition-colors flex items-center space-x-2"
+          >
+            <span>🎨</span>
+            <span>Customize Avatar</span>
+          </button>
           <button
             type="button"
             onClick={() => setEditMode(true)}
-            className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-medium transition-colors"
+            className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-2 rounded-lg font-medium transition-colors flex items-center space-x-2"
           >
-            ✏️ Edit Profile
+            <span>✏️</span>
+            <span>Edit Profile</span>
           </button>
         </div>
-      )}
+      </div>
+
+      {/* Profile Settings */}
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+          📝 Profile Information
+        </h3>
+
+        {editMode ? (
+          <div className="space-y-4">
+            <div>
+              <label htmlFor="profile-name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Display Name
+              </label>
+              <input
+                id="profile-name"
+                value={name}
+                onChange={e => setName(e.target.value)}
+                placeholder="Enter your display name"
+                className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-gray-900 dark:text-white"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="profile-identity" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Satirical Identity
+              </label>
+              <input
+                id="profile-identity"
+                value={identity}
+                onChange={e => setIdentity(e.target.value)}
+                placeholder="e.g., Crypto Enthusiast, Meme Lord, etc."
+                className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-gray-900 dark:text-white"
+              />
+            </div>
+
+            <div className="flex space-x-3 pt-2">
+              <button
+                type="button"
+                onClick={handleSave}
+                className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-medium transition-colors"
+              >
+                💾 Save Changes
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setEditMode(false);
+                  setName(user.name);
+                  setIdentity(user.identity);
+                }}
+                className="bg-gray-300 hover:bg-gray-400 text-gray-700 px-6 py-2 rounded-lg font-medium transition-colors"
+              >
+                ❌ Cancel
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Display Name</p>
+              <p className="text-lg font-semibold text-gray-900 dark:text-white">
+                {user.name || 'Not set'}
+              </p>
+            </div>
+
+            <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Satirical Identity</p>
+              <p className="text-lg font-semibold text-green-600 dark:text-green-400">
+                {user.identity || 'Not set'}
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Avatar Stats */}
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+          🎭 Avatar Details
+        </h3>
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+          <div className="text-center">
+            <p className="text-sm text-gray-600 dark:text-gray-400">Face</p>
+            <p className="font-semibold text-gray-900 dark:text-white capitalize">{currentAvatar.face}</p>
+          </div>
+          <div className="text-center">
+            <p className="text-sm text-gray-600 dark:text-gray-400">Hair</p>
+            <p className="font-semibold text-gray-900 dark:text-white capitalize">{currentAvatar.hair}</p>
+          </div>
+          <div className="text-center">
+            <p className="text-sm text-gray-600 dark:text-gray-400">Eyes</p>
+            <p className="font-semibold text-gray-900 dark:text-white capitalize">{currentAvatar.eyes}</p>
+          </div>
+          <div className="text-center">
+            <p className="text-sm text-gray-600 dark:text-gray-400">Accessory</p>
+            <p className="font-semibold text-gray-900 dark:text-white capitalize">{currentAvatar.accessories}</p>
+          </div>
+          <div className="text-center">
+            <p className="text-sm text-gray-600 dark:text-gray-400">Color</p>
+            <p className="font-semibold text-gray-900 dark:text-white capitalize">{currentAvatar.color}</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

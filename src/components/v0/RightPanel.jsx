@@ -35,10 +35,10 @@ export function RightPanel() {
                     <div className="flex items-center justify-between mb-3">
                         <h3 className="text-gray-500 dark:text-gray-400 font-medium text-sm">Contacts</h3>
                         <div className="flex items-center space-x-2">
-                            <button className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
+                            <button type="button" className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
                                 <Search className="h-4 w-4 text-gray-500 dark:text-gray-400" />
                             </button>
-                            <button className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
+                            <button type="button" className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
                                 <MoreHorizontal className="h-4 w-4 text-gray-500 dark:text-gray-400" />
                             </button>
                         </div>
@@ -53,7 +53,7 @@ export function RightPanel() {
                                 <div className="relative">
                                     <img src={contact.avatar || "/placeholder.svg"} alt={contact.name} className="w-8 h-8 rounded-full" />
                                     {contact.online && (
-                                        <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 border-2 border-white dark:border-gray-800 rounded-full"></div>
+                                        <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 border-2 border-white dark:border-gray-800 rounded-full" />
                                     )}
                                 </div>
                                 <span className="text-sm font-medium text-gray-900 dark:text-white">{contact.name}</span>

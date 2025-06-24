@@ -30,21 +30,22 @@ export function Composer() {
 
             <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4">
-                    <button className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400">
+                    <button type="button" className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400">
                         <ImageIcon className="h-5 w-5 text-green-500" />
                         <span className="text-sm font-medium">Photo/video</span>
                     </button>
-                    <button className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400">
+                    <button type="button" className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400">
                         <Users className="h-5 w-5 text-red-500" />
                         <span className="text-sm font-medium">Tag friends</span>
                     </button>
-                    <button className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400">
+                    <button type="button" className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400">
                         <Smile className="h-5 w-5 text-green-500" />
                         <span className="text-sm font-medium">Feeling/activity</span>
                     </button>
                 </div>
 
                 <button
+                    type="button"
                     onClick={handlePost}
                     disabled={!content.trim()}
                     className="bg-green-600 hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white px-6 py-2 rounded-lg font-medium transition-colors"
