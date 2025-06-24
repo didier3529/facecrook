@@ -66,6 +66,14 @@ const userAuthService = {
     clearAuthHeader();
   },
 
+  setAuthHeader: (token) => {
+    setAuthHeader(token);
+  },
+
+  getRefreshToken: () => {
+    return localStorage.getItem(REFRESH_TOKEN_KEY);
+  },
+
   getAccessToken: () => {
     return localStorage.getItem(ACCESS_TOKEN_KEY);
   },
