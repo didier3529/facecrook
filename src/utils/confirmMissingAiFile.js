@@ -7,7 +7,7 @@ const ConfirmMissingAiFile = ({ isOpen, fileName, onConfirm, onCancel }) => {
   const previouslyFocusedElement = useRef(null);
 
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen) return undefined;
     previouslyFocusedElement.current = document.activeElement;
     modalRef.current.focus({ preventScroll: true });
 
@@ -52,8 +52,15 @@ const ConfirmMissingAiFile = ({ isOpen, fileName, onConfirm, onCancel }) => {
   return (
     <div
       className="confirm-missing-ai-file__overlay"
+      role="button"
+      tabIndex="0"
       ref={overlayRef}
       onClick={handleOverlayClick}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          handleOverlayClick(e);
+        }
+      }}
     >
       <div
         className="confirm-missing-ai-file__modal"
@@ -74,7 +81,7 @@ const ConfirmMissingAiFile = ({ isOpen, fileName, onConfirm, onCancel }) => {
           id="confirm-missing-ai-file-desc"
           className="confirm-missing-ai-file__message"
         >
-          The AI file "{fileName}" is missing. Would you like to generate it now?
+          The AI file {fileName} is missing. Would you like to generate it now?
         </p>
         <div className="confirm-missing-ai-file__actions">
           <button
