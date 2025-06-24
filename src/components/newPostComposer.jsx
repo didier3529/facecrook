@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { UserContext } from '../App';
+import { UserContext, TokenContext } from '../App';
 
 const MAX_CHAR = 280;
 const TOKEN_COST = 10;
@@ -60,7 +60,7 @@ const NewPostComposer = () => {
         timestamp: new Date().toISOString(),
         likes: 0,
         tips: 0,
-        media: file ? URL.createObjectURL(file) : null
+        media: file ? URL.createObjectURL(file) : null,
       };
 
       // Deduct tokens and update balance
