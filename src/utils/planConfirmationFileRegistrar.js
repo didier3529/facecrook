@@ -14,7 +14,7 @@ function PlanConfirmationFileRegistrar({ planId, onUploadSuccess }) {
   useEffect(() => {
     if (!selectedFile) {
       setPreviewUrl('')
-      return
+      return undefined
     }
     const objectUrl = URL.createObjectURL(selectedFile)
     setPreviewUrl(objectUrl)
@@ -123,6 +123,10 @@ function PlanConfirmationFileRegistrar({ planId, onUploadSuccess }) {
 PlanConfirmationFileRegistrar.propTypes = {
   planId: PropTypes.string.isRequired,
   onUploadSuccess: PropTypes.func
+}
+
+PlanConfirmationFileRegistrar.defaultProps = {
+  onUploadSuccess: null
 }
 
 export default PlanConfirmationFileRegistrar

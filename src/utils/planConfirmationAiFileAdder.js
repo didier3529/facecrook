@@ -21,7 +21,7 @@ const PlanConfirmationAiFileAdder = ({ onFilesChange, maxFiles, maxFileSizeMB, a
 
   const handleFiles = selectedFiles => {
     const newFiles = [...files]
-    for (let i = 0; i < selectedFiles.length; i++) {
+    for (let i = 0; i < selectedFiles.length; i += 1) {
       const file = selectedFiles[i]
       const validationError = validateFile(file, newFiles.length)
       if (validationError) {
@@ -33,7 +33,9 @@ const PlanConfirmationAiFileAdder = ({ onFilesChange, maxFiles, maxFileSizeMB, a
     }
     setFiles(newFiles)
     setError('')
-    onFilesChange && onFilesChange(newFiles.map(fObj => fObj.file))
+    if (onFilesChange) {
+      onFilesChange(newFiles.map(fObj => fObj.file))
+    }
   }
 
   const handleInputChange = e => {
@@ -43,7 +45,9 @@ const PlanConfirmationAiFileAdder = ({ onFilesChange, maxFiles, maxFileSizeMB, a
 
   const handleDrop = e => {
     e.preventDefault()
-    e.dataTransfer.files && handleFiles(e.dataTransfer.files)
+    if (e.dataTransfer.files) {
+      handleFiles(e.dataTransfer.files)
+    }
   }
 
   const handleDragOver = e => e.preventDefault()
@@ -59,7 +63,9 @@ const PlanConfirmationAiFileAdder = ({ onFilesChange, maxFiles, maxFileSizeMB, a
     const newFiles = files.filter((_, i) => i !== index)
     setFiles(newFiles)
     setError('')
-    onFilesChange && onFilesChange(newFiles.map(fObj => fObj.file))
+    if (onFilesChange) {
+      onFilesChange(newFiles.map(fObj => fObj.file))
+    }
   }
 
   return (
