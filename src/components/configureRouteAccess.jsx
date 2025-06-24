@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom'
-import { useAuth } from '../hooks/useAuth'
+import { useAuth } from '../contexts/AuthContext'
 import LandingPage from '../pages/LandingPage'
 import FeedView from '../pages/FeedView'
 import SettingsPage from '../pages/SettingsPage'
