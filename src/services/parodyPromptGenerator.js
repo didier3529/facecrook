@@ -1,9 +1,10 @@
+import apiService from './apiService';
 
 const templateMap = {
   cryptoKing: 'CryptoKing says: "{user}"',
   nftQueen: 'NFTQueen responds: "{user}"',
   satoshi: 'Satoshi whispers: "{user}"',
-  hodlGuru: 'HODLGuru proclaims: "{user}"'
+  hodlGuru: 'HODLGuru proclaims: "{user}"',
 };
 
 export default async function sendMessage(characterId, userText) {
@@ -22,6 +23,8 @@ export default async function sendMessage(characterId, userText) {
     const { data } = await apiService.post('/ai/chat', { prompt });
     return data;
   } catch (error) {
-    throw new Error(`Failed to send AI chat message for characterId "${characterId}": ${error.message}`);
+    throw new Error(
+      `Failed to send AI chat message for characterId "${characterId}": ${error.message}`
+    );
   }
 }
