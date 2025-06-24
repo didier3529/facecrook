@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { UserContext } from '../App';
+import { UserContext, TokenContext } from '../App';
 
 const MAX_CHAR = 280;
 const TOKEN_COST = 10;
