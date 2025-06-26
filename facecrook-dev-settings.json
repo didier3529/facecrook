@@ -1,0 +1,368 @@
+{
+  "name": "Facecrook Development Settings",
+  "version": "1.0.0",
+  "description": "Optimal development configuration for Facecrook React application",
+  
+  "vscode": {
+    "settings": {
+      "editor.formatOnSave": true,
+      "editor.formatOnPaste": true,
+      "editor.formatOnType": true,
+      "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true,
+        "source.organizeImports": true,
+        "source.removeUnusedImports": true
+      },
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.tabSize": 2,
+      "editor.insertSpaces": true,
+      "editor.detectIndentation": false,
+      "editor.wordWrap": "on",
+      "editor.minimap.enabled": true,
+      "editor.suggestSelection": "first",
+      "editor.quickSuggestions": {
+        "other": true,
+        "comments": false,
+        "strings": true
+      },
+      "editor.bracketPairColorization.enabled": true,
+      "editor.guides.bracketPairs": "active",
+      "editor.inlineSuggest.enabled": true,
+      "editor.linkedEditing": true,
+      "editor.semanticHighlighting.enabled": true,
+      
+      "emmet.includeLanguages": {
+        "javascript": "javascriptreact",
+        "typescript": "typescriptreact"
+      },
+      "emmet.triggerExpansionOnTab": true,
+      "emmet.showExpandedAbbreviation": "always",
+      
+      "files.associations": {
+        "*.jsx": "javascriptreact",
+        "*.tsx": "typescriptreact",
+        "*.css": "tailwindcss",
+        "*.md": "markdown"
+      },
+      "files.autoSave": "onWindowChange",
+      "files.trimTrailingWhitespace": true,
+      "files.insertFinalNewline": true,
+      "files.trimFinalNewlines": true,
+      
+      "search.exclude": {
+        "**/node_modules": true,
+        "**/build": true,
+        "**/dist": true,
+        "**/.git": true,
+        "**/coverage": true,
+        "**/.next": true
+      },
+      
+      "explorer.confirmDelete": false,
+      "explorer.confirmDragAndDrop": false,
+      "explorer.compactFolders": false,
+      
+      "terminal.integrated.defaultProfile.windows": "PowerShell",
+      "terminal.integrated.fontSize": 14,
+      "terminal.integrated.fontFamily": "Consolas, 'Courier New', monospace",
+      
+      "workbench.colorTheme": "Dark+ (default dark)",
+      "workbench.iconTheme": "vscode-icons",
+      "workbench.editor.enablePreview": false,
+      "workbench.editor.limit.enabled": true,
+      "workbench.editor.limit.value": 10,
+      
+      "git.enableSmartCommit": true,
+      "git.autofetch": true,
+      "git.confirmSync": false,
+      "git.defaultCloneDirectory": "./projects",
+      
+      "javascript.updateImportsOnFileMove.enabled": "always",
+      "typescript.updateImportsOnFileMove.enabled": "always",
+      "javascript.suggest.autoImports": true,
+      "typescript.suggest.autoImports": true,
+      
+      "css.validate": true,
+      "scss.validate": true,
+      "tailwindCSS.includeLanguages": {
+        "javascript": "javascript",
+        "html": "HTML"
+      },
+      "tailwindCSS.experimental.classRegex": [
+        ["clsx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"],
+        ["className\\s*=\\s*['\"`]([^'\"`]*)['\"`]", "([a-zA-Z0-9\\-:]+)"]
+      ],
+      
+      "eslint.enable": true,
+      "eslint.format.enable": true,
+      "eslint.lintTask.enable": true,
+      "eslint.codeActionsOnSave.mode": "all",
+      
+      "prettier.enable": true,
+      "prettier.requireConfig": false,
+      "prettier.useEditorConfig": false,
+      
+      "debug.console.fontSize": 14,
+      "debug.console.wordWrap": true,
+      
+      "extensions.autoUpdate": true,
+      "extensions.autoCheckUpdates": true
+    },
+    
+    "extensions": [
+      "esbenp.prettier-vscode",
+      "dbaeumer.vscode-eslint",
+      "bradlc.vscode-tailwindcss",
+      "ms-vscode.vscode-typescript-next",
+      "christian-kohler.npm-intellisense",
+      "christian-kohler.path-intellisense",
+      "formulahendry.auto-rename-tag",
+      "ms-vscode.vscode-json",
+      "yzhang.markdown-all-in-one",
+      "ms-vscode-remote.remote-containers",
+      "ms-vscode.live-server",
+      "ritwickdey.liveserver",
+      "vscode-icons-team.vscode-icons",
+      "ms-vscode.theme-tomorrowkit",
+      "github.copilot",
+      "github.copilot-chat"
+    ],
+    
+    "keybindings": [
+      {
+        "key": "ctrl+shift+p",
+        "command": "workbench.action.showCommands"
+      },
+      {
+        "key": "ctrl+shift+e",
+        "command": "workbench.view.explorer"
+      },
+      {
+        "key": "ctrl+shift+f",
+        "command": "workbench.view.search"
+      },
+      {
+        "key": "ctrl+shift+g",
+        "command": "workbench.view.scm"
+      },
+      {
+        "key": "ctrl+shift+d",
+        "command": "workbench.view.debug"
+      },
+      {
+        "key": "ctrl+shift+x",
+        "command": "workbench.view.extensions"
+      },
+      {
+        "key": "ctrl+shift+`",
+        "command": "workbench.action.terminal.new"
+      },
+      {
+        "key": "alt+z",
+        "command": "editor.action.toggleWordWrap"
+      },
+      {
+        "key": "ctrl+k ctrl+f",
+        "command": "editor.action.formatDocument"
+      }
+    ]
+  },
+  
+  "eslint": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ],
+    "rules": {
+      "no-console": "warn",
+      "no-unused-vars": "warn",
+      "no-debugger": "warn",
+      "prefer-const": "error",
+      "no-var": "error",
+      "eqeqeq": ["error", "always"],
+      "curly": ["error", "all"],
+      "no-multiple-empty-lines": ["error", { "max": 1 }],
+      "no-trailing-spaces": "error",
+      "comma-dangle": ["error", "never"],
+      "semi": ["error", "always"],
+      "quotes": ["error", "single", { "allowTemplateLiterals": true }],
+      "jsx-quotes": ["error", "prefer-double"],
+      "react/prop-types": "off",
+      "react/react-in-jsx-scope": "off",
+      "react/jsx-uses-react": "off",
+      "react/jsx-uses-vars": "error",
+      "react/jsx-key": "error",
+      "react/jsx-no-duplicate-props": "error",
+      "react/jsx-no-undef": "error",
+      "react/jsx-pascal-case": "error"
+    },
+    "env": {
+      "browser": true,
+      "es6": true,
+      "node": true,
+      "jest": true
+    },
+    "parserOptions": {
+      "ecmaVersion": 2021,
+      "sourceType": "module",
+      "ecmaFeatures": {
+        "jsx": true
+      }
+    }
+  },
+  
+  "prettier": {
+    "semi": true,
+    "trailingComma": "none",
+    "singleQuote": true,
+    "printWidth": 100,
+    "tabWidth": 2,
+    "useTabs": false,
+    "jsxSingleQuote": false,
+    "bracketSpacing": true,
+    "bracketSameLine": false,
+    "arrowParens": "avoid",
+    "endOfLine": "auto",
+    "quoteProps": "as-needed"
+  },
+  
+  "package_scripts": {
+    "dev": "npm start",
+    "build": "npm run build",
+    "test": "npm test",
+    "eject": "npm run eject",
+    "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "eslint src --ext .js,.jsx,.ts,.tsx --fix",
+    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,md}\"",
+    "format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,json,css,md}\"",
+    "analyze": "npm run build && npx bundle-analyzer build/static/js/*.js",
+    "clean": "rm -rf node_modules build coverage",
+    "fresh-install": "npm run clean && npm install"
+  },
+  
+  "git_aliases": {
+    "gs": "git --no-pager status",
+    "gl": "git --no-pager log --oneline -10",
+    "gd": "git --no-pager diff",
+    "ga": "git add .",
+    "gc": "git commit -m",
+    "gp": "git push",
+    "gpl": "git pull",
+    "gb": "git --no-pager branch",
+    "gco": "git checkout",
+    "gcb": "git checkout -b",
+    "gm": "git merge",
+    "gr": "git reset",
+    "grh": "git reset --hard"
+  },
+  
+  "powershell_profile": {
+    "functions": [
+      "function gs { git --no-pager status }",
+      "function gl { git --no-pager log --oneline -10 }",
+      "function gd { git --no-pager diff }",
+      "function ga { git add . }",
+      "function gc { param($message) git commit -m $message }",
+      "function gp { git push }",
+      "function gpl { git pull }",
+      "function dev { npm start }",
+      "function build { npm run build }",
+      "function lint { npm run lint }",
+      "function format { npm run format }",
+      "function clean { Remove-Item -Recurse -Force node_modules, build, coverage -ErrorAction SilentlyContinue }",
+      "function fresh { clean; npm install }"
+    ],
+    "aliases": [
+      "Set-Alias -Name ll -Value Get-ChildItem",
+      "Set-Alias -Name la -Value 'Get-ChildItem -Force'",
+      "Set-Alias -Name .. -Value 'Set-Location ..'",
+      "Set-Alias -Name ... -Value 'Set-Location ../..'",
+      "Set-Alias -Name cls -Value Clear-Host"
+    ]
+  },
+  
+  "development_workflow": {
+    "daily_commands": [
+      "gs",
+      "gpl",
+      "npm start",
+      "npm run lint",
+      "npm run format"
+    ],
+    "before_commit": [
+      "npm run lint:fix",
+      "npm run format",
+      "npm test",
+      "gs"
+    ],
+    "deployment": [
+      "npm run build",
+      "npm run analyze",
+      "git add .",
+      "git commit -m 'Build: Production build'",
+      "git push"
+    ]
+  },
+  
+  "facecrook_specific": {
+    "component_templates": {
+      "functional_component": "import React from 'react';\n\nexport function ComponentName() {\n  return (\n    <div className=\"\">\n      {/* Component content */}\n    </div>\n  );\n}",
+      "component_with_props": "import React from 'react';\n\nexport function ComponentName({ prop1, prop2 }) {\n  return (\n    <div className=\"\">\n      {/* Component content */}\n    </div>\n  );\n}",
+      "component_with_state": "import React, { useState } from 'react';\n\nexport function ComponentName() {\n  const [state, setState] = useState(initialValue);\n\n  return (\n    <div className=\"\">\n      {/* Component content */}\n    </div>\n  );\n}"
+    },
+    "tailwind_classes": {
+      "dark_theme": {
+        "backgrounds": ["bg-[#0a0a0a]", "bg-[#1a1a1a]", "bg-[#2a2a2a]"],
+        "borders": ["border-[#3a3a3a]"],
+        "text": ["text-white", "text-gray-400", "text-gray-300"],
+        "accent": ["text-[#1877f2]", "bg-[#1877f2]", "border-[#1877f2]"],
+        "hover": ["hover:bg-[#2a2a2a]", "hover:text-white"]
+      }
+    },
+    "celebrity_ids": [
+      "donald-trump",
+      "melania-trump", 
+      "elon-musk",
+      "sam-bankman-fried",
+      "do-kwon",
+      "justin-sun",
+      "vitalik-buterin",
+      "faustin-archange-touadera",
+      "javier-milei",
+      "changpeng-zhao"
+    ]
+  },
+  
+  "performance_optimization": {
+    "react_devtools": true,
+    "bundle_analyzer": true,
+    "lighthouse_ci": true,
+    "webpack_bundle_analyzer": true,
+    "memory_profiling": true
+  },
+  
+  "debugging": {
+    "chrome_flags": [
+      "--disable-web-security",
+      "--disable-features=VizDisplayCompositor",
+      "--allow-running-insecure-content"
+    ],
+    "react_devtools": {
+      "profiler": true,
+      "components": true,
+      "highlight_updates": true
+    }
+  },
+  
+  "security": {
+    "npm_audit": "npm audit --audit-level high",
+    "dependency_check": "npm outdated",
+    "security_scan": "npm audit fix"
+  },
+  
+  "backup_and_sync": {
+    "git_backup": "git push origin --all",
+    "settings_sync": true,
+    "extension_sync": true
+  }
+} 

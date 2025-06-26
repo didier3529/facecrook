@@ -4,9 +4,9 @@ import { useAuth } from '../../hooks/useAuth';
 
 export function LoginForm() {
     const [formData, setFormData] = useState({
+        name: '',
         email: '',
         password: '',
-        name: '',
         identity: '',
         isSignup: false
     });
@@ -29,11 +29,11 @@ export function LoginForm() {
                     identity: formData.identity
                 });
             } else {
-                // Simple login - create default persona
+                // Simple login - use the entered name
                 login({
                     email: formData.email,
-                    name: formData.name || 'Crypto Veteran',
-                    identity: 'Returning Trader'
+                    name: formData.name || 'Crypto Enthusiast',
+                    identity: formData.identity || 'Returning Trader'
                 });
             }
 
@@ -49,14 +49,14 @@ export function LoginForm() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center px-4">
-            <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
+        <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center px-4">
+            <div className="max-w-md w-full bg-[#1a1a1a] rounded-lg shadow-lg border border-[#3a3a3a] p-8">
                 {/* Header */}
                 <div className="text-center mb-8">
-                    <h1 className="text-4xl font-bold text-green-600 dark:text-green-400 mb-2">
+                    <h1 className="text-4xl font-bold text-[#42c767] mb-2">
                         Facecrook
                     </h1>
-                    <p className="text-gray-600 dark:text-gray-400">
+                    <p className="text-gray-300">
                         {formData.isSignup
                             ? 'Create your satirical crypto persona!'
                             : 'Welcome back to the crypto comedy show!'
@@ -66,50 +66,49 @@ export function LoginForm() {
 
                 {/* Form */}
                 <form onSubmit={handleSubmit} className="space-y-4">
+                    {/* Name field - now displayed prominently first */}
+                    <input
+                        type="text"
+                        placeholder="Enter your satirical persona name"
+                        value={formData.name}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        className="w-full px-4 py-3 border border-[#3a3a3a] bg-[#2a2a2a] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#42c767] placeholder-gray-400"
+                        required
+                    />
+
                     <input
                         type="email"
-                        placeholder="Email"
+                        placeholder="your.email@example.com"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white text-lg"
+                        className="w-full px-4 py-3 border border-[#3a3a3a] bg-[#2a2a2a] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#42c767] placeholder-gray-400"
+                        required
+                    />
+
+                    <input
+                        type="password"
+                        placeholder="Password (any password works for demo)"
+                        value={formData.password}
+                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                        className="w-full px-4 py-3 border border-[#3a3a3a] bg-[#2a2a2a] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#42c767] placeholder-gray-400"
                         required
                     />
 
                     {formData.isSignup && (
-                        <>
-                            <input
-                                type="text"
-                                placeholder="Satirical Name (e.g., Crypto Karen, Diamond Dave)"
-                                value={formData.name}
-                                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white text-lg"
-                                required
-                            />
-
-                            <input
-                                type="text"
-                                placeholder="Crypto Identity (e.g., Meme Coin Enthusiast, NFT Collector)"
-                                value={formData.identity}
-                                onChange={(e) => setFormData({ ...formData, identity: e.target.value })}
-                                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white text-lg"
-                                required
-                            />
-                        </>
+                        <input
+                            type="text"
+                            placeholder="Crypto Identity (e.g., Meme Coin Enthusiast, NFT Collector)"
+                            value={formData.identity}
+                            onChange={(e) => setFormData({ ...formData, identity: e.target.value })}
+                            className="w-full px-4 py-3 border border-[#3a3a3a] bg-[#2a2a2a] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#42c767] placeholder-gray-400"
+                            required
+                        />
                     )}
-
-                    <input
-                        type="password"
-                        placeholder="Password (any password works!)"
-                        value={formData.password}
-                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white text-lg"
-                        required
-                    />
 
                     <button
                         type="submit"
                         disabled={isLoading}
-                        className="w-full bg-green-600 hover:bg-green-700 text-white py-3 text-lg font-semibold rounded-lg disabled:opacity-50"
+                        className="w-full bg-[#42c767] hover:bg-green-600 text-white py-3 text-lg font-semibold rounded-lg disabled:opacity-50 transition-colors"
                     >
                         {getButtonText()}
                     </button>
@@ -120,7 +119,7 @@ export function LoginForm() {
                     <button
                         type="button"
                         onClick={() => setFormData({ ...formData, isSignup: !formData.isSignup })}
-                        className="text-green-600 dark:text-green-400 hover:underline"
+                        className="text-[#42c767] hover:underline"
                     >
                         {formData.isSignup
                             ? 'Already have a persona? Log in'
@@ -129,7 +128,7 @@ export function LoginForm() {
                 </div>
 
                 {formData.isSignup && (
-                    <div className="text-xs text-gray-500 dark:text-gray-400 text-center mt-4">
+                    <div className="text-xs text-gray-400 text-center mt-4">
                         🎭 Ready to join the satirical crypto universe? You&apos;ll start with 1000 tokens!
                     </div>
                 )}

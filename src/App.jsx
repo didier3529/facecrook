@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import { CelebrityImageManager } from './components/admin/CelebrityImageManager';
 import { AuthGuard } from './components/auth/AuthGuard';
 import { LoginForm } from './components/auth/LoginForm';
 import { AvatarCreator } from './components/AvatarCreator';
@@ -25,7 +26,7 @@ function MainApp() {
   const { user, logout } = useAuth();
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-[#0a0a0a]">
       <Header user={user} onLogout={logout} />
       <div className="flex">
         <Sidebar />
@@ -33,9 +34,14 @@ function MainApp() {
           <div className="max-w-2xl mx-auto">
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/feed" element={<Feed />} />
+              <Route path="/feed" element={<Navigate to="/" replace />} />
+              <Route path="/watch" element={<Watch />} />
+              <Route path="/marketplace" element={<Marketplace />} />
+              <Route path="/groups" element={<Groups />} />
+              <Route path="/gaming" element={<Gaming />} />
               <Route path="/chat" element={<Chat chatHistory={chatHistory} setChatHistory={setChatHistory} />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/admin/celebrities" element={<CelebrityImageManager />} />
             </Routes>
           </div>
         </main>
@@ -46,111 +52,109 @@ function MainApp() {
   );
 }
 
-// Home Component
+// Home Component - Now displays the social feed (Facebook-style)
 function Home() {
-  const { user, isLoading } = useAuth();
-  const { getCurrentUserAvatar } = useAvatar();
-
-  // ✅ Loading state
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-64">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4" />
-          <p className="text-gray-600 dark:text-gray-400">Loading your profile...</p>
-        </div>
-      </div>
-    );
-  }
-
-  // ✅ No user state - this shouldn't happen due to AuthGuard, but safety first
-  if (!user) {
-    return (
-      <div className="text-center py-12">
-        <p className="text-gray-600 dark:text-gray-400">Please log in to continue.</p>
-      </div>
-    );
-  }
-
-  // ✅ Safe to access user properties with fallbacks
-  const userAvatar = getCurrentUserAvatar();
-  const userName = user.name || 'Anonymous User';
-  const userIdentity = user.identity || 'New Member';
-  const tokenBalance = user.tokenBalance || 1000;
-
-  return (
-    <div className="space-y-6">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 text-center">
-        <div className="flex justify-center mb-4">
-          <AvatarDisplay
-            avatar={userAvatar}
-            size="xl"
-            className="border-4 border-green-500"
-          />
-        </div>
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-          {`Welcome to Facecrook, ${userName}! 🎉`}
-        </h2>
-        <p className="text-gray-600 dark:text-gray-400 mb-4">
-          Identity: <span className="font-semibold text-green-600 dark:text-green-400">{userIdentity}</span>
-        </p>
-        <p className="text-sm text-gray-500 dark:text-gray-400">
-          Token Balance: <span className="font-bold text-green-600">{tokenBalance}</span> 🪙
-        </p>
-      </div>
-      <Composer />
-    </div>
-  );
-}
-
-// Feed Component
-function Feed() {
   const { generateRandomAvatar } = useAvatar();
+  const [posts, setPosts] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const [posts] = useState([
-    {
-      id: "1",
-      displayName: 'Satoshi Spoof',
-      content: 'Just minted a PepeCoin! 🚀 This is going to revolutionize the meme economy!',
-      likes: 42,
-      comments: 8,
-      shares: 3,
-      timestamp: '2h',
-      avatar: generateRandomAvatar()
-    },
-    {
-      id: "2",
-      displayName: 'Elon Parody',
-      content: 'Dogecoin to the moon! 🐕 Much wow, very crypto, such gains!',
-      likes: 156,
-      comments: 23,
-      shares: 12,
-      timestamp: '4h',
-      avatar: generateRandomAvatar()
-    },
-    {
-      id: "3",
-      displayName: 'Crypto Karen',
-      content: 'Can someone explain why my NFT of a rock is worth more than my car? Asking for a friend... 🪨💎',
-      likes: 89,
-      comments: 34,
-      shares: 7,
-      timestamp: '6h',
-      avatar: generateRandomAvatar()
+  // Import and initialize feed service
+  React.useEffect(() => {
+    const loadFeedService = async () => {
+      try {
+        const { feedService } = await import('./services/feedService');
+        const celebrityPosts = feedService.getPosts();
+        setPosts(celebrityPosts);
+      } catch (error) {
+        console.error('Error loading feed service:', error);
+        // Fallback to demo posts
+        setPosts([
+          {
+            id: "1",
+            displayName: 'Satoshi Spoof',
+            content: 'Just minted a PepeCoin! 🚀 This is going to revolutionize the meme economy!',
+            likes: 42,
+            comments: 8,
+            shares: 3,
+            timestamp: '2h',
+            avatar: generateRandomAvatar()
+          }
+        ]);
+      }
+    };
+
+    loadFeedService();
+  }, [generateRandomAvatar]);
+
+  const loadMorePosts = async () => {
+    setIsLoading(true);
+    try {
+      const { feedService } = await import('./services/feedService');
+      const newPosts = feedService.generateMorePosts(5);
+      setPosts(prevPosts => [...prevPosts, ...newPosts]);
+    } catch (error) {
+      console.error('Error loading more posts:', error);
+    } finally {
+      setIsLoading(false);
     }
-  ]);
+  };
 
   return (
     <div className="space-y-6">
       <Composer />
-      <div className="space-y-4">
-        {posts.map(post => (
-          <PostCard key={post.id} post={post} />
-        ))}
+
+      {/* Celebrity Feed Header */}
+      <div className="bg-[#1a1a1a] rounded-lg border border-[#3a3a3a] p-4">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-xl font-bold text-white">🚀 Social Feed</h2>
+            <p className="text-gray-400 text-sm">Real posts from interesting people with authentic vibes</p>
+          </div>
+          <div className="text-sm text-[#1877f2]">
+            {posts.length} posts loaded
+          </div>
+        </div>
       </div>
+
+      {/* Posts Feed */}
+      <div className="space-y-4">
+        {posts.length === 0 ? (
+          <div className="text-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4" />
+            <p className="text-gray-300">Loading celebrity posts...</p>
+          </div>
+        ) : (
+          posts.map(post => (
+            <PostCard key={post.id} post={post} />
+          ))
+        )}
+      </div>
+
+      {/* Load More Button */}
+      {posts.length > 0 && (
+        <div className="text-center">
+          <button
+            type="button"
+            onClick={loadMorePosts}
+            disabled={isLoading}
+            className="bg-[#1877f2] hover:bg-[#166fe5] disabled:bg-gray-600 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+          >
+            {isLoading ? (
+              <div className="flex items-center space-x-2">
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
+                <span>Loading more posts...</span>
+              </div>
+            ) : (
+              'Load More Posts 🚀'
+            )}
+          </button>
+        </div>
+      )}
     </div>
   );
 }
+
+
 
 // Chat Component
 function Chat({ chatHistory, setChatHistory }) {
@@ -164,7 +168,7 @@ function Chat({ chatHistory, setChatHistory }) {
       <div className="flex items-center justify-center min-h-64">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4" />
-          <p className="text-gray-600 dark:text-gray-400">Loading chat...</p>
+          <p className="text-gray-300">Loading chat...</p>
         </div>
       </div>
     );
@@ -174,7 +178,7 @@ function Chat({ chatHistory, setChatHistory }) {
   if (!user) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-600 dark:text-gray-400">Please log in to chat.</p>
+        <p className="text-gray-300">Please log in to chat.</p>
       </div>
     );
   }
@@ -324,6 +328,63 @@ function Profile() {
             Customize Avatar
           </button>
         )}
+      </div>
+    </div>
+  );
+}
+
+// Facebook-style page components
+function Watch() {
+  return (
+    <div className="space-y-6">
+      <div className="bg-[#1a1a1a] rounded-lg shadow-sm border border-[#3a3a3a] p-6 text-center">
+        <h2 className="text-2xl font-bold text-white mb-4">📺 Watch</h2>
+        <p className="text-gray-400 mb-4">Discover videos from creators and pages you follow.</p>
+        <div className="bg-[#2a2a2a] p-8 rounded-lg">
+          <p className="text-gray-300">Video content coming soon...</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Marketplace() {
+  return (
+    <div className="space-y-6">
+      <div className="bg-[#1a1a1a] rounded-lg shadow-sm border border-[#3a3a3a] p-6 text-center">
+        <h2 className="text-2xl font-bold text-white mb-4">🛒 Marketplace</h2>
+        <p className="text-gray-400 mb-4">Buy and sell items with people in your community.</p>
+        <div className="bg-[#2a2a2a] p-8 rounded-lg">
+          <p className="text-gray-300">Marketplace features coming soon...</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Groups() {
+  return (
+    <div className="space-y-6">
+      <div className="bg-[#1a1a1a] rounded-lg shadow-sm border border-[#3a3a3a] p-6 text-center">
+        <h2 className="text-2xl font-bold text-white mb-4">👥 Groups</h2>
+        <p className="text-gray-400 mb-4">Connect with people who share your interests.</p>
+        <div className="bg-[#2a2a2a] p-8 rounded-lg">
+          <p className="text-gray-300">Groups functionality coming soon...</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Gaming() {
+  return (
+    <div className="space-y-6">
+      <div className="bg-[#1a1a1a] rounded-lg shadow-sm border border-[#3a3a3a] p-6 text-center">
+        <h2 className="text-2xl font-bold text-white mb-4">🎮 Gaming</h2>
+        <p className="text-gray-400 mb-4">Play games and connect with gaming communities.</p>
+        <div className="bg-[#2a2a2a] p-8 rounded-lg">
+          <p className="text-gray-300">Gaming features coming soon...</p>
+        </div>
       </div>
     </div>
   );
