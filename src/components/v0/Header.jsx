@@ -59,7 +59,7 @@ export function Header({ user, onLogout }) {
                         title="Home"
                     >
                         <Home className={`h-6 w-6 ${location.pathname === "/" ? "text-[#1877f2]" : "text-gray-400"}`} />
-                        {location.pathname === "/" && <div className="facebook-nav-indicator"></div>}
+                        {location.pathname === "/" && <div className="facebook-nav-indicator" />}
                     </Link>
                     <Link
                         to="/watch"
@@ -67,7 +67,7 @@ export function Header({ user, onLogout }) {
                         title="Watch"
                     >
                         <Play className={`h-6 w-6 ${location.pathname === "/watch" ? "text-[#1877f2]" : "text-gray-400"}`} />
-                        {location.pathname === "/watch" && <div className="facebook-nav-indicator"></div>}
+                        {location.pathname === "/watch" && <div className="facebook-nav-indicator" />}
                     </Link>
                     <Link
                         to="/marketplace"
@@ -75,7 +75,7 @@ export function Header({ user, onLogout }) {
                         title="Marketplace"
                     >
                         <Store className={`h-6 w-6 ${location.pathname === "/marketplace" ? "text-[#1877f2]" : "text-gray-400"}`} />
-                        {location.pathname === "/marketplace" && <div className="facebook-nav-indicator"></div>}
+                        {location.pathname === "/marketplace" && <div className="facebook-nav-indicator" />}
                     </Link>
                     <Link
                         to="/groups"
@@ -83,7 +83,7 @@ export function Header({ user, onLogout }) {
                         title="Groups"
                     >
                         <Users className={`h-6 w-6 ${location.pathname === "/groups" ? "text-[#1877f2]" : "text-gray-400"}`} />
-                        {location.pathname === "/groups" && <div className="facebook-nav-indicator"></div>}
+                        {location.pathname === "/groups" && <div className="facebook-nav-indicator" />}
                     </Link>
                     <Link
                         to="/gaming"
@@ -91,7 +91,7 @@ export function Header({ user, onLogout }) {
                         title="Gaming"
                     >
                         <Gamepad2 className={`h-6 w-6 ${location.pathname === "/gaming" ? "text-[#1877f2]" : "text-gray-400"}`} />
-                        {location.pathname === "/gaming" && <div className="facebook-nav-indicator"></div>}
+                        {location.pathname === "/gaming" && <div className="facebook-nav-indicator" />}
                     </Link>
                 </div>
 

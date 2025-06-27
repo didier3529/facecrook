@@ -211,7 +211,7 @@ export class FeedService {
     }
 
     // Get user by ID
-    getUser(userId) {
+    static getUser(userId) {
         return FeedService.getUserData()[userId];
     }
 
