@@ -7,6 +7,7 @@ import { AvatarCreator } from './components/AvatarCreator';
 import { AvatarDisplay } from './components/AvatarDisplay';
 import ErrorBoundary from './components/ErrorBoundary';
 import { StatusIndicator } from './components/StatusIndicator';
+import TrumpAIChatWidget from './components/TrumpAIChatWidget';
 import { Composer } from './components/v0/Composer';
 import { Header } from './components/v0/Header';
 import { PostCard } from './components/v0/PostCard';
@@ -48,6 +49,7 @@ function MainApp() {
         <RightPanel />
       </div>
       <StatusIndicator />
+      <TrumpAIChatWidget />
     </div>
   );
 }
