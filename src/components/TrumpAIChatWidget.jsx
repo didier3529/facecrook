@@ -25,6 +25,34 @@ const TrumpAIChatWidget = () => {
         console.log(`[TrumpChat:${type}] ${message}`);
     };
 
+    // Send initial greeting message
+    const sendInitialGreeting = async (trumpServiceInstance, memoryServiceInstance) => {
+        try {
+            addDebugLog('Sending initial greeting...', 'info');
+
+            const greeting = await trumpServiceInstance.generateResponse(
+                'initial_greeting',
+                [],
+                { isFirstVisit: true }
+            );
+
+            const greetingMessage = {
+                id: Date.now(),
+                content: greeting.content,
+                sender: 'trump',
+                timestamp: new Date(),
+                messageType: 'greeting'
+            };
+
+            setMessages([greetingMessage]);
+            memoryServiceInstance.saveMessage('current-user', greetingMessage);
+
+            addDebugLog('Initial greeting sent successfully', 'success');
+        } catch (error) {
+            addDebugLog(`Greeting error: ${error.message}`, 'error');
+        }
+    };
+
     // Initialize services with extensive error handling
     useEffect(() => {
         const initializeServices = async () => {
@@ -35,10 +63,10 @@ const TrumpAIChatWidget = () => {
                 addDebugLog('Testing service imports...', 'info');
 
                 try {
-                    const TrumpAIService = (await import('../services/trumpAIService.js')).default;
+                    const TrumpAIService = (await import('../services/trumpAIService')).default;
                     addDebugLog('TrumpAIService imported successfully', 'success');
 
-                    const ConversationMemoryService = (await import('../services/conversationMemoryService.js')).default;
+                    const ConversationMemoryService = (await import('../services/conversationMemoryService')).default;
                     addDebugLog('ConversationMemoryService imported successfully', 'success');
 
                     // Test 2: Try to instantiate services
@@ -84,34 +112,6 @@ const TrumpAIChatWidget = () => {
 
         initializeServices();
     }, []);
-
-    // Send initial greeting message
-    const sendInitialGreeting = async (trumpServiceInstance, memoryServiceInstance) => {
-        try {
-            addDebugLog('Sending initial greeting...', 'info');
-
-            const greeting = await trumpServiceInstance.generateResponse(
-                'initial_greeting',
-                [],
-                { isFirstVisit: true }
-            );
-
-            const greetingMessage = {
-                id: Date.now(),
-                content: greeting.content,
-                sender: 'trump',
-                timestamp: new Date(),
-                messageType: 'greeting'
-            };
-
-            setMessages([greetingMessage]);
-            memoryServiceInstance.saveMessage('current-user', greetingMessage);
-
-            addDebugLog('Initial greeting sent successfully', 'success');
-        } catch (error) {
-            addDebugLog(`Greeting error: ${error.message}`, 'error');
-        }
-    };
 
     // Handle sending messages
     const handleSendMessage = async () => {
@@ -162,6 +162,19 @@ const TrumpAIChatWidget = () => {
         }
     };
 
+    // Handle widget toggle with keyboard support
+    const handleWidgetToggle = () => {
+        setIsOpen(!isOpen);
+    };
+
+    // Handle key press for widget toggle
+    const handleWidgetKeyPress = (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            handleWidgetToggle();
+        }
+    };
+
     // Scroll to bottom when new messages arrive
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -173,7 +186,7 @@ const TrumpAIChatWidget = () => {
             case 'initializing':
                 return (
                     <div className="trump-widget-loading">
-                        <div className="spinner"></div>
+                        <div className="spinner" />
                         <span>Loading...</span>
                     </div>
                 );
@@ -194,7 +207,7 @@ const TrumpAIChatWidget = () => {
                             celebrityId="donald-trump"
                             size="xl"
                         />
-                        <div className="status-indicator"></div>
+                        <div className="status-indicator" />
                     </div>
                 );
             default:
@@ -210,8 +223,8 @@ const TrumpAIChatWidget = () => {
             <div className="debug-panel">
                 <h4>Debug Information:</h4>
                 <div className="debug-logs">
-                    {debugInfo.slice(-10).map((log, index) => (
-                        <div key={index} className={`debug-log debug-${log.type}`}>
+                    {debugInfo.slice(-10).map((log) => (
+                        <div key={`debug-${log.timestamp}-${log.message.substring(0, 20)}`} className={`debug-log debug-${log.type}`}>
                             <span className="debug-time">{log.timestamp}</span>
                             <span className="debug-message">{log.message}</span>
                         </div>
@@ -226,7 +239,10 @@ const TrumpAIChatWidget = () => {
             {/* Widget Button */}
             <div
                 className="trump-widget-button"
-                onClick={() => setIsOpen(!isOpen)}
+                onClick={handleWidgetToggle}
+                onKeyPress={handleWidgetKeyPress}
+                role="button"
+                tabIndex={0}
                 title="Chat with Donald Trump"
             >
                 {renderStatusIndicator()}
@@ -245,6 +261,7 @@ const TrumpAIChatWidget = () => {
                             <div className="status-badge">{serviceStatus}</div>
                         </div>
                         <button
+                            type="button"
                             className="close-button"
                             onClick={() => setIsOpen(false)}
                         >
@@ -272,9 +289,9 @@ const TrumpAIChatWidget = () => {
                         {isTyping && (
                             <div className="message trump-message typing">
                                 <div className="typing-indicator">
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
+                                    <span />
+                                    <span />
+                                    <span />
                                 </div>
                             </div>
                         )}
@@ -293,6 +310,7 @@ const TrumpAIChatWidget = () => {
                                 disabled={isTyping}
                             />
                             <button
+                                type="button"
                                 onClick={handleSendMessage}
                                 disabled={!inputValue.trim() || isTyping}
                                 className="send-button"
