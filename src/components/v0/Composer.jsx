@@ -19,7 +19,7 @@ export function Composer() {
     const userName = user?.name || 'Anonymous User';
 
     return (
-        <div className="bg-[#1a1a1a] rounded-lg shadow-sm border border-[#3a3a3a] p-4">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
             <div className="flex space-x-3 mb-3">
                 <AvatarDisplay
                     avatar={getCurrentUserAvatar()}
@@ -31,25 +31,25 @@ export function Composer() {
                         value={content}
                         onChange={(e) => setContent(e.target.value)}
                         placeholder={`What's on your mind, ${userName}?`}
-                        className="w-full p-3 bg-[#2a2a2a] text-white placeholder-gray-400 rounded-3xl resize-none focus:outline-none focus:ring-2 focus:ring-[#1877f2] border border-[#3a3a3a]"
+                        className="w-full p-3 bg-gray-100 text-gray-900 placeholder-gray-500 rounded-3xl resize-none focus:outline-none focus:ring-2 focus:ring-[#1877f2] border border-gray-200"
                         rows={3}
                     />
                 </div>
             </div>
 
-            <hr className="border-[#3a3a3a] mb-3" />
+            <hr className="border-gray-200 mb-3" />
 
             <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4">
-                    <button type="button" className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-[#2a2a2a] text-gray-400 hover:text-white transition-colors">
+                    <button type="button" className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-600 hover:text-gray-900 transition-colors">
                         <ImageIcon className="h-5 w-5 text-[#1877f2]" />
                         <span className="text-sm font-medium">Photo/video</span>
                     </button>
-                    <button type="button" className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-[#2a2a2a] text-gray-400 hover:text-white transition-colors">
+                    <button type="button" className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-600 hover:text-gray-900 transition-colors">
                         <Users className="h-5 w-5 text-red-500" />
                         <span className="text-sm font-medium">Tag friends</span>
                     </button>
-                    <button type="button" className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-[#2a2a2a] text-gray-400 hover:text-white transition-colors">
+                    <button type="button" className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-600 hover:text-gray-900 transition-colors">
                         <Smile className="h-5 w-5 text-[#1877f2]" />
                         <span className="text-sm font-medium">Feeling/activity</span>
                     </button>

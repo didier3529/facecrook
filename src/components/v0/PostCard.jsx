@@ -31,11 +31,20 @@ export function PostCard({ post }) {
     const isCelebrityPost = post.celebrityId || post.isVerified;
 
     return (
-        <div className="bg-[#1a1a1a] rounded-lg shadow-sm border border-[#3a3a3a] mb-4">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 mb-4">
             {/* Post Header */}
             <div className="flex items-center justify-between p-4 pb-3">
                 <div className="flex items-center space-x-3">
-                    {isCelebrityPost && post.celebrityId ? (
+                    {post.avatar ? (
+                        <img
+                            src={post.avatar}
+                            alt={post.displayName}
+                            className="w-12 h-12 rounded-full object-cover border border-gray-200"
+                            onError={(e) => {
+                                e.target.style.display = 'none';
+                            }}
+                        />
+                    ) : isCelebrityPost && post.celebrityId ? (
                         <CelebrityAvatarDisplay
                             celebrityId={post.celebrityId}
                             size="lg"
@@ -50,7 +59,7 @@ export function PostCard({ post }) {
                     )}
                     <div>
                         <div className="flex items-center space-x-2">
-                            <h3 className="font-semibold text-white">{post.displayName}</h3>
+                            <h3 className="font-semibold text-gray-900">{post.displayName}</h3>
                             {post.isVerified && (
                                 <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
                                     <span className="text-white text-xs">✓</span>
@@ -58,7 +67,7 @@ export function PostCard({ post }) {
                             )}
                         </div>
                         <div className="flex items-center space-x-1">
-                            <p className="text-sm text-gray-400">
+                            <p className="text-sm text-gray-500">
                                 {post.professionalIdentity && (
                                     <span className="text-[#1877f2]">{post.professionalIdentity}</span>
                                 )}
@@ -68,14 +77,14 @@ export function PostCard({ post }) {
                         </div>
                     </div>
                 </div>
-                <button type="button" className="p-2 rounded-full hover:bg-[#2a2a2a] transition-colors">
-                    <MoreHorizontal className="h-5 w-5 text-gray-400" />
+                <button type="button" className="p-2 rounded-full hover:bg-gray-100 transition-colors">
+                    <MoreHorizontal className="h-5 w-5 text-gray-600" />
                 </button>
             </div>
 
             {/* Post Content */}
             <div className="px-4 pb-3">
-                <p className="text-white leading-relaxed whitespace-pre-wrap">{post.content}</p>
+                <p className="text-gray-900 leading-relaxed whitespace-pre-wrap">{post.content}</p>
 
                 {/* Post Image */}
                 {post.imageUrl && (
@@ -110,7 +119,7 @@ export function PostCard({ post }) {
                         {reactions.filter(r => r.count > 0).map((reaction) => (
                             <div key={reaction.name} className="flex items-center space-x-1 text-sm">
                                 <span className="text-lg">{reaction.emoji}</span>
-                                <span className="text-gray-400">{reaction.count}</span>
+                                <span className="text-gray-600">{reaction.count}</span>
                             </div>
                         ))}
                     </div>
@@ -118,8 +127,8 @@ export function PostCard({ post }) {
             )}
 
             {/* Post Stats */}
-            <div className="px-4 py-2 border-t border-b border-[#3a3a3a]">
-                <div className="flex items-center justify-between text-sm text-gray-400">
+            <div className="px-4 py-2 border-t border-b border-gray-200">
+                <div className="flex items-center justify-between text-sm text-gray-600">
                     <div className="flex items-center space-x-4">
                         <span>{post.comments} comments</span>
                         <span>{post.shares} shares</span>
@@ -134,7 +143,7 @@ export function PostCard({ post }) {
                     onClick={handleLike}
                     className={`flex-1 flex items-center justify-center space-x-2 py-2 rounded-lg transition-colors ${isLiked
                         ? "text-red-500"
-                        : "text-gray-400 hover:bg-[#2a2a2a] hover:text-white"
+                        : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
                         }`}
                 >
                     <Heart className={`h-5 w-5 ${isLiked ? "fill-current" : ""}`} />
@@ -146,14 +155,14 @@ export function PostCard({ post }) {
                     <button
                         type="button"
                         onClick={() => setShowReactions(!showReactions)}
-                        className="flex items-center justify-center space-x-2 py-2 rounded-lg text-gray-400 hover:bg-[#2a2a2a] hover:text-white transition-colors w-full"
+                        className="flex items-center justify-center space-x-2 py-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors w-full"
                     >
                         <span className="text-lg">{selectedReaction || "🔥"}</span>
                         <span className="font-medium">React</span>
                     </button>
 
                     {showReactions && (
-                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 bg-[#2a2a2a] rounded-lg p-2 shadow-lg border border-[#3a3a3a]">
+                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 bg-white rounded-lg p-2 shadow-lg border border-gray-200">
                             <div className="flex space-x-2">
                                 {reactions.map((reaction) => (
                                     <button
@@ -171,12 +180,12 @@ export function PostCard({ post }) {
                     )}
                 </div>
 
-                <button type="button" className="flex-1 flex items-center justify-center space-x-2 py-2 rounded-lg text-gray-400 hover:bg-[#2a2a2a] hover:text-white transition-colors">
+                <button type="button" className="flex-1 flex items-center justify-center space-x-2 py-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors">
                     <MessageCircle className="h-5 w-5" />
                     <span className="font-medium">Comment</span>
                 </button>
 
-                <button type="button" className="flex-1 flex items-center justify-center space-x-2 py-2 rounded-lg text-gray-400 hover:bg-[#2a2a2a] hover:text-white transition-colors">
+                <button type="button" className="flex-1 flex items-center justify-center space-x-2 py-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors">
                     <Share className="h-5 w-5" />
                     <span className="font-medium">Share</span>
                 </button>

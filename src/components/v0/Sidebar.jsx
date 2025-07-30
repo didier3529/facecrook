@@ -29,16 +29,16 @@ export function Sidebar() {
     const { user } = useAuth();
 
     return (
-        <aside className="w-80 bg-[#1a1a1a] h-screen sticky top-14 overflow-y-auto">
+        <aside className="w-80 bg-white h-screen sticky top-14 overflow-y-auto">
             <div className="p-4">
                 {/* User Profile */}
-                <Link to="/profile" className="flex items-center space-x-3 p-2 rounded-lg hover:bg-[#2a2a2a] cursor-pointer mb-4 transition-colors">
+                <Link to="/profile" className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 cursor-pointer mb-4 transition-colors">
                     <AvatarDisplay
                         avatar={getCurrentUserAvatar()}
                         size="sm"
                         className="w-9 h-9"
                     />
-                    <span className="font-medium text-white">{user?.name || 'Your Profile'}</span>
+                    <span className="font-medium text-gray-900">{user?.name || 'Your Profile'}</span>
                 </Link>
 
                 {/* Main Navigation */}
@@ -52,8 +52,8 @@ export function Sidebar() {
                                 key={item.name}
                                 to={item.path}
                                 className={`w-full flex items-center space-x-3 px-2 py-2 rounded-lg transition-colors ${isActive
-                                    ? "bg-[#2a2a2a] text-[#1877f2]"
-                                    : "hover:bg-[#2a2a2a] text-white"
+                                    ? "bg-gray-100 text-[#1877f2]"
+                                    : "hover:bg-gray-100 text-gray-900"
                                     }`}
                             >
                                 <Icon className={`h-6 w-6 ${isActive ? "text-[#1877f2]" : item.color}`} />
@@ -63,7 +63,7 @@ export function Sidebar() {
                     })}
                 </nav>
 
-                <hr className="border-[#3a3a3a] mb-4" />
+                <hr className="border-gray-200 mb-4" />
 
                 {/* Secondary Navigation */}
                 <nav className="space-y-1">
@@ -74,10 +74,10 @@ export function Sidebar() {
                             <button
                                 key={item.name}
                                 type="button"
-                                className="w-full flex items-center space-x-3 px-2 py-2 rounded-lg text-left hover:bg-[#2a2a2a] transition-colors"
+                                className="w-full flex items-center space-x-3 px-2 py-2 rounded-lg text-left hover:bg-gray-100 transition-colors"
                             >
                                 <Icon className={`h-6 w-6 ${item.color}`} />
-                                <span className="font-medium text-white">{item.name}</span>
+                                <span className="font-medium text-gray-900">{item.name}</span>
                             </button>
                         );
                     })}
@@ -85,14 +85,14 @@ export function Sidebar() {
                     <button
                         type="button"
                         onClick={() => setShowMore(!showMore)}
-                        className="w-full flex items-center space-x-3 px-2 py-2 rounded-lg text-left hover:bg-[#2a2a2a] transition-colors"
+                        className="w-full flex items-center space-x-3 px-2 py-2 rounded-lg text-left hover:bg-gray-100 transition-colors"
                     >
-                        <div className="w-6 h-6 bg-[#3a3a3a] rounded-full flex items-center justify-center">
+                        <div className="w-6 h-6 bg-gray-100 rounded-full flex items-center justify-center">
                             <ChevronDown
-                                className={`h-4 w-4 text-gray-300 transition-transform ${showMore ? "rotate-180" : ""}`}
+                                className={`h-4 w-4 text-gray-600 transition-transform ${showMore ? "rotate-180" : ""}`}
                             />
                         </div>
-                        <span className="font-medium text-white">{showMore ? "See less" : "See more"}</span>
+                        <span className="font-medium text-gray-900">{showMore ? "See less" : "See more"}</span>
                     </button>
                 </nav>
             </div>

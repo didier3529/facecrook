@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { CelebrityImageManager } from './components/admin/CelebrityImageManager';
-import { AuthGuard } from './components/auth/AuthGuard';
-import { LoginForm } from './components/auth/LoginForm';
 import { AvatarCreator } from './components/AvatarCreator';
 import { AvatarDisplay } from './components/AvatarDisplay';
 import ErrorBoundary from './components/ErrorBoundary';
 import { StatusIndicator } from './components/StatusIndicator';
 import TrumpAIChatWidget from './components/TrumpAIChatWidget';
+import { CelebrityImageManager } from './components/admin/CelebrityImageManager';
+import { AuthGuard } from './components/auth/AuthGuard';
+import { LoginForm } from './components/auth/LoginForm';
 import { Composer } from './components/v0/Composer';
 import { Header } from './components/v0/Header';
 import { PostCard } from './components/v0/PostCard';
@@ -27,7 +27,14 @@ function MainApp() {
   const { user, logout } = useAuth();
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a]">
+    <div className="min-h-screen bg-white">
+      {/* Educational Disclaimer Banner */}
+      <div className="bg-yellow-100 border-b border-yellow-200 px-4 py-2 text-center">
+        <p className="text-sm text-yellow-800">
+          ⚠️ <strong>Educational Parody:</strong> All content is fictional satire for scam awareness education. 
+          <span className="ml-2 text-xs">Learn to recognize these common scam tactics!</span>
+        </p>
+      </div>
       <Header user={user} onLogout={logout} />
       <div className="flex">
         <Sidebar />
@@ -106,13 +113,13 @@ function Home() {
       <Composer />
 
       {/* Celebrity Feed Header */}
-      <div className="bg-[#1a1a1a] rounded-lg border border-[#3a3a3a] p-4">
+      <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-bold text-white">🚀 Social Feed</h2>
-            <p className="text-gray-400 text-sm">Real posts from interesting people with authentic vibes</p>
+            <h2 className="text-xl font-bold text-gray-900">🚀 Social Feed</h2>
+            <p className="text-gray-600 text-sm">Real posts from interesting people with authentic vibes</p>
           </div>
-          <div className="text-sm text-[#1877f2]">
+          <div className="text-sm text-[#1877f2] font-medium">
             {posts.length} posts loaded
           </div>
         </div>
@@ -122,8 +129,8 @@ function Home() {
       <div className="space-y-4">
         {posts.length === 0 ? (
           <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4" />
-            <p className="text-gray-300">Loading celebrity posts...</p>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#1877f2] mx-auto mb-4" />
+            <p className="text-gray-600">Loading celebrity posts...</p>
           </div>
         ) : (
           posts.map(post => (
@@ -224,19 +231,19 @@ function Chat({ chatHistory, setChatHistory }) {
 
   return (
     <div className="space-y-6">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-        <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Chat with AI Trump 🤖</h2>
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <h2 className="text-xl font-bold text-gray-900 mb-4">Chat with AI Trump 🤖</h2>
 
-        <div className="h-96 overflow-y-auto mb-4 space-y-4 p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
-          {chatHistory.length === 0 ? (
-            <p className="text-gray-500 dark:text-gray-400 text-center">Start a conversation with AI Trump!</p>
-          ) : (
-            chatHistory.map(message => (
-              <div key={message.id} className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${message.sender === 'user'
-                  ? 'bg-green-600 text-white'
-                  : 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700'
-                  }`}>
+        <div className="h-96 overflow-y-auto mb-4 space-y-4 p-4 bg-gray-50 rounded-lg">
+                      {chatHistory.length === 0 ? (
+              <p className="text-gray-500 text-center">Start a conversation with AI Trump!</p>
+            ) : (
+              chatHistory.map(message => (
+                <div key={message.id} className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+                  <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${message.sender === 'user'
+                    ? 'bg-[#1877f2] text-white'
+                    : 'bg-white text-gray-900 border border-gray-200'
+                    }`}>
                   <div className="flex items-center space-x-2 mb-1">
                     <AvatarDisplay avatar={message.avatar} size="sm" />
                     <span className="text-xs opacity-75">{message.timestamp}</span>
@@ -256,12 +263,12 @@ function Chat({ chatHistory, setChatHistory }) {
             onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
             placeholder="Ask AI Trump about crypto..."
             aria-label="Ask AI Trump about crypto"
-            className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white"
+            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1877f2] bg-white text-gray-900"
           />
           <button
             type="button"
             onClick={sendMessage}
-            className="px-6 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
+            className="px-6 py-2 bg-[#1877f2] hover:bg-[#166fe5] text-white font-medium rounded-lg transition-colors"
           >
             Send
           </button>

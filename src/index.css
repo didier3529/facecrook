@@ -15,8 +15,8 @@ body {
         sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: #0a0a0a;
-    color: #ffffff;
+    background-color: #f0f2f5;
+    color: #1c1e21;
 }
 
 code {
@@ -29,16 +29,16 @@ code {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background-color: #0a0a0a;
+    background-color: #f0f2f5;
 }
 
 /* Navigation */
 .navbar {
-    @apply bg-[#1a1a1a] shadow-md px-6 py-4 flex justify-center space-x-8 border-b border-[#3a3a3a];
+    @apply bg-white shadow-md px-6 py-4 flex justify-center space-x-8 border-b border-gray-200;
 }
 
 .navlink {
-    @apply text-gray-300 hover:text-[#1877f2] font-medium transition-colors duration-200;
+    @apply text-gray-600 hover:text-[#1877f2] font-medium transition-colors duration-200;
 }
 
 .navlink.active {
@@ -55,23 +55,23 @@ code {
 }
 
 .home h2 {
-    @apply text-3xl font-bold text-white mb-4;
+    @apply text-3xl font-bold text-gray-900 mb-4;
 }
 
 .home p {
-    @apply text-gray-300 text-lg;
+    @apply text-gray-600 text-lg;
 }
 
 .home-form {
-    @apply max-w-md mx-auto bg-[#1a1a1a] rounded-lg shadow-lg p-8 space-y-6 border border-[#3a3a3a];
+    @apply max-w-md mx-auto bg-white rounded-lg shadow-lg p-8 space-y-6 border border-gray-200;
 }
 
 .home-form h2 {
-    @apply text-2xl font-bold text-center text-white mb-6;
+    @apply text-2xl font-bold text-center text-gray-900 mb-6;
 }
 
 .home-form input {
-    @apply w-full px-4 py-3 border border-[#3a3a3a] bg-[#2a2a2a] text-white placeholder-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1877f2] focus:border-transparent;
+    @apply w-full px-4 py-3 border border-gray-300 bg-white text-gray-900 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1877f2] focus:border-transparent;
 }
 
 .home-form button {
@@ -84,19 +84,19 @@ code {
 }
 
 .feed h2 {
-    @apply text-2xl font-bold text-white mb-6;
+    @apply text-2xl font-bold text-gray-900 mb-6;
 }
 
 .post {
-    @apply bg-[#1a1a1a] rounded-lg shadow-md p-6 space-y-4 border border-[#3a3a3a];
+    @apply bg-white rounded-lg shadow-md p-6 space-y-4 border border-gray-200;
 }
 
 .post h3 {
-    @apply font-semibold text-white;
+    @apply font-semibold text-gray-900;
 }
 
 .post p {
-    @apply text-gray-300;
+    @apply text-gray-600;
 }
 
 .post-actions {
@@ -104,7 +104,7 @@ code {
 }
 
 .post-actions button {
-    @apply px-4 py-2 bg-[#2a2a2a] text-gray-300 rounded-lg hover:bg-[#3a3a3a] hover:text-white transition-colors duration-200;
+    @apply px-4 py-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 hover:text-gray-900 transition-colors duration-200;
 }
 
 /* Chat */
@@ -113,11 +113,11 @@ code {
 }
 
 .chat h2 {
-    @apply text-2xl font-bold text-white mb-6;
+    @apply text-2xl font-bold text-gray-900 mb-6;
 }
 
 .chat-window {
-    @apply bg-[#1a1a1a] rounded-lg shadow-md p-6 h-96 overflow-y-auto space-y-4 border border-[#3a3a3a];
+    @apply bg-white rounded-lg shadow-md p-6 h-96 overflow-y-auto space-y-4 border border-gray-200;
 }
 
 .chat-message {
@@ -129,7 +129,7 @@ code {
 }
 
 .chat-message.ai {
-    @apply bg-[#2a2a2a] text-gray-300;
+    @apply bg-gray-100 text-gray-700;
 }
 
 .chat-input {
@@ -137,7 +137,7 @@ code {
 }
 
 .chat-input input {
-    @apply flex-1 px-4 py-3 border border-[#3a3a3a] bg-[#2a2a2a] text-white placeholder-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1877f2];
+    @apply flex-1 px-4 py-3 border border-gray-300 bg-white text-gray-900 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1877f2];
 }
 
 .chat-input button {
@@ -150,11 +150,11 @@ code {
 }
 
 .tokens h2 {
-    @apply text-2xl font-bold text-white;
+    @apply text-2xl font-bold text-gray-900;
 }
 
 .tokens p {
-    @apply text-xl text-gray-300;
+    @apply text-xl text-gray-600;
 }
 
 .tokens button {
@@ -167,11 +167,11 @@ code {
 }
 
 .mint h2 {
-    @apply text-2xl font-bold text-white;
+    @apply text-2xl font-bold text-gray-900;
 }
 
 .mint p {
-    @apply text-lg text-gray-300;
+    @apply text-lg text-gray-600;
 }
 
 .mint button {
@@ -183,7 +183,7 @@ code {
 }
 
 .nft-item {
-    @apply bg-[#1a1a1a] rounded-lg shadow-md p-4 text-center border border-[#3a3a3a];
+    @apply bg-white rounded-lg shadow-md p-4 text-center border border-gray-200;
 }
 
 /* Store */
@@ -192,7 +192,7 @@ code {
 }
 
 .store h2 {
-    @apply text-2xl font-bold text-white mb-6;
+    @apply text-2xl font-bold text-gray-900 mb-6;
 }
 
 .store-grid {
@@ -200,15 +200,15 @@ code {
 }
 
 .store-item {
-    @apply bg-[#1a1a1a] rounded-lg shadow-md p-6 text-center border border-[#3a3a3a];
+    @apply bg-white rounded-lg shadow-md p-6 text-center border border-gray-200;
 }
 
 .store-item h3 {
-    @apply text-lg font-semibold text-white mb-2;
+    @apply text-lg font-semibold text-gray-900 mb-2;
 }
 
 .store-item p {
-    @apply text-gray-300 mb-4;
+    @apply text-gray-600 mb-4;
 }
 
 .store-item button {
@@ -226,7 +226,7 @@ code {
     }
 
     .facebook-nav-item:hover {
-        @apply bg-[#2a2a2a] rounded-lg;
+        @apply bg-gray-100 rounded-lg;
     }
 
     .facebook-nav-item.active {
@@ -239,7 +239,7 @@ code {
 
     /* Facebook Action Buttons */
     .facebook-action-button {
-        @apply w-10 h-10 bg-[#2a2a2a] hover:bg-[#3a3a3a] rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-colors duration-200;
+        @apply w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center text-gray-600 hover:text-gray-900 transition-colors duration-200;
     }
 
     /* Facebook Search Container */

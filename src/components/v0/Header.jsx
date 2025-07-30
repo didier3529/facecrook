@@ -24,27 +24,27 @@ export function Header({ user, onLogout }) {
     };
 
     return (
-        <header className="fixed top-0 left-0 right-0 bg-[#1a1a1a] border-b border-[#3a3a3a] z-50 h-14 shadow-lg">
+        <header className="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 z-50 h-14 shadow-sm">
             <div className="relative h-full w-full">
                 {/* Left Section - Facebook Logo + Search */}
                 <div className="logo-ultra-left">
-                    {/* Facebook "f" Logo */}
+                    {/* Facebook Logo */}
                     <Link to="/" className="facebook-logo-link">
-                        <div className="w-10 h-10 bg-[#1877f2] rounded-full flex items-center justify-center hover:bg-[#166fe5] transition-colors duration-200">
-                            <span className="text-white font-bold text-2xl" style={{ fontFamily: '"Helvetica Neue", sans-serif', marginLeft: '1px' }}>
-                                f
-                            </span>
+                        <div className="w-10 h-10 bg-[#1877f2] rounded-full flex items-center justify-center hover:bg-[#166fe5] transition-colors duration-200 relative">
+                            <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                            </svg>
                         </div>
                     </Link>
 
                     {/* Search Bar */}
                     <div className="facebook-search-container">
                         <div className="relative">
-                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500" />
                             <input
                                 type="text"
                                 placeholder="Search Facecrook"
-                                className="w-60 h-10 pl-10 pr-4 bg-[#2a2a2a] text-white placeholder-gray-400 rounded-full border-none focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                                className="w-60 h-10 pl-10 pr-4 bg-gray-100 text-gray-900 placeholder-gray-500 rounded-full border-none focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                                 style={{ fontFamily: '"Segoe UI", Helvetica, Arial, sans-serif' }}
                             />
                         </div>
@@ -58,7 +58,7 @@ export function Header({ user, onLogout }) {
                         className={`facebook-nav-item ${location.pathname === "/" ? "active" : ""}`}
                         title="Home"
                     >
-                        <Home className={`h-6 w-6 ${location.pathname === "/" ? "text-[#1877f2]" : "text-gray-400"}`} />
+                        <Home className={`h-6 w-6 ${location.pathname === "/" ? "text-[#1877f2]" : "text-gray-500"}`} />
                         {location.pathname === "/" && <div className="facebook-nav-indicator" />}
                     </Link>
                     <Link
@@ -66,7 +66,7 @@ export function Header({ user, onLogout }) {
                         className={`facebook-nav-item ${location.pathname === "/watch" ? "active" : ""}`}
                         title="Watch"
                     >
-                        <Play className={`h-6 w-6 ${location.pathname === "/watch" ? "text-[#1877f2]" : "text-gray-400"}`} />
+                        <Play className={`h-6 w-6 ${location.pathname === "/watch" ? "text-[#1877f2]" : "text-gray-500"}`} />
                         {location.pathname === "/watch" && <div className="facebook-nav-indicator" />}
                     </Link>
                     <Link
@@ -74,7 +74,7 @@ export function Header({ user, onLogout }) {
                         className={`facebook-nav-item ${location.pathname === "/marketplace" ? "active" : ""}`}
                         title="Marketplace"
                     >
-                        <Store className={`h-6 w-6 ${location.pathname === "/marketplace" ? "text-[#1877f2]" : "text-gray-400"}`} />
+                        <Store className={`h-6 w-6 ${location.pathname === "/marketplace" ? "text-[#1877f2]" : "text-gray-500"}`} />
                         {location.pathname === "/marketplace" && <div className="facebook-nav-indicator" />}
                     </Link>
                     <Link
@@ -82,7 +82,7 @@ export function Header({ user, onLogout }) {
                         className={`facebook-nav-item ${location.pathname === "/groups" ? "active" : ""}`}
                         title="Groups"
                     >
-                        <Users className={`h-6 w-6 ${location.pathname === "/groups" ? "text-[#1877f2]" : "text-gray-400"}`} />
+                        <Users className={`h-6 w-6 ${location.pathname === "/groups" ? "text-[#1877f2]" : "text-gray-500"}`} />
                         {location.pathname === "/groups" && <div className="facebook-nav-indicator" />}
                     </Link>
                     <Link
@@ -90,7 +90,7 @@ export function Header({ user, onLogout }) {
                         className={`facebook-nav-item ${location.pathname === "/gaming" ? "active" : ""}`}
                         title="Gaming"
                     >
-                        <Gamepad2 className={`h-6 w-6 ${location.pathname === "/gaming" ? "text-[#1877f2]" : "text-gray-400"}`} />
+                        <Gamepad2 className={`h-6 w-6 ${location.pathname === "/gaming" ? "text-[#1877f2]" : "text-gray-500"}`} />
                         {location.pathname === "/gaming" && <div className="facebook-nav-indicator" />}
                     </Link>
                 </div>
@@ -134,8 +134,8 @@ export function Header({ user, onLogout }) {
                         className="facebook-action-button"
                         title="Account"
                     >
-                        <div className="w-8 h-8 bg-[#2a2a2a] rounded-full flex items-center justify-center">
-                            <span className="text-sm font-semibold text-white">
+                        <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
+                            <span className="text-sm font-semibold text-gray-700">
                                 {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
                             </span>
                         </div>
