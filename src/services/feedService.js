@@ -345,7 +345,7 @@ export class FeedService {
                     poop: Math.floor(Math.random() * 1000) + 500 // High poop reactions (people see through scam)
                 },
                 professionalIdentity: scammer.professionalIdentity,
-                hashtags: this.generateScamHashtags(scammer.scamCategory)
+                hashtags: FeedService.generateScamHashtags(scammer.scamCategory)
             };
 
             newPosts.push(newPost);
@@ -356,7 +356,7 @@ export class FeedService {
     }
 
     // Generate appropriate hashtags for scam categories
-    generateScamHashtags(scamCategory) {
+    static generateScamHashtags(scamCategory) {
         const hashtagTemplates = {
             'investment': ['GetRichQuick', 'FastMoney', 'SecretFormula', 'InvestmentGuru', 'MillionaireMindset'],
             'cryptocurrency': ['CryptoMoon', 'GuaranteedReturns', 'DiamondHands', 'ToTheMoon', 'CryptoSecrets'],
@@ -370,7 +370,7 @@ export class FeedService {
         const selectedTags = [];
         const numTags = Math.floor(Math.random() * 3) + 2; // 2-4 hashtags
 
-        for (let i = 0; i < numTags; i++) {
+        for (let i = 0; i < numTags; i += 1) {
             const randomTag = categoryTags[Math.floor(Math.random() * categoryTags.length)];
             if (!selectedTags.includes(randomTag)) {
                 selectedTags.push(randomTag);

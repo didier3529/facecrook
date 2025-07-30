@@ -35,28 +35,36 @@ export function PostCard({ post }) {
             {/* Post Header */}
             <div className="flex items-center justify-between p-4 pb-3">
                 <div className="flex items-center space-x-3">
-                    {post.avatar ? (
-                        <img
-                            src={post.avatar}
-                            alt={post.displayName}
-                            className="w-12 h-12 rounded-full object-cover border border-gray-200"
-                            onError={(e) => {
-                                e.target.style.display = 'none';
-                            }}
-                        />
-                    ) : isCelebrityPost && post.celebrityId ? (
-                        <CelebrityAvatarDisplay
-                            celebrityId={post.celebrityId}
-                            size="lg"
-                            className="w-12 h-12"
-                        />
-                    ) : (
-                        <AvatarDisplay
-                            avatar={post.avatar}
-                            size="lg"
-                            className="w-12 h-12"
-                        />
-                    )}
+                    {(() => {
+                        if (post.avatar) {
+                            return (
+                                <img
+                                    src={post.avatar}
+                                    alt={post.displayName}
+                                    className="w-12 h-12 rounded-full object-cover border border-gray-200"
+                                    onError={(e) => {
+                                        e.target.style.display = 'none';
+                                    }}
+                                />
+                            );
+                        }
+                        if (isCelebrityPost && post.celebrityId) {
+                            return (
+                                <CelebrityAvatarDisplay
+                                    celebrityId={post.celebrityId}
+                                    size="lg"
+                                    className="w-12 h-12"
+                                />
+                            );
+                        }
+                        return (
+                            <AvatarDisplay
+                                avatar={post.avatar}
+                                size="lg"
+                                className="w-12 h-12"
+                            />
+                        );
+                    })()}
                     <div>
                         <div className="flex items-center space-x-2">
                             <h3 className="font-semibold text-gray-900">{post.displayName}</h3>
