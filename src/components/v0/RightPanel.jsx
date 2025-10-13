@@ -26,9 +26,9 @@ const scammerContacts = [
         avatar: '/scammers/0bdfea035a028e2202b6508b48e3300b.jpg'
     },
     {
-        id: 'anil-prince-varma',
-        realName: 'Anil "Prince" Varma',
-        status: 'Seeking trustworthy friend',
+        id: 'alex-investment-guru',
+        realName: 'Alex "Investment Guru" Smith',
+        status: 'Helping people invest',
         isOnline: false,
         avatar: '/scammers/OIP (1).jpeg'
     },
@@ -58,7 +58,7 @@ export function RightPanel() {
     const { generateRandomAvatar } = useAvatar();
 
     return (
-        <aside className="w-80 bg-white h-screen sticky top-14 overflow-y-auto border-l border-gray-200">
+        <aside className="w-80 bg-white h-screen sticky top-14 overflow-y-auto">
             <div className="p-4">
                 {/* Sponsored */}
                 <div className="mb-6">
@@ -69,7 +69,7 @@ export function RightPanel() {
                         </div>
                         <div className="flex-1">
                             <p className="text-sm font-medium text-gray-900">Connect with Friends</p>
-                            <p className="text-xs text-gray-500">socialmedia.facecrook</p>
+                            <p className="text-xs text-gray-500">socialmedia.facCrook</p>
                         </div>
                     </div>
                 </div>

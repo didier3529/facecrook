@@ -82,7 +82,15 @@ export const AvatarProvider = ({ children }) => {
         }));
     };
 
-    const getCurrentUserAvatar = () => avatars[currentUserId] || defaultAvatars['current-user'];
+    const getCurrentUserAvatar = () => {
+        // Check if user has a profile picture from auth context
+        const user = JSON.parse(localStorage.getItem('facecrook-user') || '{}');
+        if (user && user.profilePicture) {
+            return user.profilePicture;
+        }
+        // Return the default avatar image
+        return '/default-avatar.jpg';
+    };
 
     const getAvatarById = (userId) => avatars[userId] || defaultAvatars['current-user'];
 

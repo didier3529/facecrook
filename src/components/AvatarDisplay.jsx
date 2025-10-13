@@ -76,6 +76,62 @@ export function AvatarDisplay({
     };
 
     const generateAvatarDisplay = () => {
+        // Check if avatar is a URL (image) or an object (emoji config)
+        if (typeof avatar === 'string' && (avatar.startsWith('http') || avatar.startsWith('/') || avatar.startsWith('data:'))) {
+            // It's an image URL, display as image
+            const borderClass = showBorder ? 'border-2 border-gray-200 dark:border-gray-600' : '';
+            const cursorClass = clickable ? 'cursor-pointer hover:scale-105' : '';
+            const sizeClass = sizeClasses[size] || sizeClasses.md;
+
+            if (clickable) {
+                return (
+                    <button
+                        type="button"
+                        className={`${sizeClass} rounded-full overflow-hidden ${borderClass} ${cursorClass} transition-all duration-200 ${className}`}
+                        onClick={(e) => onClick?.(e)}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                                onClick?.(e);
+                            }
+                        }}
+                        aria-label="Avatar button"
+                    >
+                        <img
+                            src={avatar}
+                            alt="Profile"
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                                // Fallback to emoji if image fails to load
+                                e.target.style.display = 'none';
+                                e.target.parentElement.innerHTML = '😊';
+                            }}
+                        />
+                    </button>
+                );
+            }
+
+            return (
+                <div
+                    className={`${sizeClass} rounded-full overflow-hidden ${borderClass} transition-all duration-200 ${className}`}
+                    role="img"
+                    aria-label="User avatar"
+                >
+                    <img
+                        src={avatar}
+                        alt="Profile"
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                            // Fallback to emoji if image fails to load
+                            e.target.style.display = 'none';
+                            e.target.parentElement.innerHTML = '😊';
+                        }}
+                    />
+                </div>
+            );
+        }
+
+        // It's an emoji config object, use the original emoji system
         const faceEmoji = avatarOptions.face.find(f => f.id === avatarConfig.face)?.emoji || '😊';
         const accessoryEmoji = avatarOptions.accessories.find(a => a.id === avatarConfig.accessories)?.emoji || '';
         const color = avatarOptions.colors.find(c => c.id === avatarConfig.color)?.color || '#FCD34D';

@@ -77,7 +77,7 @@ const TopNavigationBar = () => {
     <nav className="top-nav">
       <div className="nav-container">
         <Link to="/" className="nav-logo" onClick={closeMenu}>
-          FaceCrook
+          FACECROOK
         </Link>
         <button
           ref={toggleButtonRef}

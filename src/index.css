@@ -242,6 +242,15 @@ code {
         @apply w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center text-gray-600 hover:text-gray-900 transition-colors duration-200;
     }
 
+    /* Hide scrollbar for stories */
+    .scrollbar-hide {
+        -ms-overflow-style: none;  /* Internet Explorer 10+ */
+        scrollbar-width: none;  /* Firefox */
+    }
+    .scrollbar-hide::-webkit-scrollbar { 
+        display: none;  /* Safari and Chrome */
+    }
+
     /* Facebook Search Container */
     .facebook-search-container {
         @apply relative;

@@ -112,7 +112,7 @@ export function AvatarCreator({ onSave, initialAvatar = null }) {
                     🎨 Create Your Avatar
                 </h2>
                 <p className="text-gray-600 dark:text-gray-400">
-                    Customize your unique Facecrook persona!
+                    Customize your unique FACECROOK persona!
                 </p>
             </div>
 

@@ -57,21 +57,21 @@ export class FeedService {
                 scamCategory: 'tech-support',
                 professionalIdentity: 'Microsoft® Partner'
             },
-            'anil-prince-varma': {
-                id: 'anil-prince-varma',
-                realName: 'Anil "Prince" Varma',
-                displayName: 'Prince_Anil_Official',
-                characterType: 'Prince Scammer',
-                about: 'Long-lost royalty. Searching for a trustworthy friend.',
-                location: 'Royal Palace (temporarily displaced)',
-                defaultFeeling: 'Grateful',
+            'alex-investment-guru': {
+                id: 'alex-investment-guru',
+                realName: 'Alex "Investment Guru" Smith',
+                displayName: 'InvestmentGuru_Alex',
+                characterType: 'Investment Scammer',
+                about: 'Financial advisor helping people invest wisely.',
+                location: 'Wall Street, New York',
+                defaultFeeling: 'Confident',
                 joinDate: '2020-11-30',
                 followerCount: '156.8K',
-                bio: '👑 DISPLACED PRINCE 👑 £43M inheritance FROZEN by corrupt officials! Need ONE trustworthy friend to help transfer funds. Will share 50% as gratitude!',
+                bio: '💰 INVESTMENT EXPERT 💰 Helping people make millions! Join my exclusive trading group. Limited spots available!',
                 isVerified: true,
                 avatar: '/scammers/OIP (1).jpeg',
-                scamCategory: 'advance-fee',
-                professionalIdentity: 'Displaced Royalty'
+                scamCategory: 'investment',
+                professionalIdentity: 'Financial Advisor'
             },
             'deepak-refund-guru-nair': {
                 id: 'deepak-refund-guru-nair',
@@ -94,7 +94,7 @@ export class FeedService {
                 realName: 'Seema "Scholarship" Rao',
                 displayName: 'ScholarshipSeema',
                 characterType: 'Education Scammer',
-                about: 'Education consultant—every student "wins".',
+                about: 'Education consultant, every student "wins".',
                 location: 'Harvard Admissions Office',
                 defaultFeeling: 'Proud of students',
                 joinDate: '2021-09-07',
@@ -121,17 +121,20 @@ export class FeedService {
                 displayName: scammers['rajesh-roi-jindal'].realName,
                 avatar: scammers['rajesh-roi-jindal'].avatar,
                 isVerified: true,
-                content: "Hard work? Over-rated. I turned ₹7,000 into ₹7 lakh in 7 days—ask me how before SEATS FILL ⚡⚡ ONLY 3 SPOTS LEFT! DM NOW for my SECRET FORMULA!",
+                content: "Hard work? Over-rated. I turned ₹7,000 into ₹7 lakh in 7 days, ask me how before SEATS FILL ⚡⚡ ONLY 3 SPOTS LEFT! DM NOW for my SECRET FORMULA!",
                 timestamp: '1h',
-                likes: 4247,
-                comments: 189,
-                shares: 756,
-                hashtags: ['GetRichQuick', 'SecretFormula', 'FastMoney', 'NoWorkRequired'],
+                likes: 18,
+                comments: 8,
+                shares: 12,
                 reactions: {
-                    fire: 156,
-                    heart: 89,
-                    poop: 1247
+                    fire: 12,
+                    heart: 6
                 },
+                commentData: [
+                    { author: "Sarah", content: "This seems legitimate. I've been looking for investment opportunities.", timestamp: "45m", avatar: "/profile-pics/download (1).jpeg", likes: 7 },
+                    { author: "Mike", content: "Bro, my grandma's cookie recipe has better ROI 📈🍪", timestamp: "38m", avatar: "/profile-pics/Amir.jpeg", likes: 5 },
+                    { author: "Priya", content: "I need to see more documentation before I consider this.", timestamp: "25m", avatar: "/profile-pics/download (2).jpeg", likes: 9 }
+                ],
                 professionalIdentity: scammers['rajesh-roi-jindal'].professionalIdentity
             },
 
@@ -144,15 +147,18 @@ export class FeedService {
                 isVerified: true,
                 content: "Just minted a new coin: PRYACOIN 🚀 Early investors get 10000% returns GUARANTEED! DM for whitelist access 💎 Only serious investors - minimum ₹50K entry!",
                 timestamp: '2h',
-                likes: 2834,
-                comments: 456,
-                shares: 892,
-                hashtags: ['PRYACOIN', 'CryptoMoon', 'GuaranteedReturns', 'DiamondHands'],
+                likes: 22,
+                comments: 15,
+                shares: 7,
                 reactions: {
-                    fire: 234,
-                    heart: 167,
-                    poop: 892
+                    fire: 18,
+                    heart: 4
                 },
+                commentData: [
+                    { author: "Alex", content: "What's the actual use case for this token? I'm genuinely curious.", timestamp: "1h", avatar: "/profile-pics/download (3).jpeg", likes: 6 },
+                    { author: "Sam", content: "I'll trade you my Pokemon cards for this coin 🃏", timestamp: "52m", avatar: "/profile-pics/Hk.jpeg", likes: 4 },
+                    { author: "Moon", content: "This is obviously a pump and dump scheme.", timestamp: "41m", avatar: "/profile-pics/download (4).jpeg", likes: 12 }
+                ],
                 professionalIdentity: scammers['priya-crypto-queen-patel'].professionalIdentity
             },
 
@@ -163,39 +169,46 @@ export class FeedService {
                 displayName: scammers['mahesh-gift-card-kumar'].realName,
                 avatar: scammers['mahesh-gift-card-kumar'].avatar,
                 isVerified: true,
-                content: "Limited-time Microsoft® partnership—pay tech-support fee in any gift card! Your computer security depends on it! 🛡️ URGENT: Hackers detected on your network!",
+                content: "Limited-time Microsoft® partnership, pay tech-support fee in any gift card! Your computer security depends on it! 🛡️ URGENT: Hackers detected on your network!",
                 timestamp: '3h',
-                likes: 1567,
-                comments: 234,
-                shares: 445,
-                hashtags: ['MicrosoftPartner', 'UrgentSecurity', 'GiftCardPayment', 'ComputerProtection'],
+                likes: 14,
+                comments: 11,
+                shares: 9,
                 reactions: {
-                    fire: 89,
-                    heart: 56,
-                    poop: 567
+                    fire: 8,
+                    heart: 6
                 },
+                commentData: [
+                    { author: "John", content: "Microsoft never contacts users this way. This is a scam.", timestamp: "2h", avatar: "/profile-pics/download (5).jpeg", likes: 11 },
+                    { author: "Lisa", content: "I paid my last tech support with pizza 🍕 Much better deal!", timestamp: "1h 45m", avatar: "/profile-pics/download (75).jpg", likes: 15 },
+                    { author: "David", content: "Please don't fall for this. Legitimate tech support doesn't ask for gift cards.", timestamp: "1h 20m", avatar: "/profile-pics/download (76).jpg", likes: 8 }
+                ],
                 professionalIdentity: scammers['mahesh-gift-card-kumar'].professionalIdentity
             },
 
-            // Anil "Prince" Varma - Prince Scammer
+            // Alex "Investment Guru" Smith - Investment Scammer
             {
-                id: 'anil-prince-1',
-                celebrityId: 'anil-prince-varma',
-                displayName: scammers['anil-prince-varma'].realName,
-                avatar: scammers['anil-prince-varma'].avatar,
+                id: 'alex-investment-1',
+                celebrityId: 'alex-investment-guru',
+                displayName: scammers['alex-investment-guru'].realName,
+                avatar: scammers['alex-investment-guru'].avatar,
                 isVerified: true,
-                content: "My £43M inheritance is frozen. Need ONE real friend to help transfer funds. Will share 50% as gratitude 👑 Only need £5000 transfer fee to unlock millions!",
+                content: "BREAKING: Government insider reveals investment loophole! Only sharing with 5 people! Join my private group for exclusive access 💰 Only $500 entry fee to unlock millions!",
                 timestamp: '4h',
-                likes: 3421,
-                comments: 789,
-                shares: 1234,
-                hashtags: ['RoyalInheritance', 'Trustworthy Friend', 'SharedWealth', 'BlessedPartnership'],
+                likes: 25,
+                comments: 19,
+                shares: 14,
                 reactions: {
-                    fire: 345,
-                    heart: 567,
-                    poop: 2134
+                    fire: 15,
+                    heart: 10
                 },
-                professionalIdentity: scammers['anil-prince-varma'].professionalIdentity
+                commentData: [
+                    { author: "Emma", content: "This looks like a legitimate investment opportunity. How can I get started?", timestamp: "3h", avatar: "/profile-pics/download (77).jpg", likes: 18 },
+                    { author: "Robert", content: "I'll invest my entire life savings... of $3.50 💸", timestamp: "2h 30m", avatar: "/profile-pics/download (78).jpg", likes: 2 },
+                    { author: "Jennifer", content: "Be very careful with these types of investments. Do your research first.", timestamp: "2h 15m", avatar: "/profile-pics/Oh.jpeg", likes: 12 },
+                    { author: "Mark", content: "Can I pay with exposure? I have 12 followers 📸", timestamp: "1h 50m", avatar: "/profile-pics/download (1).jpeg", likes: 5 }
+                ],
+                professionalIdentity: scammers['alex-investment-guru'].professionalIdentity
             },
 
             // Deepak "Refund Guru" Nair - Refund Scammer
@@ -205,17 +218,20 @@ export class FeedService {
                 displayName: scammers['deepak-refund-guru-nair'].realName,
                 avatar: scammers['deepak-refund-guru-nair'].avatar,
                 isVerified: true,
-                content: "Your Amazon order shipped twice—click for refund (requires screen-share). Act fast before charge goes through! 📦 URGENT: Double billing detected!",
+                content: "Your Amazon order shipped twice, click for refund (requires screen-share). Act fast before charge goes through! 📦 URGENT: Double billing detected!",
                 timestamp: '5h',
-                likes: 2156,
-                comments: 345,
-                shares: 678,
-                hashtags: ['AmazonRefund', 'DoubleCharge', 'UrgentAction', 'ScreenShare'],
+                likes: 16,
+                comments: 13,
+                shares: 8,
                 reactions: {
-                    fire: 123,
-                    heart: 89,
-                    poop: 789
+                    fire: 9,
+                    heart: 7
                 },
+                commentData: [
+                    { author: "Amazon", content: "Amazon never processes refunds through social media comments. This is a scam.", timestamp: "4h", avatar: "/profile-pics/download (2).jpeg", likes: 16 },
+                    { author: "John", content: "I clicked the link... now my fridge is ordering groceries 🤖", timestamp: "3h 45m", avatar: "/profile-pics/download (3).jpeg", likes: 9 },
+                    { author: "Maria", content: "This is clearly fraudulent. Please report this to Amazon customer service.", timestamp: "3h 20m", avatar: "/profile-pics/download (4).jpeg", likes: 13 }
+                ],
                 professionalIdentity: scammers['deepak-refund-guru-nair'].professionalIdentity
             },
 
@@ -228,15 +244,19 @@ export class FeedService {
                 isVerified: true,
                 content: "Every student deserves Harvard. Comment 'STUDY' and I'll personally ensure your admission. 100% success rate! 🎓 Limited seats available - only ₹25K processing fee!",
                 timestamp: '6h',
-                likes: 5678,
-                comments: 1234,
-                shares: 2345,
-                hashtags: ['HarvardAdmission', 'GuaranteedAcceptance', 'EducationSuccess', 'LimitedSeats'],
+                likes: 24,
+                comments: 17,
+                shares: 11,
                 reactions: {
-                    fire: 678,
-                    heart: 456,
-                    poop: 3456
+                    fire: 14,
+                    heart: 10
                 },
+                commentData: [
+                    { author: "Harvard", content: "Harvard does not offer scholarships through social media platforms. Please verify through official channels.", timestamp: "5h", avatar: "/profile-pics/download (5).jpeg", likes: 20 },
+                    { author: "Student", content: "I studied for 20 minutes and got this scholarship 📚✨", timestamp: "4h 30m", avatar: "/profile-pics/Hk.jpeg", likes: 3 },
+                    { author: "Parent", content: "This seems too good to be true. I'll need to verify this with the school directly.", timestamp: "4h 15m", avatar: "/profile-pics/download (75).jpg", likes: 7 },
+                    { author: "Counselor", content: "Legitimate scholarships require proper application processes. Be very cautious.", timestamp: "3h 45m", avatar: "/profile-pics/download (76).jpg", likes: 15 }
+                ],
                 professionalIdentity: scammers['seema-scholarship-rao'].professionalIdentity
             }
         ];
@@ -302,11 +322,11 @@ export class FeedService {
                 "Hackers accessing your bank account RIGHT NOW! Only we can stop them! 🔒💳",
                 "FBI detected illegal activity on your PC! Avoid arrest - pay fine immediately! 👮‍♂️💰"
             ],
-            'anil-prince-varma': [
-                "Royal family lawyer confirmed my inheritance! £100M waiting! Need trustworthy partner! 👑💰",
-                "Government officials demanding ₹10K bribe to release my funds! Please help! 😢💔",
-                "My father was King of Nigeria! I choose YOU to share wealth! God bless! 🙏✨",
-                "Bank manager says transfer fee required! Will double your investment guaranteed! 📈💎"
+            'alex-investment-guru': [
+                "Financial advisor confirmed this opportunity! $100M waiting! Need trustworthy partner! 💰📈",
+                "Government officials demanding $10K fee to access this investment! Please help! 😢💔",
+                "My father was a Wall Street legend! I choose YOU to share this wealth! God bless! 🙏✨",
+                "Bank manager says entry fee required! Will double your investment guaranteed! 📈💎"
             ],
             'deepak-refund-guru-nair': [
                 "Amazon charged you TWICE! Refund pending but needs verification! Click link NOW! 📦💰",
@@ -341,11 +361,10 @@ export class FeedService {
                 shares: Math.floor(Math.random() * 1200) + 200,
                 reactions: {
                     fire: Math.floor(Math.random() * 200) + 50,  // High fake fire reactions
-                    heart: Math.floor(Math.random() * 150) + 30, // Moderate hearts
-                    poop: Math.floor(Math.random() * 1000) + 500 // High poop reactions (people see through scam)
+                    heart: Math.floor(Math.random() * 150) + 30 // Moderate hearts
                 },
                 professionalIdentity: scammer.professionalIdentity,
-                hashtags: FeedService.generateScamHashtags(scammer.scamCategory)
+                commentData: FeedService.generateRealisticComments(scammer.scamCategory)
             };
 
             newPosts.push(newPost);
@@ -355,29 +374,54 @@ export class FeedService {
         return newPosts;
     }
 
-    // Generate appropriate hashtags for scam categories
-    static generateScamHashtags(scamCategory) {
-        const hashtagTemplates = {
-            'investment': ['GetRichQuick', 'FastMoney', 'SecretFormula', 'InvestmentGuru', 'MillionaireMindset'],
-            'cryptocurrency': ['CryptoMoon', 'GuaranteedReturns', 'DiamondHands', 'ToTheMoon', 'CryptoSecrets'],
-            'tech-support': ['ComputerSecurity', 'VirusAlert', 'UrgentAction', 'MicrosoftPartner', 'PCProtection'],
-            'advance-fee': ['RoyalInheritance', 'TrustworthyFriend', 'SharedWealth', 'BlessedPartnership', 'GodsWill'],
-            'refund-fraud': ['RefundAlert', 'BillingError', 'UrgentRefund', 'AccountSecurity', 'FraudPrevention'],
-            'education-fraud': ['HarvardBound', 'GuaranteedAdmission', 'EducationSuccess', 'ScholarshipAlert', 'DreamCollege']
+    // Generate realistic comments for scam categories
+    static generateRealisticComments(scamCategory) {
+        const commentTemplates = {
+            'investment': [
+                { author: 'Mike', content: 'I\'m interested in learning more about this opportunity. Can you provide more details?', timestamp: '2h', avatar: '/profile-pics/Amir.jpeg', likes: 9 },
+                { author: 'Sarah', content: 'This seems suspicious... but so does my neighbor\'s cat 🐱', timestamp: '1h 30m', avatar: '/profile-pics/download (1).jpeg', likes: 13 },
+                { author: 'Guru', content: 'No legitimate investment works this way... except my lemonade stand 🍋', timestamp: '1h', avatar: '/profile-pics/download (2).jpeg', likes: 21 }
+            ],
+            'cryptocurrency': [
+                { author: 'Max', content: 'I\'ve been following this project. The technology looks promising.', timestamp: '1h 45m', avatar: '/profile-pics/download (3).jpeg', likes: 7 },
+                { author: 'Bitcoin', content: 'Too risky for me... I only invest in friendship bracelets 🤝', timestamp: '1h 20m', avatar: '/profile-pics/Hk.jpeg', likes: 5 },
+                { author: 'Trader', content: 'Need to see the whitepaper first... preferably written in crayon 🖍️', timestamp: '55m', avatar: '/profile-pics/download (4).jpeg', likes: 12 }
+            ],
+            'tech-support': [
+                { author: 'Expert', content: 'This is a known tech support scam. Microsoft will never call you asking for gift cards.', timestamp: '2h 30m', avatar: '/profile-pics/download (5).jpeg', likes: 17 },
+                { author: 'Repair', content: 'Microsoft called me... to ask if I wanted fries with my Windows 🍟', timestamp: '2h', avatar: '/profile-pics/download (75).jpg', likes: 20 },
+                { author: 'Tech', content: 'Report this immediately... to the comedy show! 🎭', timestamp: '1h 45m', avatar: '/profile-pics/download (76).jpg', likes: 26 }
+            ],
+            'investment': [
+                { author: 'Alert', content: 'Be very careful with these types of investments. Always verify legitimacy first.', timestamp: '3h', avatar: '/profile-pics/download (77).jpg', likes: 29 },
+                { author: 'John', content: 'I invested my lunch money... now I\'m rich in sandwiches 🥪💰', timestamp: '2h 45m', avatar: '/profile-pics/download (78).jpg', likes: 1 },
+                { author: 'Fraud', content: 'This is not legitimate... but neither is my credit score 🤷‍♂️', timestamp: '2h 15m', avatar: '/profile-pics/Oh.jpeg', likes: 24 }
+            ],
+            'refund-fraud': [
+                { author: 'Amazon', content: 'Amazon never processes refunds through social media. Please contact customer service directly.', timestamp: '3h 20m', avatar: '/profile-pics/download (1).jpeg', likes: 30 },
+                { author: 'Service', content: 'Don\'t share your screen... unless you want me to see your browser history 😏', timestamp: '2h 50m', avatar: '/profile-pics/download (2).jpeg', likes: 18 },
+                { author: 'Security', content: 'This is a phishing attempt... and I\'m the fish 🐟', timestamp: '2h 30m', avatar: '/profile-pics/download (3).jpeg', likes: 22 }
+            ],
+            'education-fraud': [
+                { author: 'Counselor', content: 'Legitimate scholarships require proper application processes through official channels.', timestamp: '4h', avatar: '/profile-pics/download (4).jpeg', likes: 32 },
+                { author: 'Advisor', content: 'This is a scam... but I still want the diploma 🎓', timestamp: '3h 30m', avatar: '/profile-pics/download (5).jpeg', likes: 19 },
+                { author: 'Expert', content: 'Report this to authorities... and my mom 📞👩', timestamp: '3h', avatar: '/profile-pics/Hk.jpeg', likes: 28 }
+            ]
         };
 
-        const categoryTags = hashtagTemplates[scamCategory] || ['Opportunity', 'LimitedTime', 'Exclusive'];
-        const selectedTags = [];
-        const numTags = Math.floor(Math.random() * 3) + 2; // 2-4 hashtags
-
-        for (let i = 0; i < numTags; i += 1) {
-            const randomTag = categoryTags[Math.floor(Math.random() * categoryTags.length)];
-            if (!selectedTags.includes(randomTag)) {
-                selectedTags.push(randomTag);
-            }
+        const categoryComments = commentTemplates[scamCategory] || [
+            { author: 'User', content: 'This looks suspicious', timestamp: '2h', avatar: '/profile-pics/download (1).jpeg', likes: 10 },
+            { author: 'Safety', content: 'Be careful with this', timestamp: '1h 30m', avatar: '/profile-pics/download (2).jpeg', likes: 8 }
+        ];
+        
+        const numComments = Math.floor(Math.random() * 3) + 2; // 2-4 comments
+        const selectedComments = [];
+        
+        for (let i = 0; i < numComments && i < categoryComments.length; i += 1) {
+            selectedComments.push(categoryComments[i]);
         }
 
-        return selectedTags;
+        return selectedComments;
     }
 }
 

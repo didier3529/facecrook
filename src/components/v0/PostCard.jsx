@@ -9,11 +9,10 @@ export function PostCard({ post }) {
     const [selectedReaction, setSelectedReaction] = useState(null);
     const [showReactions, setShowReactions] = useState(false);
 
-    // Simplified reactions - only 3 types
+    // Simplified reactions - only fire and heart
     const reactions = [
         { emoji: "🔥", name: "Fire", count: post.reactions?.fire || 0 },
-        { emoji: "❤️", name: "Love", count: post.reactions?.heart || 0 },
-        { emoji: "💩", name: "Trash", count: post.reactions?.poop || 0 }
+        { emoji: "❤️", name: "Love", count: post.reactions?.heart || 0 }
     ];
 
     const handleLike = () => {
@@ -31,7 +30,7 @@ export function PostCard({ post }) {
     const isCelebrityPost = post.celebrityId || post.isVerified;
 
     return (
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 mb-4">
+        <div className="bg-white rounded-lg shadow-sm mb-4">
             {/* Post Header */}
             <div className="flex items-center justify-between p-4 pb-3">
                 <div className="flex items-center space-x-3">
@@ -41,7 +40,7 @@ export function PostCard({ post }) {
                                 <img
                                     src={post.avatar}
                                     alt={post.displayName}
-                                    className="w-12 h-12 rounded-full object-cover border border-gray-200"
+                                    className="w-12 h-12 rounded-full object-cover"
                                     onError={(e) => {
                                         e.target.style.display = 'none';
                                     }}
@@ -108,16 +107,6 @@ export function PostCard({ post }) {
                     </div>
                 )}
 
-                {/* Hashtags and Mentions */}
-                {post.hashtags && post.hashtags.length > 0 && (
-                    <div className="mt-2 flex flex-wrap gap-1">
-                        {post.hashtags.map((hashtag) => (
-                            <span key={hashtag} className="text-[#1877f2] hover:underline cursor-pointer">
-                                #{hashtag}
-                            </span>
-                        ))}
-                    </div>
-                )}
             </div>
 
             {/* Reactions Display */}
@@ -135,7 +124,7 @@ export function PostCard({ post }) {
             )}
 
             {/* Post Stats */}
-            <div className="px-4 py-2 border-t border-b border-gray-200">
+            <div className="px-4 py-2">
                 <div className="flex items-center justify-between text-sm text-gray-600">
                     <div className="flex items-center space-x-4">
                         <span>{post.comments} comments</span>
@@ -143,6 +132,50 @@ export function PostCard({ post }) {
                     </div>
                 </div>
             </div>
+
+            {/* Comments Section */}
+            {post.commentData && post.commentData.length > 0 && (
+                <div className="px-4 pb-3">
+                    {post.commentData.slice(0, 3).map((comment, index) => (
+                        <div key={index} className="mb-3">
+                            <div className="flex items-start space-x-2">
+                                <img
+                                    src={comment.avatar}
+                                    alt={comment.author}
+                                    className="w-8 h-8 rounded-full object-cover"
+                                    onError={(e) => {
+                                        e.target.style.display = 'none';
+                                        e.target.nextSibling.style.display = 'flex';
+                                    }}
+                                />
+                                <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-xs font-semibold text-gray-600" style={{display: 'none'}}>
+                                    {comment.author.charAt(0)}
+                                </div>
+                                <div className="flex-1">
+                                    <div className="flex items-center space-x-2">
+                                        <span className="font-semibold text-sm text-gray-900">{comment.author}</span>
+                                        <span className="text-xs text-gray-500">{comment.timestamp}</span>
+                                    </div>
+                                    <p className="text-sm text-gray-800 mt-1">{comment.content}</p>
+                                    <div className="flex items-center space-x-3 mt-1">
+                                        <button className="text-xs text-gray-500 hover:text-red-500 transition-colors">
+                                            ❤️ {comment.likes}
+                                        </button>
+                                        <button className="text-xs text-gray-500 hover:text-blue-500 transition-colors">
+                                            Reply
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                    {post.commentData.length > 3 && (
+                        <button className="text-sm text-gray-500 hover:text-gray-700">
+                            View {post.commentData.length - 3} more comments
+                        </button>
+                    )}
+                </div>
+            )}
 
             {/* Post Actions */}
             <div className="flex items-center px-4 py-2">
@@ -170,7 +203,7 @@ export function PostCard({ post }) {
                     </button>
 
                     {showReactions && (
-                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 bg-white rounded-lg p-2 shadow-lg border border-gray-200">
+                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 bg-white rounded-lg p-2 shadow-lg">
                             <div className="flex space-x-2">
                                 {reactions.map((reaction) => (
                                     <button

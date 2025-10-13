@@ -1,4 +1,4 @@
-import { Bookmark, Calendar, ChevronDown, Clock, Flag, Gamepad2, Home, MessageCircle, ShoppingBag, User, Users, Users2 } from "lucide-react";
+import { Bookmark, Calendar, ChevronDown, Clock, Flag, Gamepad2, Home, ShoppingBag, User, Users, Users2 } from "lucide-react";
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAvatar } from '../../contexts/AvatarContext';
@@ -8,7 +8,6 @@ import { AvatarDisplay } from '../AvatarDisplay';
 const mainNavigationItems = [
     { name: "Home", icon: Home, color: "text-[#1877f2]", path: "/" },
     { name: "Feed", icon: Users, color: "text-[#1877f2]", path: "/feed" },
-    { name: "AI Trump Chat", icon: MessageCircle, color: "text-red-500", path: "/chat" },
     { name: "Profile", icon: User, color: "text-[#1877f2]", path: "/profile" },
 ];
 
