@@ -82,21 +82,30 @@ export function AuthProvider({ children }) {
 
     // Load auth state from localStorage on mount
     useEffect(() => {
-        const savedToken = localStorage.getItem('facecrook_token');
-        const savedUser = localStorage.getItem('facecrook_user');
+        // Check if we're in a browser environment
+        if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
+            return;
+        }
 
-        if (savedToken && savedUser) {
-            try {
-                const user = JSON.parse(savedUser);
-                dispatch({
-                    type: AUTH_ACTIONS.LOGIN_SUCCESS,
-                    payload: { user, token: savedToken }
-                });
-            } catch (error) {
-                // Invalid saved data, clear it
-                localStorage.removeItem('facecrook_token');
-                localStorage.removeItem('facecrook_user');
+        try {
+            const savedToken = localStorage.getItem('facecrook_token');
+            const savedUser = localStorage.getItem('facecrook_user');
+
+            if (savedToken && savedUser) {
+                try {
+                    const user = JSON.parse(savedUser);
+                    dispatch({
+                        type: AUTH_ACTIONS.LOGIN_SUCCESS,
+                        payload: { user, token: savedToken }
+                    });
+                } catch (error) {
+                    // Invalid saved data, clear it
+                    localStorage.removeItem('facecrook_token');
+                    localStorage.removeItem('facecrook_user');
+                }
             }
+        } catch (error) {
+            console.error('Error loading auth state:', error);
         }
     }, []);
 
@@ -105,30 +114,37 @@ export function AuthProvider({ children }) {
         dispatch({ type: AUTH_ACTIONS.LOGIN_START });
 
         try {
+            // Check if we're in a browser environment
+            if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
+                throw new Error('Authentication not available in this environment');
+            }
+
             // Check if user is logging in or signing up
             let user;
             
             if (credentials.isSignup) {
                 // Create new user account
-                try {
-                    user = storageService.createUser({
-                        name: credentials.name,
-                        email: credentials.email || `${credentials.name.toLowerCase().replace(/\s+/g, '')}@facecrook.com`,
-                        identity: credentials.identity || 'Member',
-                        aka: credentials.aka || '',
-                        profilePicture: credentials.profilePicture || '/default-avatar.jpg',
-                        bio: credentials.bio || ''
-                    });
-                } catch (error) {
-                    // User might already exist, try to get them
-                    user = storageService.getUserByEmail(credentials.email || credentials.name);
-                    if (!user) {
-                        throw error;
-                    }
+                const email = credentials.email || `${credentials.name.toLowerCase().replace(/\s+/g, '')}@facecrook.com`;
+                
+                // Check if user already exists
+                user = storageService.getUserByEmail(email);
+                if (user) {
+                    throw new Error('User already exists. Please log in instead.');
                 }
+                
+                // Create new user
+                user = storageService.createUser({
+                    name: credentials.name,
+                    email: email,
+                    identity: credentials.identity || 'Member',
+                    aka: credentials.aka || '',
+                    profilePicture: credentials.profilePicture || '/default-avatar.jpg',
+                    bio: credentials.bio || ''
+                });
             } else {
                 // Login existing user
-                user = storageService.getUserByEmail(credentials.email || credentials.name);
+                const email = credentials.email || credentials.name;
+                user = storageService.getUserByEmail(email);
                 if (!user) {
                     throw new Error('User not found. Please sign up first.');
                 }
@@ -139,6 +155,13 @@ export function AuthProvider({ children }) {
             // Set as current user
             storageService.setCurrentUser(user);
             localStorage.setItem('facecrook_token', mockToken);
+            
+            // Also save user data in the format expected by the useAuth hook
+            const userDataForHook = {
+                ...user,
+                isLoggedIn: true
+            };
+            localStorage.setItem('facecrook_user', JSON.stringify(userDataForHook));
 
             dispatch({
                 type: AUTH_ACTIONS.LOGIN_SUCCESS,
@@ -156,18 +179,33 @@ export function AuthProvider({ children }) {
     };
 
     const logout = () => {
-        localStorage.removeItem('facecrook_token');
-        localStorage.removeItem('facecrook_user');
-        dispatch({ type: AUTH_ACTIONS.LOGOUT });
+        try {
+            if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+                localStorage.removeItem('facecrook_token');
+                localStorage.removeItem('facecrook_user');
+                localStorage.removeItem('facecrook_auth');
+            }
+            storageService.logout();
+            dispatch({ type: AUTH_ACTIONS.LOGOUT });
+        } catch (error) {
+            console.error('Error during logout:', error);
+            dispatch({ type: AUTH_ACTIONS.LOGOUT });
+        }
     };
 
     const updateUser = (updates) => {
-        const updatedUser = { ...state.user, ...updates };
-        localStorage.setItem('facecrook_user', JSON.stringify(updatedUser));
-        dispatch({
-            type: AUTH_ACTIONS.UPDATE_USER,
-            payload: updates
-        });
+        try {
+            if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+                const updatedUser = { ...state.user, ...updates };
+                localStorage.setItem('facecrook_user', JSON.stringify(updatedUser));
+            }
+            dispatch({
+                type: AUTH_ACTIONS.UPDATE_USER,
+                payload: updates
+            });
+        } catch (error) {
+            console.error('Error updating user:', error);
+        }
     };
 
     const clearError = () => {

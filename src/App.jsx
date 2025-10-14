@@ -9,12 +9,12 @@ import { CelebrityImageManager } from './components/admin/CelebrityImageManager'
 import { AuthGuard } from './components/auth/AuthGuard';
 import { LoginForm } from './components/auth/LoginForm';
 import { Composer } from './components/v0/Composer';
-import { Header } from './components/v0/Header';
 import { EnhancedPostCard } from './components/v0/EnhancedPostCard';
+import { Header } from './components/v0/Header';
 import { RightPanel } from './components/v0/RightPanel';
 import { Sidebar } from './components/v0/Sidebar';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { AvatarProvider, useAvatar } from './contexts/AvatarContext';
-import { useAuth } from './hooks/useAuth';
 import { feedService } from './services/feedService';
 
 // Login Page Component
@@ -69,10 +69,31 @@ function Home() {
   const [isLoading, setIsLoading] = useState(false);
 
   // Load posts from feed service
-  React.useEffect(() => {
+  const loadPosts = React.useCallback(() => {
     const celebrityPosts = feedService.getPosts();
     setPosts(celebrityPosts);
   }, []);
+
+  React.useEffect(() => {
+    loadPosts();
+  }, [loadPosts]);
+
+  // Listen for storage changes to refresh posts
+  React.useEffect(() => {
+    const handleStorageChange = () => {
+      loadPosts();
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    
+    // Also listen for custom post events
+    window.addEventListener('postCreated', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('postCreated', handleStorageChange);
+    };
+  }, [loadPosts]);
 
   const loadMorePosts = () => {
     setIsLoading(true);
@@ -514,16 +535,18 @@ function Gaming() {
 function App() {
   return (
     <ErrorBoundary>
-      <AvatarProvider>
-        <Routes>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/*" element={
-            <AuthGuard>
-              <MainApp />
-            </AuthGuard>
-          } />
-        </Routes>
-      </AvatarProvider>
+      <AuthProvider>
+        <AvatarProvider>
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/*" element={
+              <AuthGuard>
+                <MainApp />
+              </AuthGuard>
+            } />
+          </Routes>
+        </AvatarProvider>
+      </AuthProvider>
     </ErrorBoundary>
   );
 }

@@ -1,7 +1,8 @@
 import { ImageIcon, Smile, Users } from "lucide-react";
 import React, { useState } from 'react';
+import { useAuth } from '../../contexts/AuthContext';
 import { useAvatar } from '../../contexts/AvatarContext';
-import { useAuth } from '../../hooks/useAuth';
+import { feedService } from '../../services/feedService';
 import { AvatarDisplay } from '../AvatarDisplay';
 
 export function Composer() {
@@ -10,9 +11,22 @@ export function Composer() {
     const { user } = useAuth();
 
     const handlePost = () => {
-        if (content.trim()) {
-            console.log("Posting:", content);
+        if (content.trim() && user) {
+            // Create new post using feedService
+            const newPost = feedService.addPost({
+                celebrityId: user.id,
+                displayName: user.name,
+                avatar: user.profilePicture || getCurrentUserAvatar(),
+                isVerified: false,
+                content: content.trim(),
+                professionalIdentity: user.identity || 'Member'
+            });
+            
+            console.log("Post created:", newPost);
             setContent("");
+            
+            // Dispatch custom event to notify other components
+            window.dispatchEvent(new CustomEvent('postCreated', { detail: newPost }));
         }
     };
 

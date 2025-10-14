@@ -303,6 +303,10 @@ export class FeedService {
         };
 
         this.posts.unshift(newPost);
+        
+        // Save to localStorage
+        storageService.savePost(newPost);
+        
         return newPost;
     }
 

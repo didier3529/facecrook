@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../hooks/useAuth';
+import { useAuth } from '../../contexts/AuthContext';
 
 export function LoginForm() {
     const [formData, setFormData] = useState({
@@ -39,7 +39,7 @@ export function LoginForm() {
             const result = await login({
                 name: formData.name,
                 password: formData.password,
-                email: formData.email || `${formData.name.toLowerCase().replace(/\s+/g, '')}@facecrook.com`,
+                email: `${formData.name.toLowerCase().replace(/\s+/g, '')}@facecrook.com`,
                 identity: formData.identity || 'Member',
                 aka: formData.aka || '',
                 profilePicture: formData.profilePicture ? profilePreview : null,

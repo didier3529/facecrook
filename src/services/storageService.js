@@ -11,8 +11,16 @@ class StorageService {
     // ==================== USERS ====================
     
     getAllUsers() {
-        const users = localStorage.getItem(this.USERS_KEY);
-        return users ? JSON.parse(users) : [];
+        try {
+            if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
+                return [];
+            }
+            const users = localStorage.getItem(this.USERS_KEY);
+            return users ? JSON.parse(users) : [];
+        } catch (error) {
+            console.error('Error getting all users:', error);
+            return [];
+        }
     }
 
     getUserById(userId) {
@@ -22,31 +30,40 @@ class StorageService {
 
     getUserByEmail(email) {
         const users = this.getAllUsers();
-        return users.find(user => user.email === email.toLowerCase());
+        return users.find(user => user.email === email.toLowerCase() || user.email === email);
     }
 
     createUser(userData) {
-        const users = this.getAllUsers();
-        
-        // Check if user already exists
-        if (this.getUserByEmail(userData.email || userData.name)) {
-            throw new Error('User already exists');
+        try {
+            if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
+                throw new Error('localStorage not available');
+            }
+
+            const users = this.getAllUsers();
+            
+            // Check if user already exists by email
+            if (userData.email && this.getUserByEmail(userData.email)) {
+                throw new Error('User already exists');
+            }
+
+            const newUser = {
+                id: `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                name: userData.name,
+                email: userData.email || `${userData.name.toLowerCase().replace(/\s+/g, '')}@facecrook.com`,
+                aka: userData.aka || '',
+                identity: userData.identity || 'Member',
+                profilePicture: userData.profilePicture || '/default-avatar.jpg',
+                createdAt: new Date().toISOString(),
+                bio: userData.bio || ''
+            };
+
+            users.push(newUser);
+            localStorage.setItem(this.USERS_KEY, JSON.stringify(users));
+            return newUser;
+        } catch (error) {
+            console.error('Error creating user:', error);
+            throw error;
         }
-
-        const newUser = {
-            id: `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-            name: userData.name,
-            email: userData.email || `${userData.name.toLowerCase().replace(/\s+/g, '')}@facecrook.com`,
-            aka: userData.aka || '',
-            identity: userData.identity || 'Member',
-            profilePicture: userData.profilePicture || '/default-avatar.jpg',
-            createdAt: new Date().toISOString(),
-            bio: userData.bio || ''
-        };
-
-        users.push(newUser);
-        localStorage.setItem(this.USERS_KEY, JSON.stringify(users));
-        return newUser;
     }
 
     updateUser(userId, updates) {
@@ -65,16 +82,36 @@ class StorageService {
     // ==================== CURRENT USER ====================
     
     getCurrentUser() {
-        const user = localStorage.getItem(this.CURRENT_USER_KEY);
-        return user ? JSON.parse(user) : null;
+        try {
+            if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
+                return null;
+            }
+            const user = localStorage.getItem(this.CURRENT_USER_KEY);
+            return user ? JSON.parse(user) : null;
+        } catch (error) {
+            console.error('Error getting current user:', error);
+            return null;
+        }
     }
 
     setCurrentUser(user) {
-        localStorage.setItem(this.CURRENT_USER_KEY, JSON.stringify(user));
+        try {
+            if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+                localStorage.setItem(this.CURRENT_USER_KEY, JSON.stringify(user));
+            }
+        } catch (error) {
+            console.error('Error setting current user:', error);
+        }
     }
 
     logout() {
-        localStorage.removeItem(this.CURRENT_USER_KEY);
+        try {
+            if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+                localStorage.removeItem(this.CURRENT_USER_KEY);
+            }
+        } catch (error) {
+            console.error('Error during logout:', error);
+        }
     }
 
     // ==================== POSTS ====================
@@ -300,4 +337,5 @@ class StorageService {
 
 export const storageService = new StorageService();
 export default storageService;
+
 
