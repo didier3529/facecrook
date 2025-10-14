@@ -88,7 +88,7 @@ export function Composer() {
                     <textarea
                         value={content}
                         onChange={(e) => setContent(e.target.value)}
-                        placeholder={`What's on your mind, ${userName}?`}
+                        placeholder={`Post your best crook, ${userName}!`}
                         className="w-full p-3 bg-gray-100 text-gray-900 placeholder-gray-500 rounded-3xl resize-none focus:outline-none focus:ring-2 focus:ring-[#1877f2] border border-gray-200"
                         rows={3}
                     />
