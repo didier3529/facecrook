@@ -199,7 +199,6 @@ export function PostCard({ post }) {
                         className="flex items-center justify-center space-x-2 py-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors w-full"
                     >
                         <span className="text-lg">{selectedReaction || "🔥"}</span>
-                        <span className="font-medium">React</span>
                     </button>
 
                     {showReactions && (
