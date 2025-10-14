@@ -127,152 +127,100 @@ export class FeedService {
     initializePosts() {
         const scammers = FeedService.getScammerPersonas();
 
-        // Satirical scammer posts - educational parody content
+        // Simplified, natural-looking posts
         this.posts = [
-            // Rajesh "ROI" Jindal - Investment Scammer
             {
-                id: 'rajesh-roi-1',
-                celebrityId: 'rajesh-roi-jindal',
-                displayName: scammers['rajesh-roi-jindal'].realName,
+                id: 'post-1',
+                displayName: "Rajesh Jindal",
                 avatar: scammers['rajesh-roi-jindal'].avatar,
                 isVerified: true,
-                content: "Hard work? Over-rated. I turned ₹7,000 into ₹7 lakh in 7 days, ask me how before SEATS FILL ⚡⚡ ONLY 3 SPOTS LEFT! DM NOW for my SECRET FORMULA!",
+                content: "Quick question - anyone know about that new investment thing going around?",
                 timestamp: '1h',
-                likes: 18,
-                comments: 8,
-                shares: 12,
-                reactions: {
-                    fire: 12,
-                    heart: 6
-                },
+                likes: 3,
+                comments: 2,
+                shares: 1,
                 commentData: [
-                    { author: "Sarah", content: "This seems legitimate. I've been looking for investment opportunities.", timestamp: "45m", avatar: "/profile-pics/download (1).jpeg", likes: 7 },
-                    { author: "Mike", content: "Bro, my grandma's cookie recipe has better ROI 📈🍪", timestamp: "38m", avatar: "/profile-pics/Amir.jpeg", likes: 5 },
-                    { author: "Priya", content: "I need to see more documentation before I consider this.", timestamp: "25m", avatar: "/profile-pics/download (2).jpeg", likes: 9 }
+                    { author: "Sarah", content: "Be careful with those", timestamp: "45m", avatar: "/profile-pics/download (1).jpeg", likes: 2 },
+                    { author: "Mike", content: "Sounds sketchy", timestamp: "38m", avatar: "/profile-pics/Amir.jpeg", likes: 1 }
                 ],
-                professionalIdentity: scammers['rajesh-roi-jindal'].professionalIdentity
+                professionalIdentity: "Investment Advisor"
             },
-
-            // Priya "Crypto-Queen" Patel - Crypto Scammer  
             {
-                id: 'priya-crypto-1',
-                celebrityId: 'priya-crypto-queen-patel',
-                displayName: scammers['priya-crypto-queen-patel'].realName,
+                id: 'post-2',
+                displayName: "Priya Patel",
                 avatar: scammers['priya-crypto-queen-patel'].avatar,
                 isVerified: true,
-                content: "Just minted a new coin: PRYACOIN 🚀 Early investors get 10000% returns GUARANTEED! DM for whitelist access 💎 Only serious investors - minimum ₹50K entry!",
+                content: "Just made a new crypto coin. DM if interested.",
                 timestamp: '2h',
-                likes: 22,
-                comments: 15,
-                shares: 7,
-                reactions: {
-                    fire: 18,
-                    heart: 4
-                },
+                likes: 7,
+                comments: 1,
+                shares: 0,
                 commentData: [
-                    { author: "Alex", content: "What's the actual use case for this token? I'm genuinely curious.", timestamp: "1h", avatar: "/profile-pics/download (3).jpeg", likes: 6 },
-                    { author: "Sam", content: "I'll trade you my Pokemon cards for this coin 🃏", timestamp: "52m", avatar: "/profile-pics/Hk.jpeg", likes: 4 },
-                    { author: "Moon", content: "This is obviously a pump and dump scheme.", timestamp: "41m", avatar: "/profile-pics/download (4).jpeg", likes: 12 }
+                    { author: "Alex", content: "What's it called?", timestamp: "1h", avatar: "/profile-pics/download (3).jpeg", likes: 0 }
                 ],
-                professionalIdentity: scammers['priya-crypto-queen-patel'].professionalIdentity
+                professionalIdentity: "Blockchain Expert"
             },
-
-            // Mahesh "Gift-Card" Kumar - Tech Support Scammer
             {
-                id: 'mahesh-giftcard-1',
-                celebrityId: 'mahesh-gift-card-kumar',
-                displayName: scammers['mahesh-gift-card-kumar'].realName,
+                id: 'post-3',
+                displayName: "Mahesh Kumar",
                 avatar: scammers['mahesh-gift-card-kumar'].avatar,
                 isVerified: true,
-                content: "Limited-time Microsoft® partnership, pay tech-support fee in any gift card! Your computer security depends on it! 🛡️ URGENT: Hackers detected on your network!",
+                content: "Microsoft called me today. Said my computer has viruses. They want gift cards to fix it.",
                 timestamp: '3h',
-                likes: 14,
-                comments: 11,
-                shares: 9,
-                reactions: {
-                    fire: 8,
-                    heart: 6
-                },
+                likes: 5,
+                comments: 2,
+                shares: 0,
                 commentData: [
-                    { author: "John", content: "Microsoft never contacts users this way. This is a scam.", timestamp: "2h", avatar: "/profile-pics/download (5).jpeg", likes: 11 },
-                    { author: "Lisa", content: "I paid my last tech support with pizza 🍕 Much better deal!", timestamp: "1h 45m", avatar: "/profile-pics/download (75).jpg", likes: 15 },
-                    { author: "David", content: "Please don't fall for this. Legitimate tech support doesn't ask for gift cards.", timestamp: "1h 20m", avatar: "/profile-pics/download (76).jpg", likes: 8 }
+                    { author: "John", content: "That's definitely a scam", timestamp: "2h", avatar: "/profile-pics/download (5).jpeg", likes: 8 },
+                    { author: "Lisa", content: "Don't do it", timestamp: "1h 45m", avatar: "/profile-pics/download (75).jpg", likes: 3 }
                 ],
-                professionalIdentity: scammers['mahesh-gift-card-kumar'].professionalIdentity
+                professionalIdentity: "Tech Support"
             },
-
-            // Alex "Investment Guru" Smith - Investment Scammer
             {
-                id: 'alex-investment-1',
-                celebrityId: 'alex-investment-guru',
-                displayName: scammers['alex-investment-guru'].realName,
+                id: 'post-4',
+                displayName: "Alex Smith",
                 avatar: scammers['alex-investment-guru'].avatar,
                 isVerified: true,
-                content: "BREAKING: Government insider reveals investment loophole! Only sharing with 5 people! Join my private group for exclusive access 💰 Only $500 entry fee to unlock millions!",
+                content: "Found this investment opportunity. Only sharing with close friends first.",
                 timestamp: '4h',
-                likes: 25,
-                comments: 19,
-                shares: 14,
-                reactions: {
-                    fire: 15,
-                    heart: 10
-                },
+                likes: 4,
+                comments: 1,
+                shares: 1,
                 commentData: [
-                    { author: "Emma", content: "This looks like a legitimate investment opportunity. How can I get started?", timestamp: "3h", avatar: "/profile-pics/download (77).jpg", likes: 18 },
-                    { author: "Robert", content: "I'll invest my entire life savings... of $3.50 💸", timestamp: "2h 30m", avatar: "/profile-pics/download (78).jpg", likes: 2 },
-                    { author: "Jennifer", content: "Be very careful with these types of investments. Do your research first.", timestamp: "2h 15m", avatar: "/profile-pics/Oh.jpeg", likes: 12 },
-                    { author: "Mark", content: "Can I pay with exposure? I have 12 followers 📸", timestamp: "1h 50m", avatar: "/profile-pics/download (1).jpeg", likes: 5 }
+                    { author: "Emma", content: "Tell me more", timestamp: "3h", avatar: "/profile-pics/download (77).jpg", likes: 1 }
                 ],
-                professionalIdentity: scammers['alex-investment-guru'].professionalIdentity
+                professionalIdentity: "Financial Advisor"
             },
-
-            // Deepak "Refund Guru" Nair - Refund Scammer
             {
-                id: 'deepak-refund-1',
-                celebrityId: 'deepak-refund-guru-nair',
-                displayName: scammers['deepak-refund-guru-nair'].realName,
+                id: 'post-5',
+                displayName: "Deepak Nair",
                 avatar: scammers['deepak-refund-guru-nair'].avatar,
                 isVerified: true,
-                content: "Your Amazon order shipped twice, click for refund (requires screen-share). Act fast before charge goes through! 📦 URGENT: Double billing detected!",
+                content: "Amazon says I got double charged. Need to verify my account details.",
                 timestamp: '5h',
-                likes: 16,
-                comments: 13,
-                shares: 8,
-                reactions: {
-                    fire: 9,
-                    heart: 7
-                },
+                likes: 2,
+                comments: 1,
+                shares: 0,
                 commentData: [
-                    { author: "Amazon", content: "Amazon never processes refunds through social media comments. This is a scam.", timestamp: "4h", avatar: "/profile-pics/download (2).jpeg", likes: 16 },
-                    { author: "John", content: "I clicked the link... now my fridge is ordering groceries 🤖", timestamp: "3h 45m", avatar: "/profile-pics/download (3).jpeg", likes: 9 },
-                    { author: "Maria", content: "This is clearly fraudulent. Please report this to Amazon customer service.", timestamp: "3h 20m", avatar: "/profile-pics/download (4).jpeg", likes: 13 }
+                    { author: "Maria", content: "Contact Amazon directly", timestamp: "3h 20m", avatar: "/profile-pics/download (4).jpeg", likes: 5 }
                 ],
-                professionalIdentity: scammers['deepak-refund-guru-nair'].professionalIdentity
+                professionalIdentity: "Customer Service"
             },
-
-            // Seema "Scholarship" Rao - Education Scammer
             {
-                id: 'seema-scholarship-1',
-                celebrityId: 'seema-scholarship-rao',
-                displayName: scammers['seema-scholarship-rao'].realName,
+                id: 'post-6',
+                displayName: "Seema Rao",
                 avatar: scammers['seema-scholarship-rao'].avatar,
                 isVerified: true,
-                content: "Every student deserves Harvard. Comment 'STUDY' and I'll personally ensure your admission. 100% success rate! 🎓 Limited seats available - only ₹25K processing fee!",
+                content: "Helping students get into top universities. DM for details.",
                 timestamp: '6h',
-                likes: 24,
-                comments: 17,
-                shares: 11,
-                reactions: {
-                    fire: 14,
-                    heart: 10
-                },
+                likes: 6,
+                comments: 2,
+                shares: 0,
                 commentData: [
-                    { author: "Harvard", content: "Harvard does not offer scholarships through social media platforms. Please verify through official channels.", timestamp: "5h", avatar: "/profile-pics/download (5).jpeg", likes: 20 },
-                    { author: "Student", content: "I studied for 20 minutes and got this scholarship 📚✨", timestamp: "4h 30m", avatar: "/profile-pics/Hk.jpeg", likes: 3 },
-                    { author: "Parent", content: "This seems too good to be true. I'll need to verify this with the school directly.", timestamp: "4h 15m", avatar: "/profile-pics/download (75).jpg", likes: 7 },
-                    { author: "Counselor", content: "Legitimate scholarships require proper application processes. Be very cautious.", timestamp: "3h 45m", avatar: "/profile-pics/download (76).jpg", likes: 15 }
+                    { author: "Parent", content: "How does it work?", timestamp: "4h 15m", avatar: "/profile-pics/download (75).jpg", likes: 2 },
+                    { author: "Student", content: "Sounds good", timestamp: "4h 30m", avatar: "/profile-pics/Hk.jpeg", likes: 0 }
                 ],
-                professionalIdentity: scammers['seema-scholarship-rao'].professionalIdentity
+                professionalIdentity: "Education Consultant"
             }
         ];
     }
@@ -321,69 +269,64 @@ export class FeedService {
         const scammerIds = Object.keys(scammers);
         const newPosts = [];
 
-        // Satirical scammer content templates - educational parody
-        const scamContentTemplates = {
+        // Natural, varied content templates
+        const contentTemplates = {
             'rajesh-roi-jindal': [
-                "My student made ₹50 lakh in 30 days! Ask me for EXCLUSIVE access before it's too late! ⚡💰",
-                "BREAKING: Government insider reveals investment loophole! Only sharing with 5 people! 🔥📈",
-                "Warren Buffett called ME for advice! Now I'm sharing my secrets with YOU! 📞💎",
-                "₹1 lakh became ₹10 crore! Screenshots don't lie! DM for my PROVEN system! 📊🚀"
+                "Anyone tried that new trading app?",
+                "Looking for investment advice",
+                "Heard about some crypto thing",
+                "Quick question about stocks"
             ],
             'priya-crypto-queen-patel': [
-                "PRYACOIN just got listed on secret exchange! 50000% gains incoming! 🚀💎",
-                "Elon Musk secretly investing in my new token! Pre-sale access ONLY today! ⚡🌙",
-                "Government banning crypto TOMORROW! Get in NOW before it's illegal! 🔥💰",
-                "My AI trading bot made me ₹5 crore overnight! Limited spots available! 🤖📈"
+                "Made a new token today",
+                "Crypto market looking good",
+                "Anyone into blockchain?",
+                "Working on something big"
             ],
             'mahesh-gift-card-kumar': [
-                "ALERT: Your computer infected with 47 viruses! Pay ₹500 iTunes card for removal! 🚨💻",
-                "Microsoft security department calling! Your Windows license expired TODAY! 🛡️⚡",
-                "Hackers accessing your bank account RIGHT NOW! Only we can stop them! 🔒💳",
-                "FBI detected illegal activity on your PC! Avoid arrest - pay fine immediately! 👮‍♂️💰"
+                "Got a weird call about my computer",
+                "Microsoft wants gift cards?",
+                "Tech support asking for money",
+                "Is this normal?"
             ],
             'alex-investment-guru': [
-                "Financial advisor confirmed this opportunity! $100M waiting! Need trustworthy partner! 💰📈",
-                "Government officials demanding $10K fee to access this investment! Please help! 😢💔",
-                "My father was a Wall Street legend! I choose YOU to share this wealth! God bless! 🙏✨",
-                "Bank manager says entry fee required! Will double your investment guaranteed! 📈💎"
+                "Found this investment thing",
+                "Anyone know about this?",
+                "Looking for partners",
+                "Got a good opportunity"
             ],
             'deepak-refund-guru-nair': [
-                "Amazon charged you TWICE! Refund pending but needs verification! Click link NOW! 📦💰",
-                "Your credit card compromised! We stopped fraudulent purchase! Call immediately! 💳🚨",
-                "IRS owes you ₹50,000 refund! Claim expires in 24 hours! Urgent action required! 💸⏰",
-                "Netflix billing error detected! Get ₹5000 compensation! Verify account details! 📺💰"
+                "Amazon double charged me",
+                "Need to verify account",
+                "Got a refund email",
+                "Anyone else get this?"
             ],
             'seema-scholarship-rao': [
-                "Harvard professor personally recommended YOU! Full scholarship waiting! Act fast! 🎓⚡",
-                "Government education grant approved! ₹2 lakh for studies! Only processing fee required! 📚💰",
-                "MIT wants to interview you TOMORROW! Confirm with ₹1000 registration fee! 🏫🚀",
-                "Oxford University secret admission program! 100% guarantee! Limited to 3 students only! 🎯📖"
+                "Helping with college apps",
+                "Got some scholarship info",
+                "University admissions help",
+                "Education consulting available"
             ]
         };
 
         for (let i = 0; i < count; i += 1) {
             const randomScammerId = scammerIds[Math.floor(Math.random() * scammerIds.length)];
             const scammer = scammers[randomScammerId];
-            const templates = scamContentTemplates[randomScammerId] || ["URGENT! Don't miss this AMAZING opportunity!"];
+            const templates = contentTemplates[randomScammerId] || ["Anyone know about this?"];
             const randomContent = templates[Math.floor(Math.random() * templates.length)];
 
             const newPost = {
-                id: `scam-generated-${Date.now()}-${i}`,
-                celebrityId: randomScammerId,
+                id: `generated-${Date.now()}-${i}`,
                 displayName: scammer.realName,
                 avatar: scammer.avatar,
                 isVerified: true,
                 content: randomContent,
                 timestamp: `${Math.floor(Math.random() * 12) + 1}h`,
-                likes: Math.floor(Math.random() * 5000) + 1000, // Higher fake engagement
-                comments: Math.floor(Math.random() * 800) + 100,
-                shares: Math.floor(Math.random() * 1200) + 200,
-                reactions: {
-                    fire: Math.floor(Math.random() * 200) + 50,  // High fake fire reactions
-                    heart: Math.floor(Math.random() * 150) + 30 // Moderate hearts
-                },
+                likes: Math.floor(Math.random() * 10) + 1,
+                comments: Math.floor(Math.random() * 3) + 1,
+                shares: Math.floor(Math.random() * 2),
                 professionalIdentity: scammer.professionalIdentity,
-                commentData: FeedService.generateRealisticComments(scammer.scamCategory)
+                commentData: FeedService.generateSimpleComments()
             };
 
             newPosts.push(newPost);
@@ -393,51 +336,23 @@ export class FeedService {
         return newPosts;
     }
 
-    // Generate realistic comments for scam categories
-    static generateRealisticComments(scamCategory) {
-        const commentTemplates = {
-            'investment': [
-                { author: 'Mike', content: 'I\'m interested in learning more about this opportunity. Can you provide more details?', timestamp: '2h', avatar: '/profile-pics/Amir.jpeg', likes: 9 },
-                { author: 'Sarah', content: 'This seems suspicious... but so does my neighbor\'s cat 🐱', timestamp: '1h 30m', avatar: '/profile-pics/download (1).jpeg', likes: 13 },
-                { author: 'Guru', content: 'No legitimate investment works this way... except my lemonade stand 🍋', timestamp: '1h', avatar: '/profile-pics/download (2).jpeg', likes: 21 }
-            ],
-            'cryptocurrency': [
-                { author: 'Max', content: 'I\'ve been following this project. The technology looks promising.', timestamp: '1h 45m', avatar: '/profile-pics/download (3).jpeg', likes: 7 },
-                { author: 'Bitcoin', content: 'Too risky for me... I only invest in friendship bracelets 🤝', timestamp: '1h 20m', avatar: '/profile-pics/Hk.jpeg', likes: 5 },
-                { author: 'Trader', content: 'Need to see the whitepaper first... preferably written in crayon 🖍️', timestamp: '55m', avatar: '/profile-pics/download (4).jpeg', likes: 12 }
-            ],
-            'tech-support': [
-                { author: 'Expert', content: 'This is a known tech support scam. Microsoft will never call you asking for gift cards.', timestamp: '2h 30m', avatar: '/profile-pics/download (5).jpeg', likes: 17 },
-                { author: 'Repair', content: 'Microsoft called me... to ask if I wanted fries with my Windows 🍟', timestamp: '2h', avatar: '/profile-pics/download (75).jpg', likes: 20 },
-                { author: 'Tech', content: 'Report this immediately... to the comedy show! 🎭', timestamp: '1h 45m', avatar: '/profile-pics/download (76).jpg', likes: 26 }
-            ],
-            'investment': [
-                { author: 'Alert', content: 'Be very careful with these types of investments. Always verify legitimacy first.', timestamp: '3h', avatar: '/profile-pics/download (77).jpg', likes: 29 },
-                { author: 'John', content: 'I invested my lunch money... now I\'m rich in sandwiches 🥪💰', timestamp: '2h 45m', avatar: '/profile-pics/download (78).jpg', likes: 1 },
-                { author: 'Fraud', content: 'This is not legitimate... but neither is my credit score 🤷‍♂️', timestamp: '2h 15m', avatar: '/profile-pics/Oh.jpeg', likes: 24 }
-            ],
-            'refund-fraud': [
-                { author: 'Amazon', content: 'Amazon never processes refunds through social media. Please contact customer service directly.', timestamp: '3h 20m', avatar: '/profile-pics/download (1).jpeg', likes: 30 },
-                { author: 'Service', content: 'Don\'t share your screen... unless you want me to see your browser history 😏', timestamp: '2h 50m', avatar: '/profile-pics/download (2).jpeg', likes: 18 },
-                { author: 'Security', content: 'This is a phishing attempt... and I\'m the fish 🐟', timestamp: '2h 30m', avatar: '/profile-pics/download (3).jpeg', likes: 22 }
-            ],
-            'education-fraud': [
-                { author: 'Counselor', content: 'Legitimate scholarships require proper application processes through official channels.', timestamp: '4h', avatar: '/profile-pics/download (4).jpeg', likes: 32 },
-                { author: 'Advisor', content: 'This is a scam... but I still want the diploma 🎓', timestamp: '3h 30m', avatar: '/profile-pics/download (5).jpeg', likes: 19 },
-                { author: 'Expert', content: 'Report this to authorities... and my mom 📞👩', timestamp: '3h', avatar: '/profile-pics/Hk.jpeg', likes: 28 }
-            ]
-        };
-
-        const categoryComments = commentTemplates[scamCategory] || [
-            { author: 'User', content: 'This looks suspicious', timestamp: '2h', avatar: '/profile-pics/download (1).jpeg', likes: 10 },
-            { author: 'Safety', content: 'Be careful with this', timestamp: '1h 30m', avatar: '/profile-pics/download (2).jpeg', likes: 8 }
+    // Generate simple, natural comments
+    static generateSimpleComments() {
+        const simpleComments = [
+            { author: 'Mike', content: 'Interesting', timestamp: '2h', avatar: '/profile-pics/Amir.jpeg', likes: 1 },
+            { author: 'Sarah', content: 'Sounds good', timestamp: '1h 30m', avatar: '/profile-pics/download (1).jpeg', likes: 0 },
+            { author: 'Alex', content: 'Tell me more', timestamp: '1h', avatar: '/profile-pics/download (2).jpeg', likes: 2 },
+            { author: 'John', content: 'Be careful', timestamp: '45m', avatar: '/profile-pics/download (3).jpeg', likes: 3 },
+            { author: 'Lisa', content: 'Thanks for sharing', timestamp: '30m', avatar: '/profile-pics/download (4).jpeg', likes: 1 },
+            { author: 'Emma', content: 'Not sure about this', timestamp: '15m', avatar: '/profile-pics/download (5).jpeg', likes: 0 }
         ];
         
-        const numComments = Math.floor(Math.random() * 3) + 2; // 2-4 comments
+        const numComments = Math.floor(Math.random() * 2) + 1; // 1-2 comments
         const selectedComments = [];
         
-        for (let i = 0; i < numComments && i < categoryComments.length; i += 1) {
-            selectedComments.push(categoryComments[i]);
+        for (let i = 0; i < numComments; i += 1) {
+            const randomComment = simpleComments[Math.floor(Math.random() * simpleComments.length)];
+            selectedComments.push({...randomComment, timestamp: `${Math.floor(Math.random() * 60) + 1}m`});
         }
 
         return selectedComments;
