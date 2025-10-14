@@ -170,8 +170,18 @@ function Home() {
 // Chat Component
 function Chat({ chatHistory, setChatHistory }) {
   const [input, setInput] = useState('');
-  const { getAvatarById, getCurrentUserAvatar } = useAvatar();
+  const [selectedContact, setSelectedContact] = useState(null);
+  const { getCurrentUserAvatar } = useAvatar();
   const { user, isLoading } = useAuth();
+
+  // Mock contacts for the messenger
+  const contacts = [
+    { id: 1, name: "Sarah Johnson", avatar: "/profile-pics/download (1).jpeg", lastMessage: "Hey, how are you?", timestamp: "2m", online: true },
+    { id: 2, name: "Mike Chen", avatar: "/profile-pics/Amir.jpeg", lastMessage: "Thanks for the post!", timestamp: "15m", online: false },
+    { id: 3, name: "Emma Wilson", avatar: "/profile-pics/download (2).jpeg", lastMessage: "See you tomorrow!", timestamp: "1h", online: true },
+    { id: 4, name: "Alex Rodriguez", avatar: "/profile-pics/download (3).jpeg", lastMessage: "That's awesome!", timestamp: "3h", online: false },
+    { id: 5, name: "Lisa Park", avatar: "/profile-pics/download (4).jpeg", lastMessage: "Great idea!", timestamp: "5h", online: true }
+  ];
 
   // ✅ Loading state
   if (isLoading) {
@@ -179,7 +189,7 @@ function Chat({ chatHistory, setChatHistory }) {
       <div className="flex items-center justify-center min-h-64">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4" />
-          <p className="text-gray-300">Loading chat...</p>
+          <p className="text-gray-600">Loading messenger...</p>
         </div>
       </div>
     );
@@ -189,91 +199,167 @@ function Chat({ chatHistory, setChatHistory }) {
   if (!user) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-300">Please log in to chat.</p>
+        <p className="text-gray-600">Please log in to use messenger.</p>
       </div>
     );
   }
 
   const sendMessage = () => {
-    if (!input.trim()) return;
+    if (!input.trim() || !selectedContact) return;
 
     const userMessage = {
       id: Date.now(),
       content: input,
-      sender: 'user',
+      sender: user.id,
+      senderName: user.name,
+      receiver: selectedContact.id,
+      receiverName: selectedContact.name,
       timestamp: new Date().toLocaleTimeString(),
       avatar: getCurrentUserAvatar()
     };
 
     setChatHistory(prev => [...prev, userMessage]);
-
-    // Simulate AI Trump response
-    setTimeout(() => {
-      const responses = [
-        "That's a tremendous question, really tremendous. The best question I've ever heard about crypto, believe me.",
-        "Listen, I know crypto better than anyone. I have the best crypto knowledge, really the best.",
-        "DogeCoin? I love DogeCoin. Such good coin, much wow, as they say. Very smart people say that.",
-        "NFTs are fantastic, really fantastic. I should mint my own NFTs. They'd be the best NFTs, tremendous.",
-        "The market is rigged, totally rigged. But we're going to make crypto great again!"
-      ];
-
-      const aiResponse = {
-        id: Date.now() + 1,
-        content: responses[Math.floor(Math.random() * responses.length)],
-        sender: 'ai',
-        timestamp: new Date().toLocaleTimeString(),
-        avatar: getAvatarById('trump')
-      };
-
-      setChatHistory(prev => [...prev, aiResponse]);
-    }, 1000);
-
     setInput('');
   };
 
   return (
     <div className="space-y-6">
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <h2 className="text-xl font-bold text-gray-900 mb-4">Chat with AI Trump 🤖</h2>
-
-        <div className="h-96 overflow-y-auto mb-4 space-y-4 p-4 bg-gray-50 rounded-lg">
-                      {chatHistory.length === 0 ? (
-              <p className="text-gray-500 text-center">Start a conversation with AI Trump!</p>
-            ) : (
-              chatHistory.map(message => (
-                <div key={message.id} className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${message.sender === 'user'
-                    ? 'bg-[#1877f2] text-white'
-                    : 'bg-white text-gray-900 border border-gray-200'
-                    }`}>
-                  <div className="flex items-center space-x-2 mb-1">
-                    <AvatarDisplay avatar={message.avatar} size="sm" />
-                    <span className="text-xs opacity-75">{message.timestamp}</span>
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+        <div className="flex h-[600px]">
+          {/* Contacts Sidebar */}
+          <div className="w-1/3 border-r border-gray-200 flex flex-col">
+            <div className="p-4 border-b border-gray-200">
+              <h2 className="text-xl font-bold text-gray-900">Messenger</h2>
+              <p className="text-sm text-gray-600 mt-1">Chat with your friends</p>
+            </div>
+            
+            <div className="flex-1 overflow-y-auto">
+              {contacts.map(contact => (
+                <div
+                  key={contact.id}
+                  onClick={() => setSelectedContact(contact)}
+                  className={`p-4 border-b border-gray-100 cursor-pointer hover:bg-gray-50 transition-colors ${
+                    selectedContact?.id === contact.id ? 'bg-blue-50 border-blue-200' : ''
+                  }`}
+                >
+                  <div className="flex items-center space-x-3">
+                    <div className="relative">
+                      <img
+                        src={contact.avatar}
+                        alt={contact.name}
+                        className="w-12 h-12 rounded-full object-cover"
+                        onError={(e) => {
+                          e.target.src = '/default-avatar.jpg';
+                        }}
+                      />
+                      {contact.online && (
+                        <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></div>
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between">
+                        <h3 className="font-semibold text-gray-900 truncate">{contact.name}</h3>
+                        <span className="text-xs text-gray-500">{contact.timestamp}</span>
+                      </div>
+                      <p className="text-sm text-gray-600 truncate">{contact.lastMessage}</p>
+                    </div>
                   </div>
-                  <p className="text-sm">{message.content}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Chat Area */}
+          <div className="flex-1 flex flex-col">
+            {selectedContact ? (
+              <>
+                {/* Chat Header */}
+                <div className="p-4 border-b border-gray-200 bg-gray-50">
+                  <div className="flex items-center space-x-3">
+                    <div className="relative">
+                      <img
+                        src={selectedContact.avatar}
+                        alt={selectedContact.name}
+                        className="w-10 h-10 rounded-full object-cover"
+                        onError={(e) => {
+                          e.target.src = '/default-avatar.jpg';
+                        }}
+                      />
+                      {selectedContact.online && (
+                        <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></div>
+                      )}
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-gray-900">{selectedContact.name}</h3>
+                      <p className="text-sm text-gray-600">
+                        {selectedContact.online ? 'Online' : 'Last seen recently'}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Messages Area */}
+                <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
+                  {chatHistory.length === 0 ? (
+                    <div className="text-center py-8">
+                      <p className="text-gray-500">Start a conversation with {selectedContact.name}!</p>
+                    </div>
+                  ) : (
+                    chatHistory
+                      .filter(msg => (msg.sender === user.id && msg.receiver === selectedContact.id) || 
+                                    (msg.receiver === user.id && msg.sender === selectedContact.id))
+                      .map(message => (
+                        <div key={message.id} className={`flex ${message.sender === user.id ? 'justify-end' : 'justify-start'}`}>
+                          <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
+                            message.sender === user.id
+                              ? 'bg-[#1877f2] text-white'
+                              : 'bg-white text-gray-900 border border-gray-200'
+                          }`}>
+                            <p className="text-sm">{message.content}</p>
+                            <p className={`text-xs mt-1 ${message.sender === user.id ? 'text-blue-100' : 'text-gray-500'}`}>
+                              {message.timestamp}
+                            </p>
+                          </div>
+                        </div>
+                      ))
+                  )}
+                </div>
+
+                {/* Message Input */}
+                <div className="p-4 border-t border-gray-200">
+                  <div className="flex space-x-2">
+                    <input
+                      type="text"
+                      value={input}
+                      onChange={(e) => setInput(e.target.value)}
+                      onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+                      placeholder={`Message ${selectedContact.name}...`}
+                      className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1877f2] bg-white text-gray-900"
+                    />
+                    <button
+                      type="button"
+                      onClick={sendMessage}
+                      className="px-6 py-2 bg-[#1877f2] hover:bg-[#166fe5] text-white font-medium rounded-lg transition-colors"
+                    >
+                      Send
+                    </button>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div className="flex-1 flex items-center justify-center bg-gray-50">
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Welcome to Messenger</h3>
+                  <p className="text-gray-600">Select a contact to start chatting</p>
                 </div>
               </div>
-            ))
-          )}
-        </div>
-
-        <div className="flex space-x-2">
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
-            placeholder="Ask AI Trump about crypto..."
-            aria-label="Ask AI Trump about crypto"
-            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1877f2] bg-white text-gray-900"
-          />
-          <button
-            type="button"
-            onClick={sendMessage}
-            className="px-6 py-2 bg-[#1877f2] hover:bg-[#166fe5] text-white font-medium rounded-lg transition-colors"
-          >
-            Send
-          </button>
+            )}
+          </div>
         </div>
       </div>
     </div>
