@@ -10,11 +10,12 @@ import { AuthGuard } from './components/auth/AuthGuard';
 import { LoginForm } from './components/auth/LoginForm';
 import { Composer } from './components/v0/Composer';
 import { Header } from './components/v0/Header';
-import { PostCard } from './components/v0/PostCard';
+import { EnhancedPostCard } from './components/v0/EnhancedPostCard';
 import { RightPanel } from './components/v0/RightPanel';
 import { Sidebar } from './components/v0/Sidebar';
 import { AvatarProvider, useAvatar } from './contexts/AvatarContext';
 import { useAuth } from './hooks/useAuth';
+import { feedService } from './services/feedService';
 
 // Login Page Component
 function LoginPage() {
@@ -67,38 +68,15 @@ function Home() {
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Import and initialize feed service
+  // Load posts from feed service
   React.useEffect(() => {
-    const loadFeedService = async () => {
-      try {
-        const { feedService } = await import('./services/feedService');
-        const celebrityPosts = feedService.getPosts();
-        setPosts(celebrityPosts);
-      } catch (error) {
-        console.error('Error loading feed service:', error);
-        // Fallback to demo posts
-        setPosts([
-          {
-            id: "1",
-            displayName: 'Satoshi Spoof',
-            content: 'Just minted a PepeCoin! 🚀 This is going to revolutionize the meme economy!',
-            likes: 42,
-            comments: 8,
-            shares: 3,
-            timestamp: '2h',
-            avatar: generateRandomAvatar()
-          }
-        ]);
-      }
-    };
+    const celebrityPosts = feedService.getPosts();
+    setPosts(celebrityPosts);
+  }, []);
 
-    loadFeedService();
-  }, [generateRandomAvatar]);
-
-  const loadMorePosts = async () => {
+  const loadMorePosts = () => {
     setIsLoading(true);
     try {
-      const { feedService } = await import('./services/feedService');
       const newPosts = feedService.generateMorePosts(5);
       setPosts(prevPosts => [...prevPosts, ...newPosts]);
     } catch (error) {
@@ -136,9 +114,9 @@ function Home() {
             <p className="text-gray-600">Loading celebrity posts...</p>
           </div>
         ) : (
-          posts.map(post => (
-            <PostCard key={post.id} post={post} />
-          ))
+           posts.map(post => (
+             <EnhancedPostCard key={post.id} post={post} />
+           ))
         )}
       </div>
 

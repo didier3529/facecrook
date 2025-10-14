@@ -1,5 +1,5 @@
 import { Heart, MessageCircle, MoreHorizontal, Share } from "lucide-react";
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import storageService from '../../services/storageService';
 import { AvatarDisplay } from '../AvatarDisplay';
@@ -35,7 +35,13 @@ export function EnhancedPostCard({ post }) {
 
     const loadComments = () => {
         const postComments = storageService.getCommentsByPostId(post.id);
-        setComments(postComments);
+        
+        // If no comments in storage but post has commentData, use those
+        if (postComments.length === 0 && post.commentData && post.commentData.length > 0) {
+            setComments(post.commentData);
+        } else {
+            setComments(postComments);
+        }
     };
 
     const handleLike = () => {
@@ -92,20 +98,33 @@ export function EnhancedPostCard({ post }) {
         }
     };
 
-    const handleCommentLike = (commentId) => {
+    const handleCommentLike = (comment) => {
         if (!user) {
             alert('Please log in to like comments');
             return;
         }
 
-        const result = storageService.toggleCommentLike(commentId, user.id);
+        // If comment doesn't have an ID, it's from initial data - we need to handle it locally
+        if (!comment.id) {
+            // Just update local state for initial comments
+            setComments(prevComments => 
+                prevComments.map(c => 
+                    c === comment 
+                        ? { ...c, likes: (c.likes || 0) + 1 }
+                        : c
+                )
+            );
+            return;
+        }
+
+        const result = storageService.toggleCommentLike(comment.id, user.id);
         
         // Update local comments state
         setComments(prevComments => 
-            prevComments.map(comment => 
-                comment.id === commentId 
-                    ? { ...comment, likes: result.likeCount, likedBy: comment.likedBy || [] }
-                    : comment
+            prevComments.map(c => 
+                c.id === comment.id 
+                    ? { ...c, likes: result.likeCount, likedBy: c.likedBy || [] }
+                    : c
             )
         );
     };
@@ -115,6 +134,12 @@ export function EnhancedPostCard({ post }) {
 
     // Get timestamp for comment
     const getTimeAgo = (timestamp) => {
+        // If timestamp is already a formatted string like "2h" or "45m", return it
+        if (typeof timestamp === 'string' && /^\d+[mhd]$/.test(timestamp)) {
+            return timestamp;
+        }
+        
+        // Otherwise calculate time ago
         const now = new Date();
         const commentTime = new Date(timestamp);
         const diffMs = now - commentTime;
@@ -338,8 +363,8 @@ export function EnhancedPostCard({ post }) {
             {/* Comments Section */}
             {comments.length > 0 && (
                 <div className="px-4 pb-3 border-t border-gray-200">
-                    {comments.map((comment) => (
-                        <div key={comment.id} className="mb-3 mt-3">
+                    {comments.map((comment, index) => (
+                        <div key={comment.id || `comment-${index}-${comment.author}`} className="mb-3 mt-3">
                             <div className="flex items-start space-x-2">
                                 <img
                                     src={comment.avatar}
@@ -353,14 +378,14 @@ export function EnhancedPostCard({ post }) {
                                     <div className="bg-gray-100 rounded-lg px-3 py-2">
                                         <div className="flex items-center space-x-2">
                                             <span className="font-semibold text-sm text-gray-900">{comment.author}</span>
-                                            <span className="text-xs text-gray-500">{getTimeAgo(comment.createdAt)}</span>
+                                            <span className="text-xs text-gray-500">{getTimeAgo(comment.createdAt || comment.timestamp)}</span>
                                         </div>
                                         <p className="text-sm text-gray-800 mt-1">{comment.content}</p>
                                     </div>
                                     <div className="flex items-center space-x-3 mt-1 ml-2">
                                         <button 
                                             type="button"
-                                            onClick={() => handleCommentLike(comment.id)}
+                                            onClick={() => handleCommentLike(comment)}
                                             className={`text-xs font-medium transition-colors ${
                                                 comment.likedBy?.includes(user?.id)
                                                     ? 'text-red-500'
