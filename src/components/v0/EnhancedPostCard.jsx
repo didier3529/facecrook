@@ -9,18 +9,10 @@ export function EnhancedPostCard({ post }) {
     const { user } = useAuth();
     const [isLiked, setIsLiked] = useState(false);
     const [likeCount, setLikeCount] = useState(post.likes || 0);
-    const [selectedReaction, setSelectedReaction] = useState(null);
-    const [showReactions, setShowReactions] = useState(false);
     const [comments, setComments] = useState([]);
     const [commentText, setCommentText] = useState('');
     const [showCommentBox, setShowCommentBox] = useState(false);
     const [isSubmittingComment, setIsSubmittingComment] = useState(false);
-
-    // Simplified reactions - only fire and heart
-    const reactions = [
-        { emoji: "🔥", name: "Fire", count: post.reactions?.fire || 0 },
-        { emoji: "❤️", name: "Love", count: post.reactions?.heart || 0 }
-    ];
 
     // Load user's like status and comments on mount
     useEffect(() => {
@@ -55,22 +47,6 @@ export function EnhancedPostCard({ post }) {
         setLikeCount(result.likeCount);
     };
 
-    const handleReaction = (reactionType) => {
-        if (!user) {
-            alert('Please log in to react to posts');
-            return;
-        }
-
-        storageService.addReaction(post.id, user.id, reactionType);
-        setSelectedReaction(reactionType);
-        setShowReactions(false);
-        
-        // Reload post to get updated reaction counts
-        const updatedPost = storageService.getPostById(post.id);
-        if (updatedPost) {
-            // Update reactions in parent if needed
-        }
-    };
 
     const handleSubmitComment = async (e) => {
         e.preventDefault();
@@ -293,19 +269,6 @@ export function EnhancedPostCard({ post }) {
                 )}
             </div>
 
-            {/* Reactions Display */}
-            {reactions.some(r => r.count > 0) && (
-                <div className="px-4 py-2">
-                    <div className="flex items-center space-x-2">
-                        {reactions.filter(r => r.count > 0).map((reaction) => (
-                            <div key={reaction.name} className="flex items-center space-x-1 text-sm">
-                                <span className="text-lg">{reaction.emoji}</span>
-                                <span className="text-gray-600">{reaction.count}</span>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            )}
 
             {/* Post Stats */}
             <div className="px-4 py-2">
@@ -333,34 +296,6 @@ export function EnhancedPostCard({ post }) {
                     <span className="font-medium">Like</span>
                 </button>
 
-                {/* Crypto Reactions Button */}
-                <div className="relative flex-1">
-                    <button
-                        type="button"
-                        onClick={() => setShowReactions(!showReactions)}
-                        className="flex items-center justify-center space-x-2 py-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors w-full"
-                    >
-                        <span className="text-lg">{selectedReaction || "🔥"}</span>
-                    </button>
-
-                    {showReactions && (
-                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 bg-white rounded-lg p-2 shadow-lg border border-gray-200 z-10">
-                            <div className="flex space-x-2">
-                                {reactions.map((reaction) => (
-                                    <button
-                                        key={reaction.name}
-                                        type="button"
-                                        onClick={() => handleReaction(reaction.emoji)}
-                                        className="text-2xl hover:scale-125 transition-transform p-1"
-                                        title={reaction.name}
-                                    >
-                                        {reaction.emoji}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-                </div>
 
                 <button 
                     type="button" 

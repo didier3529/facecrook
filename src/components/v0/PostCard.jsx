@@ -6,25 +6,12 @@ import { CelebrityAvatarDisplay } from '../CelebrityAvatarDisplay';
 export function PostCard({ post }) {
     const [isLiked, setIsLiked] = useState(false);
     const [likeCount, setLikeCount] = useState(post.likes);
-    const [selectedReaction, setSelectedReaction] = useState(null);
-    const [showReactions, setShowReactions] = useState(false);
-
-    // Simplified reactions - only fire and heart
-    const reactions = [
-        { emoji: "🔥", name: "Fire", count: post.reactions?.fire || 0 },
-        { emoji: "❤️", name: "Love", count: post.reactions?.heart || 0 }
-    ];
 
     const handleLike = () => {
         setIsLiked(!isLiked);
         setLikeCount((prev) => (isLiked ? prev - 1 : prev + 1));
     };
 
-    const handleReaction = (reactionType) => {
-        setSelectedReaction(reactionType);
-        setShowReactions(false);
-        // In a real app, this would update the reaction counts
-    };
 
     // Check if this is a celebrity post
     const isCelebrityPost = post.celebrityId || post.isVerified;
@@ -109,19 +96,6 @@ export function PostCard({ post }) {
 
             </div>
 
-            {/* Reactions Display */}
-            {reactions.some(r => r.count > 0) && (
-                <div className="px-4 py-2">
-                    <div className="flex items-center space-x-2">
-                        {reactions.filter(r => r.count > 0).map((reaction) => (
-                            <div key={reaction.name} className="flex items-center space-x-1 text-sm">
-                                <span className="text-lg">{reaction.emoji}</span>
-                                <span className="text-gray-600">{reaction.count}</span>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            )}
 
             {/* Post Stats */}
             <div className="px-4 py-2">
@@ -191,34 +165,6 @@ export function PostCard({ post }) {
                     <span className="font-medium">Like</span>
                 </button>
 
-                {/* Crypto Reactions Button */}
-                <div className="relative flex-1">
-                    <button
-                        type="button"
-                        onClick={() => setShowReactions(!showReactions)}
-                        className="flex items-center justify-center space-x-2 py-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors w-full"
-                    >
-                        <span className="text-lg">{selectedReaction || "🔥"}</span>
-                    </button>
-
-                    {showReactions && (
-                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 bg-white rounded-lg p-2 shadow-lg">
-                            <div className="flex space-x-2">
-                                {reactions.map((reaction) => (
-                                    <button
-                                        key={reaction.name}
-                                        type="button"
-                                        onClick={() => handleReaction(reaction.emoji)}
-                                        className="text-2xl hover:scale-125 transition-transform p-1"
-                                        title={reaction.name}
-                                    >
-                                        {reaction.emoji}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-                </div>
 
                 <button type="button" className="flex-1 flex items-center justify-center space-x-2 py-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors">
                     <MessageCircle className="h-5 w-5" />
