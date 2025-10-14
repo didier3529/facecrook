@@ -12,14 +12,12 @@ const NewPostComposer = () => {
   const fileInputRef = useRef(null);
   const isMountedRef = useRef(true);
 
-  useEffect(() => {
-    return () => {
+  useEffect(() => () => {
       isMountedRef.current = false;
-    };
-  }, []);
+    }, []);
 
   const handleContentChange = e => {
-    const value = e.target.value;
+    const {value} = e.target;
     if (value.length <= MAX_CHAR) {
       setContent(value);
       setError('');

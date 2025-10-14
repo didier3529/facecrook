@@ -10,7 +10,7 @@ export default function LiveTokenBalance() {
 
   useEffect(() => {
     const controller = new AbortController()
-    const signal = controller.signal
+    const {signal} = controller
 
     async function fetchInitialBalance() {
       try {

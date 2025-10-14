@@ -7,11 +7,9 @@ const MissingAiFileAdder = ({ onAddFile }) => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    return () => {
+  useEffect(() => () => {
       isMountedRef.current = false;
-    };
-  }, []);
+    }, []);
 
   const handleFileChange = (e) => {
     if (!isMountedRef.current) return;

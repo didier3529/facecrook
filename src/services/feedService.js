@@ -1,9 +1,24 @@
 // FaceCrook satirical feed service - Educational parody content only
 // All personas are fictional and created for scam awareness education
+import storageService from './storageService';
+
 export class FeedService {
     constructor() {
         this.posts = [];
         this.initializePosts();
+        this.syncWithStorage();
+    }
+
+    // Sync posts with localStorage
+    syncWithStorage() {
+        const storedPosts = storageService.getAllPosts();
+        if (storedPosts.length === 0) {
+            // First time - save initial posts to storage
+            storageService.savePosts(this.posts);
+        } else {
+            // Load posts from storage
+            this.posts = storedPosts;
+        }
     }
 
     // Scammer personas for satirical content - educational parody only

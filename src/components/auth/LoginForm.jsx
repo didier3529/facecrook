@@ -35,29 +35,27 @@ export function LoginForm() {
         e.preventDefault();
         setIsLoading(true);
 
-        // Simulate some processing time
-        setTimeout(() => {
-            if (formData.isSignup) {
-                // Create new persona
-                login({
-                    name: formData.name,
-                    identity: formData.identity,
-                    aka: formData.aka,
-                    profilePicture: formData.profilePicture ? profilePreview : null
-                });
-            } else {
-                // Simple login - use the entered name
-                login({
-                    name: formData.name || 'User',
-                    identity: formData.identity || 'Member',
-                    aka: formData.aka || '',
-                    profilePicture: formData.profilePicture ? profilePreview : null
-                });
-            }
+        try {
+            const result = await login({
+                name: formData.name,
+                password: formData.password,
+                email: formData.email || `${formData.name.toLowerCase().replace(/\s+/g, '')}@facecrook.com`,
+                identity: formData.identity || 'Member',
+                aka: formData.aka || '',
+                profilePicture: formData.profilePicture ? profilePreview : null,
+                isSignup: formData.isSignup
+            });
 
+            if (result.success) {
+                navigate('/', { replace: true });
+            } else {
+                alert(result.error || 'Authentication failed');
+            }
+        } catch (error) {
+            alert(error.message || 'An error occurred');
+        } finally {
             setIsLoading(false);
-            navigate('/', { replace: true });
-        }, 1000);
+        }
     };
 
     const getButtonText = () => {

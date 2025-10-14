@@ -2,8 +2,7 @@ import React, { useState, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { v4 as uuidv4 } from 'uuid'
 
-const addReply = (commentList, parentId, reply) => {
-  return commentList.map(comment => {
+const addReply = (commentList, parentId, reply) => commentList.map(comment => {
     if (comment.id === parentId) {
       return {
         ...comment,
@@ -18,10 +17,8 @@ const addReply = (commentList, parentId, reply) => {
     }
     return comment
   })
-}
 
-const deleteCommentById = (commentList, idToDelete) => {
-  return commentList.reduce((acc, comment) => {
+const deleteCommentById = (commentList, idToDelete) => commentList.reduce((acc, comment) => {
     if (comment.id === idToDelete) return acc
     const updated = { ...comment }
     if (updated.children) {
@@ -30,10 +27,8 @@ const deleteCommentById = (commentList, idToDelete) => {
     acc.push(updated)
     return acc
   }, [])
-}
 
-const editCommentById = (commentList, idToEdit, newContent) => {
-  return commentList.map(comment => {
+const editCommentById = (commentList, idToEdit, newContent) => commentList.map(comment => {
     if (comment.id === idToEdit) {
       return {
         ...comment,
@@ -49,7 +44,6 @@ const editCommentById = (commentList, idToEdit, newContent) => {
     }
     return comment
   })
-}
 
 const styles = {
   container: {},

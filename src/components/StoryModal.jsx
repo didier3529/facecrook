@@ -39,7 +39,7 @@ const StoryModal = ({ story, stories, currentIndex, isOpen, onClose, onNext, onP
   const handleReaction = (emoji) => {
     const newReaction = {
       id: Date.now(),
-      emoji: emoji,
+      emoji,
       x: Math.random() * 80 + 10, // Random position 10-90%
       y: Math.random() * 60 + 20, // Random position 20-80%
       timestamp: Date.now()
@@ -228,7 +228,7 @@ const StoryModal = ({ story, stories, currentIndex, isOpen, onClose, onNext, onP
 
         {/* Progress indicator */}
         <div className="absolute top-0 left-4 right-4 h-1 bg-white bg-opacity-30 rounded-full mt-2">
-          <div className="h-full bg-white rounded-full w-0 animate-pulse"></div>
+          <div className="h-full bg-white rounded-full w-0 animate-pulse" />
         </div>
       </div>
 

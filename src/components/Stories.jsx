@@ -132,7 +132,7 @@ const Stories = () => {
                 {story.isCreateStory ? (
                   /* Create Story Card */
                   <div className="w-full h-full flex flex-col items-center justify-center text-white relative">
-                    <div className="absolute inset-0 bg-gradient-to-br from-blue-400 to-purple-500"></div>
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-400 to-purple-500" />
                     <div className="relative z-10 flex flex-col items-center">
                       <div className="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mb-3">
                         <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -175,7 +175,7 @@ const Stories = () => {
                       <source src={story.video} type="video/mp4" />
                       Your browser does not support the video tag.
                     </video>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-30"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-30" />
                   </div>
                 )}
                 

@@ -7,13 +7,11 @@ const ShowMintedNftShareLinks = ({ shareUrl, title, description, hashtags }) => 
   const [copyError, setCopyError] = useState(false);
   const timeoutRef = useRef();
 
-  useEffect(() => {
-    return () => {
+  useEffect(() => () => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
-    };
-  }, []);
+    }, []);
 
   const text = title || '';
   const hashParam = Array.isArray(hashtags) && hashtags.length
@@ -29,7 +27,7 @@ const ShowMintedNftShareLinks = ({ shareUrl, title, description, hashtags }) => 
   const performCopy = () => {
     if (navigator.clipboard && navigator.clipboard.writeText) {
       return navigator.clipboard.writeText(shareUrl);
-    } else {
+    } 
       return new Promise((resolve, reject) => {
         const textarea = document.createElement('textarea');
         textarea.value = shareUrl;
@@ -50,7 +48,7 @@ const ShowMintedNftShareLinks = ({ shareUrl, title, description, hashtags }) => 
           document.body.removeChild(textarea);
         }
       });
-    }
+    
   };
 
   const handleCopy = () => {

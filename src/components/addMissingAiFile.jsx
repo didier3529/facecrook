@@ -11,14 +11,12 @@ const AddMissingAiFile = ({ onUploadSuccess }) => {
   const isMounted = useRef(true)
   const controllerRef = useRef(null)
 
-  useEffect(() => {
-    return () => {
+  useEffect(() => () => {
       isMounted.current = false
       if (controllerRef.current) {
         controllerRef.current.abort()
       }
-    }
-  }, [])
+    }, [])
 
   const handleFileChange = (e) => {
     if (!isMounted.current) return

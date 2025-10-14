@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import useDebounce from '../hooks/useDebounce';
 import PropTypes from 'prop-types';
+import useDebounce from '../hooks/useDebounce';
 
 function FilteredTokenLeaderboard({ tokenType, maxEntries }) {
   const [loading, setLoading] = useState(true);
@@ -36,14 +36,12 @@ function FilteredTokenLeaderboard({ tokenType, maxEntries }) {
     };
   }, [tokenType]);
 
-  const filteredEntries = useMemo(() => {
-    return entries
+  const filteredEntries = useMemo(() => entries
       .filter((e) =>
         e.username.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
       )
       .sort((a, b) => b.balance - a.balance)
-      .slice(0, maxEntries);
-  }, [entries, debouncedSearchTerm, maxEntries]);
+      .slice(0, maxEntries), [entries, debouncedSearchTerm, maxEntries]);
 
   return (
     <div className="filtered-token-leaderboard">

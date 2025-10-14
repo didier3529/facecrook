@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { createContext, useContext, useEffect, useReducer } from 'react';
+import storageService from '../services/storageService';
 
 // Initial authentication state
 const initialState = {
@@ -104,35 +105,47 @@ export function AuthProvider({ children }) {
         dispatch({ type: AUTH_ACTIONS.LOGIN_START });
 
         try {
-            // Simulate login API call (since this is a satirical app)
-            await new Promise(resolve => {
-                setTimeout(resolve, 1000);
-            });
+            // Check if user is logging in or signing up
+            let user;
+            
+            if (credentials.isSignup) {
+                // Create new user account
+                try {
+                    user = storageService.createUser({
+                        name: credentials.name,
+                        email: credentials.email || `${credentials.name.toLowerCase().replace(/\s+/g, '')}@facecrook.com`,
+                        identity: credentials.identity || 'Member',
+                        aka: credentials.aka || '',
+                        profilePicture: credentials.profilePicture || '/default-avatar.jpg',
+                        bio: credentials.bio || ''
+                    });
+                } catch (error) {
+                    // User might already exist, try to get them
+                    user = storageService.getUserByEmail(credentials.email || credentials.name);
+                    if (!user) {
+                        throw error;
+                    }
+                }
+            } else {
+                // Login existing user
+                user = storageService.getUserByEmail(credentials.email || credentials.name);
+                if (!user) {
+                    throw new Error('User not found. Please sign up first.');
+                }
+            }
 
-            // Mock successful login
-            const mockUser = {
-                id: `user_${Date.now()}`,
-                name: credentials.name || 'Crypto Enthusiast',
-                email: credentials.email || 'hodler@facecrook.com',
-                identity: credentials.identity || 'Diamond Hands',
-                avatar: `https://api.dicebear.com/6.x/avataaars/svg?seed=${credentials.name}`,
-                joinDate: new Date().toISOString(),
-                tokens: 1000, // Starting token balance
-                level: 'Newbie Trader'
-            };
+            const mockToken = `token_${btoa(JSON.stringify({ userId: user.id, exp: Date.now() + 86400000 }))}`;
 
-            const mockToken = `token_${btoa(JSON.stringify({ userId: mockUser.id, exp: Date.now() + 86400000 }))}`;
-
-            // Save to localStorage
+            // Set as current user
+            storageService.setCurrentUser(user);
             localStorage.setItem('facecrook_token', mockToken);
-            localStorage.setItem('facecrook_user', JSON.stringify(mockUser));
 
             dispatch({
                 type: AUTH_ACTIONS.LOGIN_SUCCESS,
-                payload: { user: mockUser, token: mockToken }
+                payload: { user, token: mockToken }
             });
 
-            return { success: true, user: mockUser };
+            return { success: true, user };
         } catch (error) {
             dispatch({
                 type: AUTH_ACTIONS.LOGIN_FAILURE,

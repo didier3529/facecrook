@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-const AIMissingFileAdder = React.memo(function AIMissingFileAdder({ missingFiles, onAddFile }) {
+const AIMissingFileAdder = React.memo(({ missingFiles, onAddFile }) => {
   const [addingFilePath, setAddingFilePath] = useState(null);
   const [errors, setErrors] = useState({});
 
