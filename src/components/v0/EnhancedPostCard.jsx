@@ -1,6 +1,6 @@
 import { Heart, MessageCircle, MoreHorizontal, Share } from "lucide-react";
 import React, { useEffect, useState } from 'react';
-import { useAuth } from '../../hooks/useAuth';
+import { useAuth } from '../../contexts/AuthContext';
 import storageService from '../../services/storageService';
 import { AvatarDisplay } from '../AvatarDisplay';
 import { CelebrityAvatarDisplay } from '../CelebrityAvatarDisplay';
@@ -217,13 +217,74 @@ export function EnhancedPostCard({ post }) {
             <div className="px-4 pb-3">
                 <p className="text-gray-900 leading-relaxed whitespace-pre-wrap">{post.content}</p>
 
-                {/* Post Image */}
-                {post.imageUrl && (
+                {/* Post Media */}
+                {post.media && post.media.length > 0 && (
+                    <div className="mt-3">
+                        {post.media.length === 1 ? (
+                            // Single media item - larger display
+                            <div className="rounded-lg overflow-hidden">
+                                {post.media[0].type.startsWith('image/') ? (
+                                    <img
+                                        src={post.media[0].url}
+                                        alt="Post content"
+                                        className="w-full h-auto max-h-96 object-cover cursor-pointer"
+                                        onClick={() => window.open(post.media[0].url, '_blank')}
+                                    />
+                                ) : (
+                                    <video
+                                        src={post.media[0].url}
+                                        className="w-full h-auto max-h-96 object-cover"
+                                        controls
+                                        preload="metadata"
+                                    />
+                                )}
+                            </div>
+                        ) : (
+                            // Multiple media items - grid display
+                            <div className={`grid gap-2 ${
+                                post.media.length === 2 ? 'grid-cols-2' :
+                                post.media.length === 3 ? 'grid-cols-3' :
+                                'grid-cols-2'
+                            }`}>
+                                {post.media.slice(0, 4).map((media, index) => (
+                                    <div key={index} className="relative rounded-lg overflow-hidden">
+                                        {media.type.startsWith('image/') ? (
+                                            <img
+                                                src={media.url}
+                                                alt={`Post content ${index + 1}`}
+                                                className="w-full h-32 object-cover cursor-pointer"
+                                                onClick={() => window.open(media.url, '_blank')}
+                                            />
+                                        ) : (
+                                            <video
+                                                src={media.url}
+                                                className="w-full h-32 object-cover"
+                                                controls
+                                                preload="metadata"
+                                            />
+                                        )}
+                                        {post.media.length > 4 && index === 3 && (
+                                            <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                                                <span className="text-white font-bold text-lg">
+                                                    +{post.media.length - 4} more
+                                                </span>
+                                            </div>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                )}
+
+                {/* Legacy Post Image Support */}
+                {post.imageUrl && !post.media && (
                     <div className="mt-3 rounded-lg overflow-hidden">
                         <img
                             src={post.imageUrl}
                             alt="Post content"
-                            className="w-full h-auto max-h-96 object-cover"
+                            className="w-full h-auto max-h-96 object-cover cursor-pointer"
+                            onClick={() => window.open(post.imageUrl, '_blank')}
                             onError={(e) => {
                                 e.target.style.display = 'none';
                             }}
