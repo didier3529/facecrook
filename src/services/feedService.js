@@ -26,7 +26,7 @@ export class FeedService {
         return {
             'rajesh-roi-jindal': {
                 id: 'rajesh-roi-jindal',
-                realName: 'Rajesh "ROI" Jindal',
+                realName: 'Rajesh Jindal',
                 displayName: 'RajeshROI_Official',
                 characterType: 'Investment Scammer',
                 about: 'Serial entrepreneur. Inbox open for "fastest returns in Asia".',
@@ -42,7 +42,7 @@ export class FeedService {
             },
             'priya-crypto-queen-patel': {
                 id: 'priya-crypto-queen-patel',
-                realName: 'Priya "Crypto-Queen" Patel',
+                realName: 'Priya Patel',
                 displayName: 'CryptoQueenPriya',
                 characterType: 'Crypto Scammer',
                 about: 'Blockchain believer. DM for moon-shot deals 💎🚀',
@@ -58,7 +58,7 @@ export class FeedService {
             },
             'mahesh-gift-card-kumar': {
                 id: 'mahesh-gift-card-kumar',
-                realName: 'Mahesh "Gift-Card" Kumar',
+                realName: 'Mahesh Kumar',
                 displayName: 'TechSupport_Mahesh',
                 characterType: 'Tech Support Scammer',
                 about: 'Customer-support expert since Windows XP.',
@@ -74,7 +74,7 @@ export class FeedService {
             },
             'alex-investment-guru': {
                 id: 'alex-investment-guru',
-                realName: 'Alex "Investment Guru" Smith',
+                realName: 'Alex Smith',
                 displayName: 'InvestmentGuru_Alex',
                 characterType: 'Investment Scammer',
                 about: 'Financial advisor helping people invest wisely.',
@@ -90,7 +90,7 @@ export class FeedService {
             },
             'deepak-refund-guru-nair': {
                 id: 'deepak-refund-guru-nair',
-                realName: 'Deepak "Refund Guru" Nair',
+                realName: 'Deepak Nair',
                 displayName: 'RefundGuru_Deepak',
                 characterType: 'Refund Scammer',
                 about: 'I sense viruses on your PC. Let me "help" remotely.',
@@ -106,7 +106,7 @@ export class FeedService {
             },
             'seema-scholarship-rao': {
                 id: 'seema-scholarship-rao',
-                realName: 'Seema "Scholarship" Rao',
+                realName: 'Seema Rao',
                 displayName: 'ScholarshipSeema',
                 characterType: 'Education Scammer',
                 about: 'Education consultant, every student "wins".',

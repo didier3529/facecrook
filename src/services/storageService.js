@@ -50,7 +50,6 @@ class StorageService {
                 id: `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
                 name: userData.name,
                 email: userData.email || `${userData.name.toLowerCase().replace(/\s+/g, '')}@facecrook.com`,
-                aka: userData.aka || '',
                 identity: userData.identity || 'Member',
                 profilePicture: userData.profilePicture || '/default-avatar.jpg',
                 createdAt: new Date().toISOString(),

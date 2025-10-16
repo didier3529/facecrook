@@ -137,7 +137,6 @@ export function AuthProvider({ children }) {
                     name: credentials.name,
                     email: email,
                     identity: credentials.identity || 'Member',
-                    aka: credentials.aka || '',
                     profilePicture: credentials.profilePicture || '/default-avatar.jpg',
                     bio: credentials.bio || ''
                 });

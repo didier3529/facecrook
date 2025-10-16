@@ -6,42 +6,42 @@ import { useAvatar } from '../../contexts/AvatarContext';
 const scammerContacts = [
     {
         id: 'rajesh-roi-jindal',
-        realName: 'Rajesh "ROI" Jindal',
+        realName: 'Rajesh Jindal',
         status: 'Making MILLIONS! Ask me how!',
         isOnline: true,
         avatar: '/scammers/artworks-26z0Wl71BsoVlDcg-ojDyeg-t500x500.jpg'
     },
     {
         id: 'priya-crypto-queen-patel',
-        realName: 'Priya "Crypto-Queen" Patel',
+        realName: 'Priya Patel',
         status: 'PRYACOIN to the moon! 🚀',
         isOnline: true,
         avatar: '/scammers/OIP.jpeg'
     },
     {
         id: 'mahesh-gift-card-kumar',
-        realName: 'Mahesh "Gift-Card" Kumar',
+        realName: 'Mahesh Kumar',
         status: 'Your PC needs urgent help!',
         isOnline: true,
         avatar: '/scammers/0bdfea035a028e2202b6508b48e3300b.jpg'
     },
     {
         id: 'alex-investment-guru',
-        realName: 'Alex "Investment Guru" Smith',
+        realName: 'Alex Smith',
         status: 'Helping people invest',
         isOnline: false,
         avatar: '/scammers/OIP (1).jpeg'
     },
     {
         id: 'deepak-refund-guru-nair',
-        realName: 'Deepak "Refund Guru" Nair',
+        realName: 'Deepak Nair',
         status: 'Double billing detected!',
         isOnline: true,
         avatar: '/scammers/08ed8c46-6940-4f69-9b34-8d4c02f236bc-1711101712700-thumbnailS.jpeg'
     },
     {
         id: 'seema-scholarship-rao',
-        realName: 'Seema "Scholarship" Rao',
+        realName: 'Seema Rao',
         status: 'Harvard admissions open!',
         isOnline: true,
         avatar: '/scammers/Screenshot 2025-07-30 101313.png'

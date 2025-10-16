@@ -7,7 +7,6 @@ export function LoginForm() {
         name: '',
         password: '',
         identity: '',
-        aka: '',
         profilePicture: null,
         isSignup: false
     });
@@ -41,7 +40,6 @@ export function LoginForm() {
                 password: formData.password,
                 email: `${formData.name.toLowerCase().replace(/\s+/g, '')}@facecrook.com`,
                 identity: formData.identity || 'Member',
-                aka: formData.aka || '',
                 profilePicture: formData.profilePicture ? profilePreview : null,
                 isSignup: formData.isSignup
             });
@@ -132,22 +130,13 @@ export function LoginForm() {
                     />
 
                     {formData.isSignup && (
-                        <>
-                            <input
-                                type="text"
-                                placeholder="Bio or title (optional)"
-                                value={formData.identity}
-                                onChange={(e) => setFormData({ ...formData, identity: e.target.value })}
-                                className="w-full px-4 py-3 border border-gray-300 bg-white text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1877f2] focus:border-[#1877f2] placeholder-gray-500 text-lg"
-                            />
-                            <input
-                                type="text"
-                                placeholder="AKA (Also Known As) - optional"
-                                value={formData.aka}
-                                onChange={(e) => setFormData({ ...formData, aka: e.target.value })}
-                                className="w-full px-4 py-3 border border-gray-300 bg-white text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1877f2] focus:border-[#1877f2] placeholder-gray-500 text-lg"
-                            />
-                        </>
+                        <input
+                            type="text"
+                            placeholder="Bio or title (optional)"
+                            value={formData.identity}
+                            onChange={(e) => setFormData({ ...formData, identity: e.target.value })}
+                            className="w-full px-4 py-3 border border-gray-300 bg-white text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1877f2] focus:border-[#1877f2] placeholder-gray-500 text-lg"
+                        />
                     )}
 
                     <button

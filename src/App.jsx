@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { AvatarDisplay } from './components/AvatarDisplay';
 import ErrorBoundary from './components/ErrorBoundary';
 import IndianSalesWidget from './components/IndianSalesWidget';
 import { StatusIndicator } from './components/StatusIndicator';
@@ -398,7 +397,6 @@ function Profile() {
   // ✅ Safe to access user properties with fallbacks
   const userName = user.name || 'Anonymous User';
   const userIdentity = user.identity || 'New Member';
-  const userAka = user.aka || '';
 
   return (
     <div className="bg-gray-100 min-h-screen">
@@ -448,7 +446,6 @@ function Profile() {
                {/* Name and Info */}
                <div className="flex-1">
                  <h1 className="text-3xl font-bold text-gray-900 mb-2">{userName}</h1>
-                 {userAka && <p className="text-gray-600 text-lg mb-2">AKA {userAka}</p>}
                  <p className="text-gray-500 text-sm mb-4">0 friends</p>
                 
                 {/* Action Buttons */}
